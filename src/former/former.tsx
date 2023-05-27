@@ -5,10 +5,9 @@ const createFormer: CreateFormerProps = (
 	options = { elements: {}, rules: [] }
 ) => {
 	const { elements } = options;
-
-	return ({ dataSource }) => {
+	const Former: ReturnType<CreateFormerProps> = ({ dataSource, form }) => {
 		return (
-			<Form>
+			<Form form={form}>
 				{dataSource.map((item) => {
 					const formItemProps = {
 						label: item.label,
@@ -16,7 +15,7 @@ const createFormer: CreateFormerProps = (
 					if (typeof item.view === 'function') {
 						const Element = item.view;
 						return (
-							<Form.Item key={item.key} {...formItemProps}>
+							<Form.Item name={item.key} key={item.key} {...formItemProps}>
 								<Element />
 							</Form.Item>
 						);
@@ -28,7 +27,7 @@ const createFormer: CreateFormerProps = (
 						}
 						const Element = elements[item.view];
 						return (
-							<Form.Item key={item.key} {...formItemProps}>
+							<Form.Item name={item.key} key={item.key} {...formItemProps}>
 								{<Element />}
 							</Form.Item>
 						);
@@ -37,5 +36,8 @@ const createFormer: CreateFormerProps = (
 			</Form>
 		);
 	};
+	Former.displayName = 'Former';
+	Former.useForm = Form.useForm;
+	return Former;
 };
 export default createFormer;

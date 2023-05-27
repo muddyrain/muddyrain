@@ -3,6 +3,7 @@ import type {
 	Checkbox,
 	DatePicker,
 	Form as AForm,
+	FormInstance,
 	FormItemProps,
 	Input,
 	Radio,
@@ -14,6 +15,7 @@ import type {
 import React from 'react';
 
 export interface FormerProps {
+	form: FormInstance;
 	dataSource: {
 		label: string;
 		key: string | number;
@@ -44,4 +46,6 @@ export type CreateFormerProps = (
 		elements: Elements;
 		rules?: FormItemProps['rules'];
 	}
-) => React.FC<FormerProps>;
+) => React.FC<FormerProps> & {
+	useForm: () => [FormInstance];
+};
