@@ -1,0 +1,38 @@
+{
+  "github": {
+    "release": true
+  },
+  "git": {
+    "commitMessage": "chore(release): update v${version}"
+  },
+  "npm": {
+    "publish": true
+  },
+  "hooks": {
+    "after:bump": "echo 更新版本成功"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "conventionalCommits",
+        "types": [
+          {
+            "type": "feat",
+            "subject": "release",
+            "section": "✨新功能"
+          },
+          {
+            "type": "fix",
+            "subject": "release",
+            "section": "🐛问题修复"
+          },
+          {
+            "type": "docs",
+            "subject": "release",
+            "section": "📚文档"
+          }
+        ]
+      }
+    }
+  }
+}
