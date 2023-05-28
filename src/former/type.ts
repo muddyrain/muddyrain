@@ -1,49 +1,70 @@
 import type {
 	Cascader,
+	CascaderProps,
 	Checkbox,
 	DatePicker,
+	DatePickerProps,
 	Form as AForm,
 	FormInstance,
 	FormItemProps,
 	Input,
+	InputProps,
 	Radio,
+	RadioGroupProps,
 	Select,
-	Switch,
+	SelectProps,
 	TimePicker,
+	TimePickerProps,
 	TreeSelect,
+	TreeSelectProps,
 } from 'antd';
+import { CheckboxGroupProps } from 'antd/es/checkbox';
+import { TextAreaProps } from 'antd/es/input';
 import React from 'react';
 
+interface DataSourceItem extends AntdElementTypesProps {
+	label: string;
+	key: string | number;
+	view: keyof AntdElementProps | React.FC;
+	prefixPlaceholder?: string;
+}
 export interface FormerProps {
 	form: FormInstance;
-	dataSource: {
-		label: string;
-		key: string | number;
-		view: keyof Elements | React.FC;
-	}[];
+	dataSource: DataSourceItem[];
 }
-
-interface AntdElementProps {
+/**
+ * antd 元素类型props
+ */
+export interface AntdElementTypesProps {
+	Select?: SelectProps;
+	Input?: InputProps;
+	TextArea?: TextAreaProps;
+	DatePicker?: DatePickerProps;
+	TimePicker?: TimePickerProps;
+	Cascader?: CascaderProps;
+	CheckboxGroup?: CheckboxGroupProps;
+	TreeSelect?: TreeSelectProps;
+	RadioGroup?: RadioGroupProps;
+}
+/**
+ * antd 元素类型
+ */
+export interface AntdElementProps {
 	Select?: typeof Select;
 	Input?: typeof Input;
 	TextArea?: typeof Input.TextArea;
-	Switch?: typeof Switch;
 	DatePicker?: typeof DatePicker;
 	TimePicker?: typeof TimePicker;
-	Checkbox?: typeof Checkbox;
-	Radio?: typeof Radio;
 	Cascader?: typeof Cascader;
 	CheckboxGroup?: typeof Checkbox.Group;
 	TreeSelect?: typeof TreeSelect;
 	RadioGroup?: typeof Radio.Group;
 }
 
-type Elements = Partial<Record<keyof AntdElementProps, any>>;
-
 export type CreateFormerProps = (
 	Form: typeof AForm,
 	options?: {
-		elements: Elements;
+		elements: AntdElementProps;
 		rules?: FormItemProps['rules'];
 	}
 ) => React.FC<FormerProps> & {
