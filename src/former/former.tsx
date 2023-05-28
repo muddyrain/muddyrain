@@ -1,15 +1,16 @@
+import { FormItemProps } from 'antd';
 import React from 'react';
-import { AntdElementTypesProps, CreateFormerProps } from './type';
-
-/**
- *
- */
+import CustomRules from './rules';
+import type { AntdElementTypesProps, CreateFormerProps } from './type';
 
 const createFormer: CreateFormerProps = (
 	Form,
-	options = { elements: {}, rules: [] }
+	options = { elements: {}, rules: {} }
 ) => {
-	const { elements } = options;
+	const { elements, rules: _rules } = options;
+	// Merge custom rules with created rules
+	const rules = { ...CustomRules, ..._rules };
+
 	const Former: ReturnType<CreateFormerProps> = ({ dataSource, form }) => {
 		return (
 			<Form form={form}>
@@ -36,8 +37,24 @@ const createFormer: CreateFormerProps = (
 							prefixPlaceholder = '请选择';
 						}
 					}
+					const formItemRules =
+						(item.rules?.map((rule) => {
+							if (typeof rule === 'string' && rule in rules) {
+								return rules[rule as keyof typeof rules];
+							} else {
+								return rule;
+							}
+						}) as FormItemProps['rules']) || [];
 					return (
-						<Form.Item name={item.key} key={item.key} {...formItemProps}>
+						<Form.Item
+							rules={[
+								{ required: item.required, message: `${item.label}不能为空` },
+								...formItemRules,
+							]}
+							name={item.key}
+							key={item.key}
+							{...formItemProps}
+						>
 							<Element
 								placeholder={prefixPlaceholder + item.label}
 								{...(item[item.view as keyof AntdElementTypesProps] || {})}

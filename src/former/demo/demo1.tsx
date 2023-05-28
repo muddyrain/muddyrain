@@ -43,6 +43,8 @@ const Demo = () => {
 						key: 'a',
 						label: '用户名',
 						view: 'Input',
+						rules: ['integer', 'mobile'],
+						required: true,
 						Input: {
 							// placeholder: '请输入用户名自定义',
 						},
@@ -167,7 +169,9 @@ const Demo = () => {
 			/>
 			<Button
 				onClick={() => {
-					console.log($form.getFieldsValue());
+					$form.validateFields().then((data) => {
+						console.log(data);
+					});
 				}}
 			>
 				点我
