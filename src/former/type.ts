@@ -32,6 +32,30 @@ interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	key: string | number;
 	/**
+	 * 初始值 - `any`
+	 */
+	initialValue?: any;
+	/**
+	 * 必选项提示文本 - `string`
+	 * default: `xxx不能为空`
+	 */
+	requiredMsg?: string;
+	/**
+	 * 前缀占位字符 - `string`
+	 * default: `请输入/请选择xxx`
+	 */
+	placeholder?: string;
+	/**
+	 * 仅支持输入数字 - `boolean`
+	 * default: `false`
+	 */
+	onlyEntryNumber?: boolean;
+	/**
+	 * 支持清除 - `boolean`
+	 * default: `false`
+	 */
+	allowClear?: boolean;
+	/**
 	 * 展示元素
 	 *
 	 * ①: 可选择性的 `Antd Form Components`
@@ -50,6 +74,14 @@ interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	required?: boolean;
 	/**
+	 * 是否隐藏保留 key 关键字的隐藏状态 - `boolean`
+	 */
+	hide?: boolean;
+	/**
+	 *  是否显示(销毁 key 关键字的隐藏状态 - `boolean`
+	 */
+	visible?: boolean | ((record: any, index: number) => boolean);
+	/**
 	 * 校验规则
 	 *
 	 * 类型为 - `string[] | Rule[]`
@@ -59,10 +91,38 @@ interface DataSourceItem extends AntdElementTypesProps {
 	 * 对象则为标准 `FormItem` 规则
 	 */
 	rules?: (keyof typeof rules)[] | FormItemProps['rules'] | string[];
+	/**
+	 * 宽度 `number`
+	 */
+	width?: number;
+	/**
+	 * Col 布局 `number`
+	 * default: `8`
+	 */
+	span?: number;
 }
 export interface FormerProps {
 	form: FormInstance;
+	/**
+	 * Col 布局 `number`
+	 * default: `3`
+	 */
+	column?: number;
+	/**
+	 * 数据源 `DataSourceItem`
+	 * default: `[]`
+	 */
 	dataSource: DataSourceItem[];
+	/**
+	 * 容器布局 `number`
+	 * default: `18`
+	 */
+	wrapperCol?: number;
+	/**
+	 * 标签布局 `number`
+	 * default: `6`
+	 */
+	labelCol?: number;
 }
 /**
  * antd 元素类型props

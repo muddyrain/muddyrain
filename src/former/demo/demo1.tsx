@@ -38,11 +38,16 @@ const Demo = () => {
 		<div>
 			<Former
 				form={$form}
+				column={3}
 				dataSource={[
 					{
 						key: 'a',
 						label: '用户名',
 						view: 'Input',
+						initialValue: '',
+						placeholder: '掉毛',
+						requiredMsg: '哒哒哒',
+						onlyEntryNumber: true,
 						rules: ['integer', 'mobile'],
 						required: true,
 						Input: {
@@ -53,6 +58,7 @@ const Demo = () => {
 						key: 'b',
 						label: '选择器',
 						view: 'Select',
+						allowClear: true,
 						Select: {
 							options: [
 								{ value: '北京', label: '北京' },

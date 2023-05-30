@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ant-design/icons': ^5.1.4
   '@commitlint/cli': ^17.6.3
   '@commitlint/config-conventional': ^17.6.3
   '@release-it/conventional-changelog': ^5.1.1
@@ -33,6 +34,7 @@ dependencies:
   eslint-plugin-react: 7.32.2_eslint@8.40.0
 
 devDependencies:
+  '@ant-design/icons': 5.1.4_biqbaboplfbrettd7655fr4n2y
   '@commitlint/cli': 17.6.3
   '@commitlint/config-conventional': 17.6.3
   '@release-it/conventional-changelog': 5.1.1_release-it@15.10.3
@@ -91,8 +93,8 @@ packages:
     resolution: {integrity: sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==}
     dev: true
 
-  /@ant-design/icons/5.1.3_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-vajYXDkzRQevAJwXgbFzVJ3970nKYqGjX+0+L5/FJcPbItSco32U1k06K9wC0OochLfL/z0U13JN1BsniqMYsA==}
+  /@ant-design/icons/5.1.4_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-YHKL7Jx3bM12OxvtiYDon04BsBT/6LGitYEqar3GljzWaAyMOAD8i/uF1Rsi5Us/YNdWWXBGSvZV2OZWMpJlcA==}
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.0.0'
@@ -3421,7 +3423,7 @@ packages:
     dependencies:
       '@ant-design/colors': 7.0.0
       '@ant-design/cssinjs': 1.9.1_biqbaboplfbrettd7655fr4n2y
-      '@ant-design/icons': 5.1.3_biqbaboplfbrettd7655fr4n2y
+      '@ant-design/icons': 5.1.4_biqbaboplfbrettd7655fr4n2y
       '@ant-design/react-slick': 1.0.1_react@18.2.0
       '@babel/runtime': 7.21.5
       '@ctrl/tinycolor': 3.6.0

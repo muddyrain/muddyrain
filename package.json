@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@release-it/conventional-changelog": "^5.1.1",
