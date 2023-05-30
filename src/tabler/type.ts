@@ -29,4 +29,9 @@ export interface TablerProps extends TableProps<RecordType> {
 		ellipsis?: boolean;
 		ellipsisProps?: TooltipProps;
 	})[];
+	onPageChange?: (props: {
+		page: number;
+		pageSize: number;
+		size: number;
+	}) => void;
 }

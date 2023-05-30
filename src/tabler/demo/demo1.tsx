@@ -26,20 +26,12 @@ const Demo1 = () => {
 						},
 					},
 				]}
-				dataSource={[
-					{
-						key: '1',
-						name: 'John Brown',
-						age: 32,
-						address: 'New York No. 1 Lake Park',
-					},
-					{
-						key: '2',
-						name: 'Jim Green',
-						age: 42,
-						address: 'London No. 1 Lake Park',
-					},
-				]}
+				dataSource={Array.from({ length: 50 }).map((_, index) => ({
+					key: index + 1,
+					name: 'John Brown' + index + 1,
+					age: 32,
+					address: 'New York No. 1 Lake Park',
+				}))}
 				columns={[
 					{
 						title: 'Name',

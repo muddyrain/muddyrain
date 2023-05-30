@@ -1,7 +1,7 @@
+import { useSetState } from 'ahooks';
 import { Button, Popconfirm, Space, Table, Tooltip } from 'antd';
 import React, { FC } from 'react';
 import { TablerProps } from './type';
-
 const handleActions = (
 	actions: TablerProps['actions']
 ): TablerProps['columns'] => {
@@ -16,6 +16,12 @@ const handleActions = (
 					<Space>
 						{actions.map((action, _index) => {
 							const key = action.key || _index;
+							/**
+							 * 是否显示
+							 */
+							if (action.visible === false) {
+								return null;
+							}
 							/**
 							 * 自定义函数组件式方式
 							 */
@@ -32,6 +38,7 @@ const handleActions = (
 												? action.confirm
 												: action.confirm(record, index)
 										}
+										disabled={!!action.disabled}
 										okText="确定"
 										cancelText="取消"
 										onConfirm={() => {
@@ -39,7 +46,12 @@ const handleActions = (
 										}}
 										{...action.confirmProps}
 									>
-										<Button type="primary" {...action.props}>
+										<Button
+											disabled={!!action.disabled}
+											loading={!!action.loading}
+											type="primary"
+											{...action.props}
+										>
 											{action.content || ''}
 										</Button>
 									</Popconfirm>
@@ -51,6 +63,8 @@ const handleActions = (
 							return (
 								<Button
 									key={key}
+									loading={!!action.loading}
+									disabled={!!action.disabled}
 									type="primary"
 									onClick={() => {
 										action.onClick?.(record, index);
@@ -68,17 +82,19 @@ const handleActions = (
 	];
 };
 
-const handleSort = (props: TablerProps): TablerProps['columns'] => {
+const handleSort = (
+	props: TablerProps,
+	pagination: TablerProps['pagination']
+): TablerProps['columns'] => {
 	return [
 		{
 			title: props.sortTitle || '序号',
 			render(_, __, index) {
-				if (typeof props.pagination === 'object') {
+				if (pagination) {
 					return (
 						index +
 						1 +
-						((props.pagination?.current || 1) - 1) *
-							(props.pagination?.pageSize || 10)
+						((pagination?.current || 1) - 1) * (pagination?.pageSize || 10)
 					);
 				} else {
 					return index + 1;
@@ -111,14 +127,37 @@ const handleCell = (
 };
 
 const Tabler: FC<TablerProps> = (props) => {
-	const { columns = [], dataSource = [], actions = null } = props;
+	const { columns = [], dataSource = [], actions = null, onPageChange } = props;
+	const [state, setState] = useSetState({
+		current: 1,
+		pageSize: 10,
+	});
+	const pagination: TablerProps['pagination'] =
+		typeof props.pagination === 'boolean'
+			? props.pagination
+			: {
+					current: state.current,
+					pageSize: state.pageSize,
+					total: dataSource.length,
+					showTotal: (value) => `共 ${value} 条`,
+					onChange(page, pageSize) {
+						setState({
+							current: page,
+							pageSize,
+						});
+						onPageChange?.({ page, size: pageSize, pageSize });
+					},
+					...props.pagination,
+			  };
 	return (
 		<Table
+			{...props}
 			columns={[
-				...(handleSort(props) || []),
+				...(handleSort(props, pagination) || []),
 				...(handleCell(columns) || []),
 				...(handleActions(actions) || []),
 			]}
+			pagination={pagination}
 			dataSource={dataSource}
 		/>
 	);

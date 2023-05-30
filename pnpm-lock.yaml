@@ -8,6 +8,7 @@ specifiers:
   '@types/react': ^18.0.0
   '@types/react-dom': ^18.0.0
   '@umijs/lint': ^4.0.0
+  ahooks: ^3.7.7
   antd: ^5.5.1
   cz-customizable: ^7.0.0
   dumi: ^2.1.22
@@ -41,6 +42,7 @@ devDependencies:
   '@types/react': 18.2.6
   '@types/react-dom': 18.2.4
   '@umijs/lint': 4.0.69_nr52hhy3eflbtrcavvsbjjq2ji
+  ahooks: 3.7.7_react@18.2.0
   antd: 5.5.1_biqbaboplfbrettd7655fr4n2y
   dumi: 2.1.24_fozozefl4qsrkn5lqgfjebdj44
   eslint: 8.40.0
@@ -2495,6 +2497,10 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
+  /@types/js-cookie/2.2.7:
+    resolution: {integrity: sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==}
+    dev: true
+
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
@@ -3312,6 +3318,29 @@ packages:
     dependencies:
       clean-stack: 2.2.0
       indent-string: 4.0.0
+    dev: true
+
+  /ahooks-v3-count/1.0.0:
+    resolution: {integrity: sha512-V7uUvAwnimu6eh/PED4mCDjE7tokeZQLKlxg9lCTMPhN+NjsSbtdacByVlR1oluXQzD3MOw55wylDmQo4+S9ZQ==}
+    dev: true
+
+  /ahooks/3.7.7_react@18.2.0:
+    resolution: {integrity: sha512-5e5WlPq81Y84UnTLOKIQeq2cJw4aa7yj8fR2Nb/oMmXPrWMjIMCbPS1o+fpxSfCaNA3AzOnnMc8AehWRZltkJQ==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.21.5
+      '@types/js-cookie': 2.2.7
+      ahooks-v3-count: 1.0.0
+      dayjs: 1.11.7
+      intersection-observer: 0.12.2
+      js-cookie: 2.2.1
+      lodash: 4.17.21
+      react: 18.2.0
+      resize-observer-polyfill: 1.5.1
+      screenfull: 5.2.0
+      tslib: 2.5.2
     dev: true
 
   /ajv-keywords/3.5.2_ajv@6.12.6:
@@ -7414,6 +7443,10 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
+  /intersection-observer/0.12.2:
+    resolution: {integrity: sha512-7m1vEcPCxXYI8HqnL8CKI6siDyD+eIWSwgB3DZA+ZTogxk9I4CDnj4wilt9x/+/QbHI4YG5YZNmC6458/e9Ktg==}
+    dev: true
+
   /intl-messageformat/10.3.5:
     resolution: {integrity: sha512-6kPkftF8Jg3XJCkGKa5OD+nYQ+qcSxF4ZkuDdXZ6KGG0VXn+iblJqRFyDdm9VvKcMyC0Km2+JlVQffFM52D0YA==}
     dependencies:
@@ -7973,6 +8006,10 @@ packages:
 
   /jju/1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
+    dev: true
+
+  /js-cookie/2.2.1:
+    resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
     dev: true
 
   /js-sdsl/4.4.0:
@@ -12485,6 +12522,11 @@ packages:
       '@types/json-schema': 7.0.11
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
+    dev: true
+
+  /screenfull/5.2.0:
+    resolution: {integrity: sha512-9BakfsO2aUQN2K9Fdbj87RJIEZ82Q9IGim7FqM5OsebfoFC6ZHXgDq/KvniuLTPdeM8wY2o6Dj3WQ7KeQCj3cA==}
+    engines: {node: '>=0.10.0'}
     dev: true
 
   /scroll-into-view-if-needed/3.0.10:
