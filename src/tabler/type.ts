@@ -18,6 +18,14 @@ export interface TablerActionsProps {
 }
 
 export interface TablerProps extends TableProps<RecordType> {
+	/**
+	 * 类名
+	 */
+	className?: string;
+	/**
+	 * 样式
+	 */
+	style?: React.CSSProperties;
 	rowKey?: string;
 	actions?: TablerActionsProps[] | null;
 	/**
