@@ -1,4 +1,5 @@
 import type {
+	ButtonProps,
 	Cascader,
 	CascaderProps,
 	Checkbox,
@@ -116,6 +117,10 @@ export interface FormerProps {
 	 */
 	onSubmit?: FormProps['onFinish'];
 	/**
+	 * 重置表单后回调事件
+	 */
+	onReset?: () => void;
+	/**
 	 * 提交表单且数据验证成功后回调事件
 	 */
 	onFinish?: FormProps['onFinish'];
@@ -148,6 +153,40 @@ export interface FormerProps {
 	 * default: `6`
 	 */
 	labelCol?: number;
+	/**
+	 * 提交按钮文本 `string`
+	 * 如果值为 `null` 则不显示该按钮
+	 * default: `提交`
+	 */
+	submitText?: string | null;
+	/**
+	 * 重置按钮文本 `string`
+	 * 如果值为 `null` 则不显示该按钮
+	 * default: `重置`
+	 */
+	resetText?: string | null;
+	/**
+	 * 提交按钮的props - `ButtonProps`
+	 * ButtonProps -> antd button props
+	 */
+	submitProps?: ButtonProps;
+	/**
+	 * 重置按钮的props - `ButtonProps`
+	 * ButtonProps -> antd button props
+	 */
+	resetProps?: ButtonProps;
+	/**
+	 * 操作按钮模式
+	 * type -> `'inner' | 'wrapper'`
+	 * default: `wrapper`
+	 */
+	actionMode?: 'inner' | 'wrapper';
+	/**
+	 * 自定义渲染操作按钮
+	 */
+	renderAction?:
+		| ((submit: () => void, reset: () => void) => JSX.Element)
+		| null;
 }
 /**
  * antd 元素类型props

@@ -1,4 +1,4 @@
-import { Col, FormItemProps, Row } from 'antd';
+import { Button, Col, FormItemProps, Row, Space } from 'antd';
 import React, { useState } from 'react';
 import CustomRules from './rules';
 import type {
@@ -23,9 +23,16 @@ const createFormer: CreateFormerProps = (
 		wrapperCol = 16,
 		onFinish,
 		onSubmit,
+		onReset,
 		onFinishFailed,
 		style,
 		className,
+		submitText = '提交',
+		resetText = '重置',
+		submitProps,
+		resetProps,
+		actionMode = 'wrapper',
+		renderAction,
 	}) => {
 		const colSpan = Math.floor(24 / column);
 		const [formData, setFormData] = useState({});
@@ -110,6 +117,46 @@ const createFormer: CreateFormerProps = (
 				return null;
 			});
 
+		const ActionButtons = () => {
+			if (renderAction) {
+				return renderAction(
+					() => {
+						$form.validateFields().then((values) => {
+							onSubmit?.(values);
+						});
+					},
+					() => {
+						$form.resetFields();
+						onReset?.();
+					}
+				);
+			} else {
+				return !!(submitText || resetText) ? (
+					<Space>
+						{submitText && (
+							<Button type="primary" htmlType="submit" {...(submitProps || {})}>
+								{submitText}
+							</Button>
+						)}
+						{resetText && (
+							<Button
+								type="default"
+								htmlType="reset"
+								{...resetProps}
+								onClick={() => {
+									$form.resetFields();
+									onReset?.();
+								}}
+							>
+								{resetText}
+							</Button>
+						)}
+					</Space>
+				) : (
+					<></>
+				);
+			}
+		};
 		return (
 			<Form
 				form={$form}
@@ -130,7 +177,9 @@ const createFormer: CreateFormerProps = (
 					{Array.isArray(dataSource)
 						? DataSources(dataSource)
 						: DataSources(dataSource(formData))}
+					{actionMode === 'inner' && <ActionButtons />}
 				</Row>
+				{actionMode === 'wrapper' && <ActionButtons />}
 			</Form>
 		);
 	};

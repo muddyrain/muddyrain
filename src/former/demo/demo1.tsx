@@ -4,7 +4,6 @@
  */
 
 import {
-	Button,
 	Cascader,
 	Checkbox,
 	DatePicker,
@@ -40,6 +39,8 @@ const Demo = () => {
 			<Former
 				form={$form}
 				column={3}
+				resetText={null}
+				actionMode="wrapper"
 				onSubmit={(e) => {
 					console.log(e);
 				}}
@@ -54,7 +55,7 @@ const Demo = () => {
 							placeholder: '掉毛',
 							requiredMsg: '哒哒哒',
 							onlyEntryNumber: true,
-							rules: ['integer', 'mobile'],
+							rules: ['integer'],
 							required: true,
 							Input: {
 								// placeholder: '请输入用户名自定义',
@@ -180,15 +181,6 @@ const Demo = () => {
 					];
 				}}
 			/>
-			<Button
-				onClick={() => {
-					$form.validateFields().then((data) => {
-						console.log(data);
-					});
-				}}
-			>
-				点我
-			</Button>
 		</div>
 	);
 };
