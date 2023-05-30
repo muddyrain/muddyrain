@@ -145,7 +145,7 @@ export interface FormerProps {
 	dataSource: DataSourceItem[] | ((data: any) => DataSourceItem[]);
 	/**
 	 * 容器布局 `number`
-	 * default: `18`
+	 * default: `16`
 	 */
 	wrapperCol?: number;
 	/**

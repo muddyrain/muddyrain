@@ -1,6 +1,6 @@
 /**
  * title: 基础用法
- * description: 可以存储多个数据，通过state 获取、dispatch 修改
+ * description: 加装过的form表单组件，拥有全新的类型支持系统
  */
 
 import {

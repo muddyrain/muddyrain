@@ -1,1 +1,1 @@
-export { default as Former } from './former';
+export { default as createFormer } from './former';
