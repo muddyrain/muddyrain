@@ -17,14 +17,20 @@ const createFormer: CreateFormerProps = (
 
 	const Former: ReturnType<CreateFormerProps> = ({
 		dataSource,
-		form,
+		form: _form,
 		column = 3,
 		labelCol = 6,
 		wrapperCol = 16,
+		onFinish,
+		onSubmit,
+		onFinishFailed,
+		style,
+		className,
 	}) => {
 		const colSpan = Math.floor(24 / column);
 		const [formData, setFormData] = useState({});
-
+		const [initForm] = Form.useForm();
+		const $form = _form || initForm;
 		const DataSources = (_dataSource: DataSourceItem[]) =>
 			_dataSource.map((item, index) => {
 				const formItemProps = {
@@ -64,7 +70,7 @@ const createFormer: CreateFormerProps = (
 				if (typeof item.visible === 'boolean') {
 					_visible = item.visible === undefined ? true : !!item.visible;
 				} else if (typeof item.visible === 'function' && item.visible) {
-					_visible = item.visible(form.getFieldValue(item.key), index);
+					_visible = item.visible($form.getFieldValue(item.key), index);
 				}
 
 				if (_visible) {
@@ -106,9 +112,16 @@ const createFormer: CreateFormerProps = (
 
 		return (
 			<Form
-				form={form}
+				form={$form}
+				style={style}
+				className={className}
+				onFinish={(values) => {
+					onSubmit?.(values);
+					onFinish?.(values);
+				}}
+				onFinishFailed={onFinishFailed}
 				onValuesChange={() => {
-					setFormData(form.getFieldsValue());
+					setFormData($form.getFieldsValue());
 				}}
 				labelCol={{ span: labelCol }}
 				wrapperCol={{ span: wrapperCol }}

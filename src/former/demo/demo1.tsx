@@ -40,6 +40,9 @@ const Demo = () => {
 			<Former
 				form={$form}
 				column={3}
+				onSubmit={(e) => {
+					console.log(e);
+				}}
 				dataSource={(data) => {
 					console.log(data);
 					return [

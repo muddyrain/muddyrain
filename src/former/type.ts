@@ -7,6 +7,7 @@ import type {
 	Form as AForm,
 	FormInstance,
 	FormItemProps,
+	FormProps,
 	Input,
 	InputProps,
 	Radio,
@@ -102,7 +103,31 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	span?: number;
 }
 export interface FormerProps {
-	form: FormInstance;
+	/**
+	 * 类名
+	 */
+	className?: string;
+	/**
+	 * 样式
+	 */
+	style?: React.CSSProperties;
+	/**
+	 * 提交表单且数据验证成功后回调事件
+	 */
+	onSubmit?: FormProps['onFinish'];
+	/**
+	 * 提交表单且数据验证成功后回调事件
+	 */
+	onFinish?: FormProps['onFinish'];
+	/**
+	 * 提交表单且数据验证失败后回调事件
+	 */
+	onFinishFailed?: FormProps['onFinishFailed'];
+	/**
+	 * Form 实例 - `FormInstance`
+	 * const [$form] = Fromer.useFrom()
+	 */
+	form?: FormInstance;
 	/**
 	 * Col 布局 `number`
 	 * default: `3`
