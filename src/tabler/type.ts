@@ -26,17 +26,29 @@ export interface TablerProps extends TableProps<RecordType> {
 	 * 样式
 	 */
 	style?: React.CSSProperties;
+	/**
+	 * 行key
+	 */
 	rowKey?: string;
+	/**
+	 * 操作项
+	 */
 	actions?: TablerActionsProps[] | null;
 	/**
 	 * 排序标题
 	 * default: 序号
 	 */
 	sortTitle?: string;
+	/**
+	 * 表格列的配置
+	 */
 	columns: (ColumnType<RecordType> & {
 		ellipsis?: boolean;
 		ellipsisProps?: TooltipProps;
 	})[];
+	/**
+	 * 监听分页
+	 */
 	onPageChange?: (props: {
 		page: number;
 		pageSize: number;
