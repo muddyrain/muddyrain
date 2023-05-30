@@ -67,8 +67,6 @@ export default () => {
 
 ### Former - Props
 
-
-
 | 参数         | 说明     | 类型           | 描述信息 | 默认值 |
 | ------------| -------- | -----------   | ------  | ----- |
 | className | 类名 | `string;`|  react - className     | {}
@@ -88,3 +86,23 @@ export default () => {
 | resetProps | 重置按钮的props | `ButtonProps;`| 按钮的参数 - 源自 antd button | {}
 | actionMode | 操作按钮模式 | `inner  wrapper`| type -> `'inner' | 'wrapper'` | 'wrapper'
 | renderAction | 自定义渲染操作按钮 | `((submit: () => void, reset: () => void) => JSX.Element)`| 自定义渲染的按钮组，需返回JSX元素对象 | undefined
+
+### FormerItem - Props
+
+| 参数         | 说明              | 类型                      | 描述信息             | 默认值                 |
+| --------------| ----------------- | ----------------------   | ------------------  | -------------------- |
+| label         |  标签              |   `string ` | - | 必填  |
+| key           |  输出值的`key`值    |  `string  number; ` | key | 必填 |
+| initialValue  |  初始值            |  `any ` | - | '' |
+| requiredMsg   |  必选项提示文本      |  `string ` | - | xxx为必填 |
+| placeholder   |  前缀占位字符        |  `string ` | - | 请输入/请选择xxxx |
+| onlyEntryNumber|  仅支持输入数字      |  `boolean ` | - | false |
+| allowClear    |  支持清除            |  `boolean ` | - | false |
+| view          |  展示元素            |  `keyof AntdElementProps  React.FC ` | 可选择性的 antd 表单组件 或者 自定义 函数组件 | 必填 |
+| prefixPlaceholder|  前缀占位符       |  `string ` | - | '请输入/请选择' |
+| required      |  是否为必填          |  `boolean ` | - | false |
+| hide          |  是否隐藏            |  `boolean ` | - | false |
+| visible       |  是否显示            |  `boolean  ((record: any, index: number) => boolean) ` | - | true |
+| rules         |  校验规则            |  `(keyof typeof rules)[]  FormItemProps['rules']  string[] ` | 字符串为自定义类型 - 必须是 自定义rules内的 否则不生效 对象则为标准 `FormItem` 规则 | [] |
+| width         |  宽度               |  `number ` | - | '100%' |
+| span          |  Col 布局           |  `number ` | - | 8 |
