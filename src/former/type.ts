@@ -22,7 +22,7 @@ import { CheckboxGroupProps } from 'antd/es/checkbox';
 import { TextAreaProps } from 'antd/es/input';
 import React from 'react';
 import rules from './rules';
-interface DataSourceItem extends AntdElementTypesProps {
+export interface DataSourceItem extends AntdElementTypesProps {
 	/**
 	 * 标签 `string`
 	 */
@@ -112,7 +112,7 @@ export interface FormerProps {
 	 * 数据源 `DataSourceItem`
 	 * default: `[]`
 	 */
-	dataSource: DataSourceItem[];
+	dataSource: DataSourceItem[] | ((data: any) => DataSourceItem[]);
 	/**
 	 * 容器布局 `number`
 	 * default: `18`
