@@ -10,7 +10,7 @@ nav:
 <code src="./demo/demo1.tsx"></code>
 
 
-### Former - Props
+### Tabler - Props
 
 | 参数         | 说明     | 类型           | 描述信息 | 默认值 |
 | ------------| -------- | -----------   | ------  | ----- |

@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Modal } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 // 尺寸大小类型
 type SizeProps = 'default' | 'small' | 'medium' | 'large';
@@ -19,6 +19,8 @@ interface DialogProps {
 	children?: React.ReactNode | JSX.Element;
 	/** 标题 */
 	title?: string;
+	/** 显示 */
+	visible?: boolean;
 	/** 宽度 */
 	width?: SizeProps | number;
 	/** 打开按钮文字 */
@@ -45,6 +47,8 @@ interface DialogProps {
 	footer?: (close: () => void) => React.ReactNode | React.ReactNode | any;
 	/** 自定义渲染打开按钮 */
 	renderOpenButton?: (int: () => void) => void;
+	/** 监听显示 */
+	changeVisible?: (bool: boolean) => void;
 }
 
 // 处理框架宽度
@@ -68,6 +72,7 @@ const Dialog: FC<DialogProps> = ({
 	style = {},
 	title = '弹框标题',
 	onOpen,
+	visible: _visible = false,
 	okText = '确定',
 	openText = '打开',
 	cancelText = '取消',
@@ -81,8 +86,9 @@ const Dialog: FC<DialogProps> = ({
 	afterClose,
 	footer,
 	renderOpenButton,
+	changeVisible,
 }) => {
-	const [visible, setVisible] = useState(false);
+	const [visible, setVisible] = useState(_visible);
 	// 处理打开按钮
 	const procedureOpenButton = () => {
 		const type = Object.prototype.toString.call(renderOpenButton);
@@ -108,6 +114,9 @@ const Dialog: FC<DialogProps> = ({
 			);
 		}
 	};
+	useEffect(() => {
+		changeVisible?.(visible);
+	}, [visible]);
 	return (
 		<>
 			{procedureOpenButton()}

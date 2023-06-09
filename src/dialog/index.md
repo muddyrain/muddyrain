@@ -20,7 +20,7 @@ export default function (){
 }
 ```
 
-### Former - Props
+### Dialog - Props
 
 | 参数         | 说明     | 类型           | 描述信息 | 默认值 |
 | ------------| -------- | -----------   | ------  | ----- |
@@ -41,5 +41,6 @@ export default function (){
 | afterClose  | 关闭之前的操作  | `() => void`  | - | - |
 | footer  | 自定义footer  | `(close: () => void) => React.ReactNode  React.ReactNode  any`  | - | - |
 | renderOpenButton  | 自定义渲染打开按钮  | `(int: () => void) => void`  | - | - |
+| changeVisible  | 监听显示  | `(bool: boolean) => void`  | - | - |
 
 
