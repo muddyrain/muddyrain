@@ -1,91 +1,99 @@
+import { CANVAS_ERROR_MESSAGE } from 'muddyrain/constant';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import Dialog from '../dialog';
 import styles from './index.module.css';
-import type { TailorProps } from './types';
+import type { CanvasState, TailorProps } from './types';
+import { useSyncState } from './useSyncState';
+import { getPixelRatio } from './utils';
 
 /**
  * 裁剪
  */
 const Tailor: FC<TailorProps> = ({ src }) => {
-	const imgRef = useRef<HTMLImageElement>(null);
-	const dragRef = useRef<HTMLDivElement>(null);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const areaRef = useRef<HTMLDivElement>(null);
+	const [getState, setState, getAllState] = useSyncState<CanvasState>({
+		image: new Image(),
+		imageSize: {
+			width: 0,
+			height: 0,
+		},
+		initSize: {
+			width: 0,
+			height: 0,
+		},
+		imageScale: 1,
+	});
+
 	const [visible, setVisible] = useState(true);
 
 	const [base64URL, setBase64URL] = useState('');
-	const imgObject = useRef(new Image());
-	const clipImage = (
-		left: number,
-		top: number,
-		width: number,
-		height: number
-	) => {
-		const wrapperElement = imgRef.current;
-		if (!wrapperElement) return;
-		const canvasElement = document.createElement('canvas') as HTMLCanvasElement;
-		canvasElement.width = width;
-		canvasElement.height = height;
-		const ctx = canvasElement.getContext('2d');
-		if (ctx) {
-			ctx.drawImage(
-				imgObject.current,
-				left,
-				top,
-				width,
-				height,
-				0,
-				0,
-				width,
-				height
-			);
-			const _base64URL = canvasElement.toDataURL('image/jpeg', 1);
-			setBase64URL(_base64URL);
+
+	/**
+	 * 初始化canvas图片
+	 */
+	const initImageCanvas = (image: HTMLImageElement) => {
+		const { width: imageWidth, height: imageHeight } = image;
+		const imageProportion = imageWidth / imageHeight;
+		setState('imageSize', {
+			width: imageWidth,
+			height: imageHeight,
+		});
+		const initSize = getState('initSize');
+		// 图片尺寸小于初始化尺寸
+		if (imageWidth <= initSize.width && imageHeight <= initSize.height) {
+			setState('imageScale', 1);
+			return;
+		}
+		if (imageProportion > initSize.width / initSize.height) {
+			setState('imageScale', initSize.width / imageWidth);
+		} else {
+			setState('imageScale', initSize.height / imageHeight);
 		}
 	};
-	const initImage = () => {
-		imgObject.current.src = src;
-		imgObject.current.setAttribute('crossOrigin', 'Anonymous');
-		imgObject.current.onload = () => {};
+	/**
+	 * 计算 canvas Size
+	 */
+	const calcCanvasSize = () => {
+		if (!canvasRef.current) return;
 	};
+	/**
+	 * 处理图片
+	 */
+	const handleImage = () => {
+		const image = getState('image');
+		image.src = src;
+		image.onload = () => {
+			initImageCanvas(image);
+			calcCanvasSize();
+		};
+		setBase64URL(image.src);
+	};
+
 	useEffect(() => {
 		if (!visible) return;
-		if (!dragRef.current) return;
-		if (!imgRef.current) return;
-		// 初始化图片对象
-		initImage();
-		const dragElement = dragRef.current;
-		const wrapperElement = imgRef.current;
-		dragElement.onmousedown = (e) => {
-			// 记录点击距离页面坐标
-			const pageX = e.pageX;
-			const pageY = e.pageY;
-			// 记录左边和上边的距离
-			const left = dragElement.offsetLeft;
-			const top = dragElement.offsetTop;
-			e.preventDefault();
-			document.onmousemove = (ev) => {
-				let curT = ev.pageY - pageY + top;
-				let curL = ev.pageX - pageX + left;
-				// 边界处理
-				const minL = 0;
-				const minT = 0;
-				const maxL = wrapperElement.clientWidth - dragElement.offsetWidth;
-				const maxT = wrapperElement.clientHeight - dragElement.offsetHeight;
-				curL = curL < minL ? minL : curL > maxL ? maxL : curL;
-				curT = curT < minT ? minT : curT > maxT ? maxT : curT;
-				dragElement.style.left = curL + 'px';
-				dragElement.style.top = curT + 'px';
-				console.log(curL, curT);
-				clipImage(
-					curL,
-					curT,
-					dragElement.clientWidth,
-					dragElement.clientHeight
-				);
-			};
-		};
-		document.onmouseup = () => {
-			document.onmousemove = null;
-		};
+		if (!canvasRef.current) return;
+		if (!areaRef.current) return;
+		try {
+			const { width: areaWidth, height: areaHeight } =
+				areaRef.current.getBoundingClientRect();
+			setState('initSize', {
+				width: areaWidth,
+				height: areaHeight,
+			});
+			const ctx = canvasRef.current?.getContext(
+				'2d'
+			) as CanvasRenderingContext2D;
+			setState('ctx', ctx);
+			// 获取像素比
+			const pixelRatio = getPixelRatio(ctx);
+			setState('pixelRatio', pixelRatio);
+
+			// 初始化图片
+			handleImage();
+		} catch (error) {
+			console.error(CANVAS_ERROR_MESSAGE);
+		}
 	}, [visible]);
 
 	return (
@@ -97,12 +105,13 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 				title="编辑图片"
 			>
 				<div className={styles['container']}>
-					<div className={styles['tail_area']}>
-						<div className={styles['drag_crop']} ref={dragRef}>
+					<div className={styles['tail_area']} ref={areaRef}>
+						{/* <div className={styles['drag_crop']} ref={dragRef}>
 							<div className={styles['drag_crop_point_t']}></div>
 							<div className={styles['drag_crop_point_b']}></div>
-						</div>
-						<img ref={imgRef} className={styles['img']} src={src} alt="" />
+						</div> */}
+						{/* <img ref={imgRef} className={styles['img']} src={src} alt="" /> */}
+						<canvas ref={canvasRef}>{CANVAS_ERROR_MESSAGE}</canvas>
 					</div>
 					<div className={styles['tail_result']}>
 						<img src={base64URL} alt="" className={styles['tail_result_img']} />
