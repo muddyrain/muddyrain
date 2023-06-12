@@ -14,7 +14,12 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 	const areaRef = useRef<HTMLDivElement>(null);
 	const [getState, setState, getAllState] = useSyncState<CanvasState>({
 		image: new Image(),
+		canChangeSelect: false,
 		imageSize: {
+			width: 0,
+			height: 0,
+		},
+		canvasSize: {
 			width: 0,
 			height: 0,
 		},
@@ -23,6 +28,12 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 			height: 0,
 		},
 		imageScale: 1,
+		pixelRatio: 1,
+		mousePosi: [],
+		initMousePosi: {
+			x: 0,
+			y: 0,
+		},
 	});
 
 	const [visible, setVisible] = useState(true);
@@ -39,6 +50,7 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 			width: imageWidth,
 			height: imageHeight,
 		});
+		console.log(imageProportion);
 		const initSize = getState('initSize');
 		// 图片尺寸小于初始化尺寸
 		if (imageWidth <= initSize.width && imageHeight <= initSize.height) {
@@ -52,10 +64,56 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 		}
 	};
 	/**
+	 * 绘制图片
+	 */
+	const drawImage = () => {
+		const { ctx, imageSize, imageScale, image, canvasSize } = getAllState();
+		const { width: canvasWidth, height: canvasHeight } = canvasSize;
+		if (ctx) {
+			ctx.save();
+			ctx.globalCompositeOperation = 'destination-over';
+			ctx.translate(canvasWidth / 2, canvasHeight / 2);
+			// ctx.rotate((Math.PI / 180) * rotate);
+			// if (rotate % 180 !== 0) {
+			//   [canvasWidth, canvasHeight] = [canvasHeight, canvasWidth];
+			// }
+			ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
+			const scaleImgWidth = imageScale * imageSize.width;
+			const scaleImgHeight = imageScale * imageSize.height;
+			ctx.drawImage(
+				image,
+				(canvasWidth - scaleImgWidth) / 2,
+				(canvasHeight - scaleImgHeight) / 2,
+				scaleImgWidth,
+				scaleImgHeight
+			);
+		}
+	};
+	/**
 	 * 计算 canvas Size
 	 */
 	const calcCanvasSize = () => {
 		if (!canvasRef.current) return;
+		console.log(getAllState());
+		const { initSize, imageSize, imageScale, pixelRatio, ctx } = getAllState();
+		const canvasWidth = Math.min(initSize.width, imageSize.width * imageScale);
+		const canvasHeight = Math.min(
+			initSize.height,
+			imageSize.height * imageScale
+		);
+
+		canvasRef.current.style.width = `${canvasWidth}px`;
+		canvasRef.current.style.height = `${canvasHeight}px`;
+		canvasRef.current.width = canvasWidth * pixelRatio;
+		canvasRef.current.height = canvasHeight * pixelRatio;
+		if (ctx) {
+			ctx.scale(pixelRatio, pixelRatio);
+		}
+		setState('canvasSize', {
+			width: canvasWidth,
+			height: canvasHeight,
+		});
+		setState('mousePosi', []);
 	};
 	/**
 	 * 处理图片
@@ -66,8 +124,34 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 		image.onload = () => {
 			initImageCanvas(image);
 			calcCanvasSize();
+			drawImage();
 		};
-		setBase64URL(image.src);
+		setBase64URL('');
+	};
+
+	/**
+	 * 监听 canvas元素 鼠标按下事件
+	 */
+	const handleMouseDown = (e: React.MouseEvent) => {
+		setState('canChangeSelect', true);
+		setState('initMousePosi', {
+			x: e.nativeEvent.offsetX,
+			y: e.nativeEvent.offsetY,
+		});
+	};
+
+	/**
+	 * 监听 canvas 元素 鼠标移动事件
+	 */
+	const handleMouseMove = (e: React.MouseEvent) => {
+		const { ctx, pixelRatio } = getAllState();
+		if (!ctx || !canvasRef.current) {
+			return;
+		}
+		const { offsetX, offsetY } = e.nativeEvent;
+		const pathX = offsetX * pixelRatio;
+		const pathY = offsetY * pixelRatio;
+		console.log(pathX, pathY);
 	};
 
 	useEffect(() => {
@@ -111,10 +195,25 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 							<div className={styles['drag_crop_point_b']}></div>
 						</div> */}
 						{/* <img ref={imgRef} className={styles['img']} src={src} alt="" /> */}
-						<canvas ref={canvasRef}>{CANVAS_ERROR_MESSAGE}</canvas>
+						<canvas
+							ref={canvasRef}
+							onMouseDown={handleMouseDown}
+							onMouseMove={handleMouseMove}
+						>
+							{CANVAS_ERROR_MESSAGE}
+						</canvas>
 					</div>
 					<div className={styles['tail_result']}>
-						<img src={base64URL} alt="" className={styles['tail_result_img']} />
+						{base64URL ? (
+							<img
+								src={base64URL}
+								alt=""
+								className={styles['tail_result_img']}
+							/>
+						) : (
+							<div className={styles['tail_result_img']} />
+						)}
+
 						<span className={styles['tail_result_text']}>预览</span>
 					</div>
 				</div>

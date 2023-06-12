@@ -10,9 +10,7 @@ export function useSyncState<T>(
 	const state = useRef<T>(initState);
 
 	function setState<K extends keyof T>(key: K, value: T[K]) {
-		if (state.current[key]) {
-			state.current[key] = value;
-		}
+		state.current[key] = value;
 	}
 	function getState<K extends keyof T>(key: K): T[K] {
 		return state.current[key];
