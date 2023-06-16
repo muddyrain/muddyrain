@@ -7,85 +7,67 @@ import type { TailorProps } from './types';
  * 裁剪
  */
 const Tailor: FC<TailorProps> = ({ src }) => {
-	const imgRef = useRef<HTMLImageElement>(null);
+	// 拖拽元素
 	const dragRef = useRef<HTMLDivElement>(null);
+	// 容器元素
+	const containerRef = useRef<HTMLDivElement>(null);
+	// canvas 元素
+	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [visible, setVisible] = useState(true);
 
-	const [base64URL, setBase64URL] = useState('');
-	const imgObject = useRef(new Image());
-	const clipImage = (
-		left: number,
-		top: number,
-		width: number,
-		height: number
-	) => {
-		const wrapperElement = imgRef.current;
-		if (!wrapperElement) return;
-		const canvasElement = document.createElement('canvas') as HTMLCanvasElement;
-		canvasElement.width = width;
-		canvasElement.height = height;
-		const ctx = canvasElement.getContext('2d');
-		if (ctx) {
-			ctx.drawImage(
-				imgObject.current,
-				left,
-				top,
-				width,
-				height,
-				0,
-				0,
-				width,
-				height
-			);
-			const _base64URL = canvasElement.toDataURL('image/jpeg', 1);
-			setBase64URL(_base64URL);
+	const canvasState = useRef({
+		imgScale: 1,
+		imgProportion: 1,
+	});
+	const [base64URL] = useState('');
+
+	const computedSize = (obj: {
+		width: number;
+		height: number;
+		containerWidth: number;
+		containerHeight: number;
+	}) => {
+		const { width, height, containerWidth, containerHeight } = obj;
+		const imgProportion = width / height;
+		canvasState.current.imgProportion = imgProportion;
+		if (width <= containerWidth && height <= containerHeight) {
+			canvasState.current.imgScale = 1;
+			return;
+		}
+		if (imgProportion > containerWidth / containerHeight) {
+			canvasState.current.imgScale = containerWidth / width;
+		} else {
+			canvasState.current.imgScale = containerHeight / height;
 		}
 	};
 	const initImage = () => {
-		imgObject.current.src = src;
-		imgObject.current.setAttribute('crossOrigin', 'Anonymous');
-		imgObject.current.onload = () => {};
+		const canvasElement = canvasRef.current;
+		const containerElement = containerRef.current;
+		if (!canvasElement) return;
+		if (!containerElement) return;
+		const ctx = canvasElement.getContext('2d');
+		if (ctx) {
+			const image = new Image();
+			image.src = src;
+			image.onload = () => {
+				const { width, height } = image;
+				const { width: containerWidth, height: containerHeight } =
+					containerElement.getBoundingClientRect();
+				// 计算尺寸比例
+				computedSize({ width, height, containerWidth, containerHeight });
+				ctx.drawImage(image, 0, 0, canvasElement.width, canvasElement.height);
+				// const _base64URL = canvasElement.toDataURL('image/jpeg', 1);
+				// setBase64URL(_base64URL);
+			};
+		}
 	};
 	useEffect(() => {
 		if (!visible) return;
 		if (!dragRef.current) return;
-		if (!imgRef.current) return;
+		if (!canvasRef.current) return;
+		if (!containerRef.current) return;
 		// 初始化图片对象
 		initImage();
-		const dragElement = dragRef.current;
-		const wrapperElement = imgRef.current;
-		dragElement.onmousedown = (e) => {
-			// 记录点击距离页面坐标
-			const pageX = e.pageX;
-			const pageY = e.pageY;
-			// 记录左边和上边的距离
-			const left = dragElement.offsetLeft;
-			const top = dragElement.offsetTop;
-			e.preventDefault();
-			document.onmousemove = (ev) => {
-				let curT = ev.pageY - pageY + top;
-				let curL = ev.pageX - pageX + left;
-				// 边界处理
-				const minL = 0;
-				const minT = 0;
-				const maxL = wrapperElement.clientWidth - dragElement.offsetWidth;
-				const maxT = wrapperElement.clientHeight - dragElement.offsetHeight;
-				curL = curL < minL ? minL : curL > maxL ? maxL : curL;
-				curT = curT < minT ? minT : curT > maxT ? maxT : curT;
-				dragElement.style.left = curL + 'px';
-				dragElement.style.top = curT + 'px';
-				console.log(curL, curT);
-				clipImage(
-					curL,
-					curT,
-					dragElement.clientWidth,
-					dragElement.clientHeight
-				);
-			};
-		};
-		document.onmouseup = () => {
-			document.onmousemove = null;
-		};
 	}, [visible]);
 
 	return (
@@ -102,7 +84,9 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 							<div className={styles['drag_crop_point_t']}></div>
 							<div className={styles['drag_crop_point_b']}></div>
 						</div>
-						<img ref={imgRef} className={styles['img']} src={src} alt="" />
+						<div className={styles['img']} ref={containerRef}>
+							<canvas ref={canvasRef} />
+						</div>
 					</div>
 					<div className={styles['tail_result']}>
 						<img src={base64URL} alt="" className={styles['tail_result_img']} />
