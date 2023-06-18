@@ -58,12 +58,8 @@
       top: 0;
     }
 
-    .img {
-      &:hover {
-        pointer-events: none;
-      }
-
-      user-select:none;
+    .image_container {
+      position: relative;
     }
 
     background: url("./images/mosaic.jpg");
@@ -91,6 +87,13 @@
       margin-top: 10px;
       color: #666666;
       user-select: none;
+    }
+
+    .tail_result_link {
+      text-align: center;
+      margin-top: 10px;
+      color: #1677d2;
+      cursor: pointer;
     }
 
     display: flex;
