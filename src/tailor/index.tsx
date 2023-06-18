@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import ErrorImage from './images/error.png';
 import styles from './index.module.less';
 import type { TailorProps } from './types';
-
 /**
  * 裁剪
  */
@@ -9,12 +9,21 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 	const dragRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const wrapRef = useRef<HTMLDivElement>(null);
-
+	const [base64URL, setBase64URL] = useState('');
+	const imgObject = useRef(new Image());
 	const state = useRef<{
 		imageScale: number;
 	}>({
 		imageScale: 1,
 	});
+
+	/**
+	 * 处理 image 图片报错
+	 */
+
+	const handleImageError = function () {
+		setBase64URL(ErrorImage);
+	};
 	/**
 	 * 初始化canvas
 	 */
@@ -54,6 +63,13 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 		if (!dragRef.current) return;
 		if (!wrapRef.current) return;
 		if (!canvasRef.current) return;
+		const initImage = () => {
+			imgObject.current.src = src;
+			imgObject.current.setAttribute('crossOrigin', 'Anonymous');
+			imgObject.current.onload = () => {};
+		};
+		// 初始化图片对象
+		initImage();
 		initCanvas();
 	}, []);
 
@@ -67,7 +83,12 @@ const Tailor: FC<TailorProps> = ({ src }) => {
 				<canvas ref={canvasRef} />
 			</div>
 			<div className={styles['tail_result']}>
-				{/* <img src={base64URL} alt="" className={styles['tail_result_img']} /> */}
+				<img
+					src={base64URL}
+					alt=""
+					className={styles['tail_result_img']}
+					onError={handleImageError}
+				/>
 				<span className={styles['tail_result_text']}>预览</span>
 			</div>
 		</div>
