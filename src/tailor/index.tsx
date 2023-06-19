@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import ErrorImage from './images/error.png';
 import styles from './index.module.less';
 import type { TailorProps } from './types';
-import { handleMovieBl, handleMovieBr } from './utils';
+import { handleMoveDragElement } from './utils';
 /**
  * 裁剪
  */
@@ -70,13 +70,24 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 		dragElement: HTMLDivElement,
 		canvasElement: HTMLCanvasElement
 	) => {
-		// const tlElement = dragElement.querySelector('[role=tl]') as HTMLDivElement;
-		// const trElement = dragElement.querySelector('[role=tr]') as HTMLDivElement;
-		const blElement = dragElement.querySelector('[role=bl]') as HTMLDivElement;
-		const brElement = dragElement.querySelector('[role=br]') as HTMLDivElement;
-		handleMovieBr(brElement, dragElement, canvasElement);
+		for (const element of Array.from(
+			dragElement.children
+		) as HTMLDivElement[]) {
+			handleMoveDragElement(element, dragElement, () => {
+				const { left: canvasLeft, top: canvasTop } =
+					canvasElement.getBoundingClientRect();
+				const { left: dragLeft, top: dragTop } =
+					dragElement.getBoundingClientRect();
+				clipImage(
+					dragLeft - canvasLeft,
+					dragTop - canvasTop,
+					dragElement.clientWidth,
+					dragElement.clientHeight
+				);
+			});
+		}
 
-		handleMovieBl(blElement, dragElement);
+		// handleMovieBl(blElement, dragElement);
 	};
 	/**
 	 * 初始化canvas
@@ -210,12 +221,9 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 				</div>
 			</div>
 			<div className={styles['tail_result']}>
-				<img
-					src={base64URL}
-					alt=""
-					className={styles['tail_result_img']}
-					onError={handleImageError}
-				/>
+				<div className={styles['tail_result_img']}>
+					<img src={base64URL} alt="" onError={handleImageError} />
+				</div>
 				<span className={styles['tail_result_text']}>预览</span>
 				<span className={styles['tail_result_link']} onClick={handleDownload}>
 					下载

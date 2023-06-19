@@ -3,3 +3,10 @@ export interface TailorProps {
 	src: string;
 	name?: string;
 }
+
+export enum DragDirection {
+	tl = 'tl',
+	tr = 'tr',
+	bl = 'bl',
+	br = 'br',
+}

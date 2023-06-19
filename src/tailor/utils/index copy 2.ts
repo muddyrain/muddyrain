@@ -26,10 +26,7 @@ export const handleMoveDragElement = (
 					let distanceY = e.clientY - startY;
 					dragElement.style.width = width - distanceX + 'px';
 					dragElement.style.height = height + distanceY + 'px';
-					if (startLeft + distanceX > 0) {
-						dragElement.style.left = startLeft + distanceX + 'px';
-					}
-					break;
+					dragElement.style.left = startLeft + distanceX + 'px';
 				}
 				default:
 					break;

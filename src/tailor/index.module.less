@@ -65,13 +65,24 @@
 
   .tail_result {
     .tail_result_img {
-      &:hover {
-        pointer-events: none;
+
+      img {
+        &:hover {
+          pointer-events: none;
+        }
+
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        user-select: none;
       }
 
-      width: 100px;
+      background: url("./images/mosaic.jpg");
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100px;
-      user-select: none;
+      width: 100px;
     }
 
     .tail_result_text {
