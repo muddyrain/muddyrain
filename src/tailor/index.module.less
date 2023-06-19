@@ -2,58 +2,50 @@
   .tail_area {
     .drag_crop {
 
-      .drag_crop_point_t,
-      .drag_crop_point_b {
 
-        &::before,
-        &::after {
-          content: '';
-          position: absolute;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background-color: #999999;
-          border: 1px solid #ffffff;
-        }
+      .drag_crop_point {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #999999;
+        border: 1px solid #ffffff;
+
       }
 
-      .drag_crop_point_t {
-        &::before {
-          left: 0;
-          top: 0;
-          transform: translateX(-50%) translateY(-50%);
-        }
+      .drag_crop_point_tl {
+        cursor: nwse-resize;
+        left: 0;
+        top: 0;
+        transform: translateX(-50%) translateY(-50%);
       }
 
-      .drag_crop_point_t {
-        &::after {
-          right: 0;
-          top: 0;
-          transform: translateX(50%) translateY(-50%);
-        }
+      .drag_crop_point_tr {
+        cursor: nesw-resize;
+        right: 0;
+        top: 0;
+        transform: translateX(50%) translateY(-50%);
       }
 
-      .drag_crop_point_b {
-        &::before {
-          left: 0;
-          bottom: 0;
-          transform: translateX(-50%) translateY(50%);
-        }
+      .drag_crop_point_bl {
+        cursor: nesw-resize;
+        left: 0;
+        bottom: 0;
+        transform: translateX(-50%) translateY(50%);
       }
 
-      .drag_crop_point_b {
-        &::after {
-          right: 0;
-          bottom: 0;
-          transform: translateX(50%) translateY(50%);
-        }
+      .drag_crop_point_br {
+        cursor: nwse-resize;
+        right: 0;
+        bottom: 0;
+        transform: translateX(50%) translateY(50%);
       }
 
       width: 150px;
       height: 150px;
       position: absolute;
       background-color: rgba(255, 0, 0, 0.25);
-      cursor: pointer;
+      cursor: move;
       left: 0;
       top: 0;
     }

@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import ErrorImage from './images/error.png';
 import styles from './index.module.less';
 import type { TailorProps } from './types';
+import { handleMovieBl, handleMovieBr } from './utils';
 /**
  * 裁剪
  */
@@ -65,6 +66,18 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 			}
 		}
 	};
+	const createDragEvent = (
+		dragElement: HTMLDivElement,
+		canvasElement: HTMLCanvasElement
+	) => {
+		// const tlElement = dragElement.querySelector('[role=tl]') as HTMLDivElement;
+		// const trElement = dragElement.querySelector('[role=tr]') as HTMLDivElement;
+		const blElement = dragElement.querySelector('[role=bl]') as HTMLDivElement;
+		const brElement = dragElement.querySelector('[role=br]') as HTMLDivElement;
+		handleMovieBr(brElement, dragElement, canvasElement);
+
+		handleMovieBl(blElement, dragElement);
+	};
 	/**
 	 * 初始化canvas
 	 */
@@ -113,14 +126,14 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 		dragElement: HTMLDivElement,
 		canvasElement: HTMLCanvasElement
 	) => {
-		dragElement.onmousedown = (e) => {
+		dragElement.addEventListener('mousedown', (e) => {
+			e.stopPropagation();
 			// 记录点击距离页面坐标
 			const pageX = e.pageX;
 			const pageY = e.pageY;
 			// 记录左边和上边的距离
 			const left = dragElement.offsetLeft;
 			const top = dragElement.offsetTop;
-			e.preventDefault();
 			document.onmousemove = (ev) => {
 				let curT = ev.pageY - pageY + top;
 				let curL = ev.pageX - pageX + left;
@@ -140,7 +153,7 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 					dragElement.clientHeight
 				);
 			};
-		};
+		});
 		document.onmouseup = () => {
 			document.onmousemove = null;
 		};
@@ -165,19 +178,34 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 		initCanvas().then(() => {
 			// 初始化图片对象
 			initImage();
+			// 注册drag元素事件
+			createDragEvent(dragRef.current!, canvasRef.current!);
 		});
 
 		handleDrag(dragRef.current, canvasRef.current);
 	}, []);
-
 	return (
 		<div className={styles['container']}>
 			<div className={styles['tail_area']} ref={wrapRef}>
 				<div className={styles['image_container']} ref={imageContainerRef}>
 					<canvas ref={canvasRef} />
 					<div className={styles['drag_crop']} ref={dragRef}>
-						<div className={styles['drag_crop_point_t']}></div>
-						<div className={styles['drag_crop_point_b']}></div>
+						<div
+							role="tl"
+							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_tl']}`}
+						/>
+						<div
+							role="tr"
+							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_tr']}`}
+						/>
+						<div
+							role="bl"
+							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_bl']}`}
+						/>
+						<div
+							role="br"
+							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_br']}`}
+						/>
 					</div>
 				</div>
 			</div>
