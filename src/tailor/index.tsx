@@ -73,7 +73,7 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 		for (const element of Array.from(
 			dragElement.children
 		) as HTMLDivElement[]) {
-			handleMoveDragElement(element, dragElement, () => {
+			handleMoveDragElement(element, dragElement, canvasElement, () => {
 				const { left: canvasLeft, top: canvasTop } =
 					canvasElement.getBoundingClientRect();
 				const { left: dragLeft, top: dragTop } =
