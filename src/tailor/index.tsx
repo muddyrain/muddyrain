@@ -137,6 +137,8 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 		dragElement: HTMLDivElement,
 		canvasElement: HTMLCanvasElement
 	) => {
+		let curT = 0;
+		let curL = 0;
 		dragElement.addEventListener('mousedown', (e) => {
 			e.stopPropagation();
 			// 记录点击距离页面坐标
@@ -146,8 +148,8 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 			const left = dragElement.offsetLeft;
 			const top = dragElement.offsetTop;
 			document.onmousemove = (ev) => {
-				let curT = ev.pageY - pageY + top;
-				let curL = ev.pageX - pageX + left;
+				curT = ev.pageY - pageY + top;
+				curL = ev.pageX - pageX + left;
 				// 边界处理
 				const minL = 0;
 				const minT = 0;
@@ -157,17 +159,17 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 				curT = curT < minT ? minT : curT > maxT ? maxT : curT;
 				dragElement.style.left = curL + 'px';
 				dragElement.style.top = curT + 'px';
+			};
+			document.onmouseup = () => {
 				clipImage(
 					curL,
 					curT,
 					dragElement.clientWidth,
 					dragElement.clientHeight
 				);
+				document.onmousemove = null;
 			};
 		});
-		document.onmouseup = () => {
-			document.onmousemove = null;
-		};
 	};
 	useEffect(() => {
 		if (!dragRef.current) return;

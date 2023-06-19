@@ -16,6 +16,8 @@ export const handleMoveDragElement = (
 		const startTop = parseInt(dragElement.style.top) || 0;
 		const { width: startWidth, height: startHeight } =
 			dragElement.getBoundingClientRect();
+		const { width: pointWidth, height: pointHeight } =
+			element.getBoundingClientRect();
 		const {
 			top: canvasTop,
 			left: canvasLeft,
@@ -27,25 +29,15 @@ export const handleMoveDragElement = (
 				case DragDirection.br: {
 					const distanceX = e.clientX - startX;
 					const distanceY = e.clientY - startY;
-					let targetHeight = 0;
-					let targetWidth = 0;
-					if (width + distanceX <= canvasWidth) {
-						targetWidth = width + distanceX;
-					} else {
-						targetWidth = canvasWidth;
-					}
-					if (height + distanceY <= canvasWidth) {
-						targetHeight = height + distanceY;
-					} else {
-						targetHeight = canvasHeight;
-					}
+					// 起始x轴位置 - 图形距离视口的left值 小于 图形的宽度
 					if (e.x - canvasLeft < canvasWidth) {
-						dragElement.style.width = targetWidth + 'px';
+						dragElement.style.width = width + distanceX + 'px';
 					} else {
 						dragElement.style.width = canvasWidth - startLeft + 'px';
 					}
+					// 起始y轴位置 - 图形距离视口的top值 小于 图形的高度
 					if (e.y - canvasTop < canvasHeight) {
-						dragElement.style.height = targetHeight + 'px';
+						dragElement.style.height = height + distanceY + 'px';
 					} else {
 						dragElement.style.height = canvasHeight - startTop + 'px';
 					}
@@ -54,14 +46,24 @@ export const handleMoveDragElement = (
 				case DragDirection.bl: {
 					let distanceX = e.clientX - startX;
 					let distanceY = e.clientY - startY;
-					dragElement.style.height = height + distanceY + 'px';
-					if (width - distanceX < canvasElement.width) {
-						dragElement.style.width = width - distanceX + 'px';
+					if (e.y - canvasTop < canvasHeight) {
+						dragElement.style.height = height + distanceY + 'px';
+					} else {
+						dragElement.style.height = canvasHeight - startTop + 'px';
 					}
+					// 记录鼠标的起始位置 和 移动的位置 大于 0
 					if (startLeft + distanceX > 0) {
-						dragElement.style.left = startLeft + distanceX + 'px';
+						// 记录鼠标的起始位置 和 移动的位置  小于 当前选中区最右侧的位置
+						if (startLeft + distanceX < e.x - canvasLeft + width - distanceX) {
+							dragElement.style.left = startLeft + distanceX + 'px';
+						}
+						if (width - distanceX < canvasElement.width) {
+							dragElement.style.width = width - distanceX + 'px';
+						}
 					} else {
 						dragElement.style.left = 0 + 'px';
+						dragElement.style.width =
+							e.x - canvasLeft + width - distanceX + 'px';
 					}
 					break;
 				}
