@@ -14,6 +14,8 @@ export const handleMoveDragElement = (
 		const startY = e.clientY;
 		const startLeft = parseInt(dragElement.style.left) || 0;
 		const startTop = parseInt(dragElement.style.top) || 0;
+		const { width: startWidth, height: startHeight } =
+			dragElement.getBoundingClientRect();
 		const {
 			top: canvasTop,
 			left: canvasLeft,
@@ -37,11 +39,15 @@ export const handleMoveDragElement = (
 					} else {
 						targetHeight = canvasHeight;
 					}
-					if (startLeft <= targetWidth) {
-						dragElement.style.width = targetWidth - startLeft + 'px';
+					if (e.x - canvasLeft < canvasWidth) {
+						dragElement.style.width = targetWidth + 'px';
+					} else {
+						dragElement.style.width = canvasWidth - startLeft + 'px';
 					}
-					if (startTop <= targetHeight) {
-						dragElement.style.height = targetHeight - startTop + 'px';
+					if (e.y - canvasTop < canvasHeight) {
+						dragElement.style.height = targetHeight + 'px';
+					} else {
+						dragElement.style.height = canvasHeight - startTop + 'px';
 					}
 					break;
 				}
