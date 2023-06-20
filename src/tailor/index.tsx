@@ -204,6 +204,22 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 					<canvas ref={canvasRef} />
 					<div className={styles['drag_crop']} ref={dragRef}>
 						<div
+							role="top"
+							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_top']}`}
+						/>
+						<div
+							role="bottom"
+							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_bottom']}`}
+						/>
+						<div
+							role="left"
+							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_left']}`}
+						/>
+						<div
+							role="right"
+							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_right']}`}
+						/>
+						<div
 							role="tl"
 							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_tl']}`}
 						/>

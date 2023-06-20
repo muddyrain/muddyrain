@@ -9,4 +9,8 @@ export enum DragDirection {
 	tr = 'tr',
 	bl = 'bl',
 	br = 'br',
+	top = 'top',
+	bottom = 'bottom',
+	left = 'left',
+	right = 'right',
 }
