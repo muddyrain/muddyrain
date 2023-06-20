@@ -24,7 +24,13 @@ export default function (){
 
 | 参数         | 说明     | 类型           | 描述信息 | 默认值 |
 | ------------| -------- | -----------   | ------  | ----- |
-| className  | 类名  | `string`  | - | - |
-| style  | 样式  | `React.CSSProperties`  | - | - |
-| children  | 子节点  | `React.ReactNode` | JSX.Element  | - | - |
+| src  | 要裁剪的图片路径  | `string`  | - | - |
+| filename  | 文件名称  | `string`  | - | 文件 |
+| onFinish  | 返回的裁剪后的图片  | `(image: string) => void`  | - | 无 |
+| isShowReview  | 是否显示预览  | `boolean`  | - | true |
+| isShowDownload  | 是否显示下载  | `boolean`  | - | true |
+| sideColor  | 缩放边界边缘的颜色  | `string`  | - | transparent |
+| areaColor  | 缩放区域的颜色  | `string`  | - | #f00000 |
+| areaAlpha  | 缩放区域的透明度  | `number`  | - | 0.1 |
+
 

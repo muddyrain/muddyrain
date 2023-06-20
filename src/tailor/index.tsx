@@ -1,8 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import ErrorImage from './images/error.png';
 import styles from './index.module.less';
-import type { TailorProps } from './types';
-import { handleMoveDragElement } from './utils';
+import {
+	DragPointDirection,
+	DragSideDirection,
+	type TailorProps,
+} from './types';
+import { handleMoveDragElement, hexToRgba } from './utils';
 /**
  * 裁剪
  */
@@ -12,6 +16,9 @@ const Tailor: FC<TailorProps> = ({
 	onFinish,
 	isShowDownload = true,
 	isShowReview = true,
+	areaColor = '#f00000',
+	sideColor = 'transparent',
+	areaAlpha = 0.25,
 }) => {
 	const dragRef = useRef<HTMLDivElement>(null);
 	const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -94,8 +101,6 @@ const Tailor: FC<TailorProps> = ({
 				);
 			});
 		}
-
-		// handleMovieBl(blElement, dragElement);
 	};
 	/**
 	 * 初始化canvas
@@ -214,43 +219,34 @@ const Tailor: FC<TailorProps> = ({
 			<div className={styles['tail_area']} ref={wrapRef}>
 				<div className={styles['image_container']} ref={imageContainerRef}>
 					<canvas ref={canvasRef} />
-					<div className={styles['drag_crop']} ref={dragRef}>
-						<div
-							role="top"
-							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_top']}`}
-						/>
-						<div
-							role="bottom"
-							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_bottom']}`}
-						/>
-						<div
-							role="left"
-							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_left']}`}
-						/>
-						<div
-							role="right"
-							className={`${styles['drag_crop_side']} ${styles['drag_crop_side_right']}`}
-						/>
-						<div
-							role="tl"
-							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_tl']}`}
-						/>
-						<div
-							role="tr"
-							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_tr']}`}
-						/>
-						<div
-							role="bl"
-							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_bl']}`}
-						/>
-						<div
-							role="br"
-							className={`${styles['drag_crop_point']} ${styles['drag_crop_point_br']}`}
-						/>
+					<div
+						className={styles['drag_crop']}
+						ref={dragRef}
+						style={{ background: hexToRgba(areaColor, areaAlpha) }}
+					>
+						{Object.keys(DragSideDirection).map((key) => (
+							<div
+								key={key}
+								role={key}
+								style={{ background: sideColor }}
+								className={`${styles['drag_crop_side']} ${
+									styles['drag_crop_side_' + key]
+								}`}
+							/>
+						))}
+						{Object.keys(DragPointDirection).map((key) => (
+							<div
+								key={key}
+								role={key}
+								className={`${styles['drag_crop_point']} ${
+									styles['drag_crop_point_' + key]
+								}`}
+							/>
+						))}
 					</div>
 				</div>
 			</div>
-			{(isShowReview || isShowReview) && (
+			{(isShowReview || isShowDownload) && (
 				<div className={styles['tail_result']}>
 					{isShowReview && (
 						<>

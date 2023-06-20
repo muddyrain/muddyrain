@@ -1,4 +1,4 @@
-import { DragDirection } from '../types';
+import { DragPointDirection, DragSideDirection } from '../types';
 
 export const handleMoveDragElement = (
 	element: HTMLDivElement,
@@ -24,14 +24,13 @@ export const handleMoveDragElement = (
 		document.onmousemove = (e) => {
 			let distanceX = e.clientX - startX;
 			let distanceY = e.clientY - startY;
-			switch (element.role as DragDirection) {
+
+			switch (element.role as DragSideDirection & DragPointDirection) {
 				// 右下角
-				case DragDirection.br: {
+				case DragPointDirection.br: {
 					// 起始x轴位置 - 图形距离视口的left值 小于 图形的宽度
 					if (e.clientX - canvasLeft < canvasWidth) {
-						if (startLeft + distanceX >= 0) {
-							dragElement.style.width = startWidth + distanceX + 'px';
-						}
+						dragElement.style.width = startWidth + distanceX + 'px';
 					} else {
 						dragElement.style.width = canvasWidth - startLeft + 'px';
 					}
@@ -44,7 +43,7 @@ export const handleMoveDragElement = (
 					break;
 				}
 				// 左下角
-				case DragDirection.bl: {
+				case DragPointDirection.bl: {
 					if (e.y - canvasTop < canvasHeight) {
 						dragElement.style.height = startHeight + distanceY + 'px';
 					} else {
@@ -70,7 +69,7 @@ export const handleMoveDragElement = (
 					break;
 				}
 				// 左上角
-				case DragDirection.tl: {
+				case DragPointDirection.tl: {
 					if (e.clientX <= startWidth + startX) {
 						if (startLeft + distanceX >= 0) {
 							dragElement.style.width = startWidth - distanceX + 'px';
@@ -93,7 +92,7 @@ export const handleMoveDragElement = (
 					}
 					break;
 				}
-				case DragDirection.tr: {
+				case DragPointDirection.tr: {
 					// 起始x轴位置 - 图形距离视口的left值 小于 图形的宽度
 					if (e.x - canvasLeft < canvasWidth) {
 						dragElement.style.width = startWidth + distanceX + 'px';
@@ -112,7 +111,7 @@ export const handleMoveDragElement = (
 					}
 					break;
 				}
-				case DragDirection.top: {
+				case DragSideDirection.top: {
 					if (e.clientY <= startHeight + startY) {
 						if (startTop + distanceY >= 0) {
 							dragElement.style.height = startHeight - distanceY + 'px';
@@ -125,7 +124,7 @@ export const handleMoveDragElement = (
 					}
 					break;
 				}
-				case DragDirection.bottom: {
+				case DragSideDirection.bottom: {
 					if (e.clientY < canvasTop + canvasHeight) {
 						dragElement.style.height = startHeight + distanceY + 'px';
 					} else {
@@ -133,7 +132,7 @@ export const handleMoveDragElement = (
 					}
 					break;
 				}
-				case DragDirection.right: {
+				case DragSideDirection.right: {
 					if (e.clientX < canvasLeft + canvasWidth) {
 						dragElement.style.width = startWidth + distanceX + 'px';
 					} else {
@@ -141,7 +140,7 @@ export const handleMoveDragElement = (
 					}
 					break;
 				}
-				case DragDirection.left: {
+				case DragSideDirection.left: {
 					if (e.clientX <= startWidth + startX) {
 						if (startLeft + distanceX >= 0) {
 							dragElement.style.width = startWidth - distanceX + 'px';
@@ -164,3 +163,46 @@ export const handleMoveDragElement = (
 		});
 	});
 };
+
+/**
+ * 判断是否为颜色
+ * @param {string} strColor
+ * @returns {boolean}
+ */
+function isValidColor(strColor: string) {
+	let s = new Option().style;
+	s.color = strColor;
+
+	// return 'false' if color wasn't assigned
+	return s.color === strColor.toLowerCase();
+}
+
+/**
+ *
+ * @param {string} hex  16进制颜色
+ * @param {number} opacity   透明度
+ * @returns rgba 颜色
+ */
+export function hexToRgba(_hex: string, opacity: number = 1) {
+	let hex = _hex;
+	if (hex.slice(0, 1) !== '#') {
+		throw `The starting character must be #`;
+	}
+	if (hex.length === 3) {
+		hex += '000';
+	}
+	if (isValidColor(hex)) {
+		throw `${hex} is not a hex color.`;
+	}
+	return (
+		'rgba(' +
+		parseInt('0x' + hex.slice(1, 3)) +
+		',' +
+		parseInt('0x' + hex.slice(3, 5)) +
+		',' +
+		parseInt('0x' + hex.slice(5, 7)) +
+		',' +
+		opacity +
+		')'
+	);
+}

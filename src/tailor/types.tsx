@@ -5,6 +5,7 @@ export interface TailorProps {
 	src: string;
 	/**
 	 * 文件名称
+	 * default : 文件
 	 */
 	filename?: string;
 	/**
@@ -22,13 +23,30 @@ export interface TailorProps {
 	 * default : true
 	 */
 	isShowDownload?: boolean;
+	/**
+	 * 缩放边界边缘的颜色
+	 * default : transparent
+	 */
+	sideColor?: string;
+	/**
+	 * 缩放区域的颜色
+	 * default : #f00000
+	 */
+	areaColor?: string;
+	/**
+	 * 缩放区域的透明度
+	 * default : 0.1
+	 */
+	areaAlpha?: number;
 }
 
-export enum DragDirection {
+export enum DragPointDirection {
 	tl = 'tl',
 	tr = 'tr',
 	bl = 'bl',
 	br = 'br',
+}
+export enum DragSideDirection {
 	top = 'top',
 	bottom = 'bottom',
 	left = 'left',
