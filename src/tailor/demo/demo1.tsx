@@ -8,7 +8,7 @@ const Demo1: FC = () => {
 	return (
 		<div className="flex">
 			<h2>小于容器尺寸</h2>
-			<Tailor src={image1}></Tailor>
+			<Tailor isShowDownload={false} isShowReview={false} src={image1}></Tailor>
 			<h2>大于宽度容器尺寸</h2>
 			<Tailor src={image2}></Tailor>
 			<h2>大于高度容器尺寸</h2>

@@ -6,13 +6,20 @@ import { handleMoveDragElement } from './utils';
 /**
  * 裁剪
  */
-const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
+const Tailor: FC<TailorProps> = ({
+	src,
+	filename = '下载',
+	onFinish,
+	isShowDownload = true,
+	isShowReview = true,
+}) => {
 	const dragRef = useRef<HTMLDivElement>(null);
 	const imageContainerRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const wrapRef = useRef<HTMLDivElement>(null);
 	const [base64URL, setBase64URL] = useState('');
 	const imgObject = useRef(new Image());
+
 	const state = useRef<{
 		imageScale: number;
 		canvasCtx?: CanvasRenderingContext2D;
@@ -34,7 +41,7 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 	const handleDownload = () => {
 		const a = document.createElement('a');
 		// 设置图片名称
-		a.download = name + '.jpg';
+		a.download = filename + '.jpg';
 		a.href = base64URL;
 		a.click();
 	};
@@ -62,6 +69,7 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 				if (_ctx) {
 					_ctx.putImageData(imagedata, 0, 0);
 					setBase64URL(_canvas.toDataURL());
+					onFinish?.(_canvas.toDataURL());
 				}
 			}
 		}
@@ -188,12 +196,16 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 				);
 			};
 		};
-		initCanvas().then(() => {
-			// 初始化图片对象
-			initImage();
-			// 注册drag元素事件
-			createDragEvent(dragRef.current!, canvasRef.current!);
-		});
+		initCanvas()
+			.then(() => {
+				// 初始化图片对象
+				initImage();
+				// 注册drag元素事件
+				createDragEvent(dragRef.current!, canvasRef.current!);
+			})
+			.catch((err) => {
+				throw err;
+			});
 
 		handleDrag(dragRef.current, canvasRef.current);
 	}, []);
@@ -238,15 +250,26 @@ const Tailor: FC<TailorProps> = ({ src, name = '下载' }) => {
 					</div>
 				</div>
 			</div>
-			<div className={styles['tail_result']}>
-				<div className={styles['tail_result_img']}>
-					<img src={base64URL} alt="" onError={handleImageError} />
+			{(isShowReview || isShowReview) && (
+				<div className={styles['tail_result']}>
+					{isShowReview && (
+						<>
+							<div className={styles['tail_result_img']}>
+								<img src={base64URL} alt="" onError={handleImageError} />
+							</div>
+							<span className={styles['tail_result_text']}>预览</span>
+						</>
+					)}
+					{isShowDownload && (
+						<span
+							className={styles['tail_result_link']}
+							onClick={handleDownload}
+						>
+							下载
+						</span>
+					)}
 				</div>
-				<span className={styles['tail_result_text']}>预览</span>
-				<span className={styles['tail_result_link']} onClick={handleDownload}>
-					下载
-				</span>
-			</div>
+			)}
 		</div>
 	);
 };

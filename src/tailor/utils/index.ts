@@ -123,6 +123,7 @@ export const handleMoveDragElement = (
 								e.clientY - canvasTop + startHeight - distanceY + 'px';
 						}
 					}
+					break;
 				}
 				case DragDirection.bottom: {
 					if (e.clientY < canvasTop + canvasHeight) {
@@ -157,9 +158,9 @@ export const handleMoveDragElement = (
 					break;
 			}
 		};
-	});
-	element.addEventListener('mouseup', () => {
-		document.onmousemove = null;
-		onMouseUp?.();
+		element.addEventListener('mouseup', () => {
+			document.onmousemove = null;
+			onMouseUp?.();
+		});
 	});
 };

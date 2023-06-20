@@ -16,7 +16,7 @@ nav:
 import { Tailor } from "muddyrain"
 
 export default function (){
-  return (<Tailor>哈哈哈</Tailor>)
+  return (<Tailor src={'xxx.jpg'}></Tailor>)
 }
 ```
 
