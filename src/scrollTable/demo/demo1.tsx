@@ -6,6 +6,9 @@ const Demo1: FC = () => {
 			<ScrollTable
 				style={{ height: 400 }}
 				isAutoPlay={true}
+				onClick={(record, index) => {
+					console.log(record, index);
+				}}
 				dataSource={Array.from({ length: 5 }).map((_, index) => ({
 					name: '陈子涵' + (index + 1),
 					age: '21',
@@ -23,10 +26,15 @@ const Demo1: FC = () => {
 					{
 						title: '年龄',
 						dataIndex: 'age',
+						render(text) {
+							return text + '岁';
+						},
 					},
 					{
 						title: '地址',
 						dataIndex: 'address',
+						ellipsis: true,
+						cursor: 'pointer',
 					},
 					{
 						title: '日期',

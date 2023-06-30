@@ -1,13 +1,44 @@
+import Tippy from '@tippyjs/react';
 import gsap from 'gsap';
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import colors from 'tailwindcss/colors';
+import 'tippy.js/dist/tippy.css';
 import styles from './index.module.less';
 import type {
 	AlignType,
+	ColumnType,
 	DataSourceType,
 	ScrollTableProps,
 	SpacingType,
 } from './type';
+
+/**
+ * 处理渲染行数据
+ */
+const handleRenderRowData = (
+	column: ColumnType,
+	item: DataSourceType[number],
+	index: number
+): React.ReactNode => {
+	const text = column.dataIndex && item[column.dataIndex];
+	if (column.ellipsis) {
+		return (
+			<Tippy
+				placement={column.ellipsisPlacement || 'top'}
+				content={<div className={column.ellipsisClassName}>{text}</div>}
+			>
+				<span className={styles['ellipsis-line']}>{text}</span>
+			</Tippy>
+		);
+	} else {
+		if (column.render) {
+			return column.render(item[column.dataIndex], item, index);
+		} else {
+			return text;
+		}
+	}
+};
+
 const ScrollTable: FC<ScrollTableProps> = ({
 	columns,
 	dataSource,
@@ -25,6 +56,11 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	duration = 1000,
 	delay = 250,
 	waitTime = 2000,
+	rowScrollHeight,
+	onClick,
+	onMouseOver,
+	onMouseMove,
+	onMouseEnter,
 	style,
 }) => {
 	const rowBackgroundColor =
@@ -55,7 +91,6 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	const computedRowHeight = () => {
 		if (!rowRef.current) return;
 		const { height } = rowRef.current.getBoundingClientRect();
-		console.log(rowRef.current.getBoundingClientRect());
 		rowHeight.current = height;
 	};
 	/**
@@ -92,6 +127,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			}
 			setData([..._data]);
 		}
+
 		if (tableWrapperRef.current) {
 			const targetElement = tableWrapperRef.current as HTMLDivElement;
 			const { height } = targetElement.getBoundingClientRect();
@@ -122,7 +158,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		timer.current = setTimeout(() => {
 			if (tableBodyRef.current && rowRef.current) {
 				const targetElement = tableBodyRef.current as HTMLDivElement;
-				scrollHeight.current += rowHeight.current;
+				scrollHeight.current += rowScrollHeight || rowHeight.current;
 				currentScrollIndex.current += 1;
 				gsap.to(tableBodyRef.current.style, {
 					duration: duration / 1e3,
@@ -233,9 +269,22 @@ const ScrollTable: FC<ScrollTableProps> = ({
 											width: column.width || widths.current[columnIndex],
 											padding: computedSpacing(rowSpacing),
 											justifyContent: computedJustify(column.align || 'left'),
+											cursor: column.cursor,
+										}}
+										onClick={(e) => {
+											onClick?.(item, index, e);
+										}}
+										onMouseOver={(e) => {
+											onMouseOver?.(item, index, e);
+										}}
+										onMouseMove={(e) => {
+											onMouseMove?.(item, index, e);
+										}}
+										onMouseEnter={(e) => {
+											onMouseEnter?.(item, index, e);
 										}}
 									>
-										{column.dataIndex && item[column.dataIndex]}
+										{handleRenderRowData(column, item, index)}
 									</div>
 								);
 							})}

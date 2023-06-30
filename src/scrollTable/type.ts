@@ -1,3 +1,4 @@
+import { Placement } from 'tippy.js';
 export type AlignType = 'left' | 'center' | 'right';
 export interface ColumnType {
 	/**
@@ -52,6 +53,20 @@ export interface ColumnType {
 	 * default : left
 	 */
 	headAlign?: AlignType;
+	/**
+	 * 省略元素类名
+	 */
+	ellipsisClassName?: string;
+	/**
+	 * 省略方向
+	 */
+	ellipsisPlacement?: Placement;
+	/**
+	 * 指针
+	 *
+	 * default : auto
+	 */
+	cursor?: React.CSSProperties['cursor'];
 }
 
 /**
@@ -66,6 +81,12 @@ export type SpacingType =
 	| [number | string, number | string, number | string, number | string]
 	| number
 	| string;
+
+type MouseEventHandler = (
+	record: any,
+	index: number,
+	event: React.MouseEvent<HTMLDivElement, MouseEvent>
+) => void;
 export interface ScrollTableProps {
 	/**
 	 * 表头数据
@@ -125,7 +146,7 @@ export interface ScrollTableProps {
 	 *
 	 * default : blue-400
 	 */
-	headBackgroundColor?: string;
+	headBackgroundColor?: React.CSSProperties['backgroundColor'];
 	/**
 	 * 行背景颜色
 	 *
@@ -133,7 +154,7 @@ export interface ScrollTableProps {
 	 *
 	 * default : cyan-700
 	 */
-	rowBackgroundColor?: string;
+	rowBackgroundColor?: React.CSSProperties['backgroundColor'];
 	/**
 	 * 有条纹的
 	 *
@@ -158,4 +179,38 @@ export interface ScrollTableProps {
 	 * default : 2000
 	 */
 	waitTime?: number;
+	/**
+	 * 每行滚动行高
+	 *
+	 * 根据第一行数据自动计算 如果添加则覆盖
+	 *
+	 * default : -
+	 */
+	rowScrollHeight?: number;
+
+	/**
+	 * 点击事件
+	 *
+	 * default : -
+	 */
+	onClick?: MouseEventHandler;
+
+	/**
+	 * 鼠标进入事件
+	 *
+	 * default : -
+	 */
+	onMouseEnter?: MouseEventHandler;
+	/**
+	 * 鼠标离开事件
+	 *
+	 * default : -
+	 */
+	onMouseOver?: MouseEventHandler;
+	/**
+	 * 鼠标移动事件
+	 *
+	 * default : -
+	 */
+	onMouseMove?: MouseEventHandler;
 }

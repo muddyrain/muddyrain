@@ -5,6 +5,7 @@
       box-sizing: border-box;
       display: flex;
       align-items: center;
+      overflow: hidden;
     }
 
     display: flex;
@@ -18,6 +19,7 @@
           box-sizing: border-box;
           display: flex;
           align-items: center;
+          overflow: hidden;
         }
 
         display: flex;
@@ -33,4 +35,11 @@
 
   display: flex;
   flex-direction: column;
+}
+
+
+.ellipsis-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
