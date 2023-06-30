@@ -1,0 +1,145 @@
+.container {
+  .tail_area {
+    .drag_crop {
+
+      .drag_crop_side {
+        position: absolute;
+      }
+
+      .drag_crop_side_top,
+      .drag_crop_side_bottom {
+        cursor: ns-resize;
+        width: 100%;
+        height: 4px;
+      }
+
+      .drag_crop_side_left,
+      .drag_crop_side_right {
+        cursor: ew-resize;
+        width: 4px;
+        height: 100%;
+      }
+
+      .drag_crop_side_top {
+        top: 0;
+        left: 0;
+      }
+
+      .drag_crop_side_bottom {
+        bottom: 0;
+        left: 0;
+      }
+
+      .drag_crop_side_left {
+        left: 0;
+        bottom: 0;
+      }
+
+      .drag_crop_side_right {
+        right: 0;
+        bottom: 0;
+      }
+
+
+      .drag_crop_point {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #999999;
+        border: 1px solid #ffffff;
+
+      }
+
+      .drag_crop_point_tl {
+        cursor: nwse-resize;
+        left: 0;
+        top: 0;
+        transform: translateX(-50%) translateY(-50%);
+      }
+
+      .drag_crop_point_tr {
+        cursor: nesw-resize;
+        right: 0;
+        top: 0;
+        transform: translateX(50%) translateY(-50%);
+      }
+
+      .drag_crop_point_bl {
+        cursor: nesw-resize;
+        left: 0;
+        bottom: 0;
+        transform: translateX(-50%) translateY(50%);
+      }
+
+      .drag_crop_point_br {
+        cursor: nwse-resize;
+        right: 0;
+        bottom: 0;
+        transform: translateX(50%) translateY(50%);
+      }
+
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      cursor: move;
+      left: 0;
+      top: 0;
+    }
+
+    .image_container {
+      position: relative;
+    }
+
+    background: url("./images/mosaic.jpg");
+    height: 500px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+
+  .tail_result {
+    .tail_result_img {
+
+      img {
+        &:hover {
+          pointer-events: none;
+        }
+
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        user-select: none;
+      }
+
+      background: url("./images/mosaic.jpg");
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      width: 100px;
+    }
+
+    .tail_result_text {
+      text-align: center;
+      margin-top: 10px;
+      color: #666666;
+      user-select: none;
+    }
+
+    .tail_result_link {
+      text-align: center;
+      margin-top: 10px;
+      color: #1677d2;
+      cursor: pointer;
+    }
+
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+  }
+
+  display: flex;
+}
