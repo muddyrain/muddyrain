@@ -1,0 +1,134 @@
+<template>
+  <div class="port">
+    <!-- 表格 -->
+    <div class="table">
+      <!-- 表头 -->
+      <div class="thead">
+        <div class="tr">
+          <div class="th">道位号</div>
+          <div class="th">承运商</div>
+          <div class="th">使用情况</div>
+        </div>
+      </div>
+      <!-- 表格内容 -->
+      <div class="tbody-container" ref="tbodyContainer">
+        <div class="tbody" ref="tbody" :style="getTop">
+          <div class="tr" v-for="(item, index) in portList">
+            <div class="td">{{index+1}}</div>
+            <div class="td">西上海</div>
+            <div class="td">
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+
+  export default {
+    name: 'Port',
+    data() {
+      return {
+        // 表格数据
+        portList: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
+        // 滚动
+        timer: null,
+        tbodyTop: 0
+      }
+    },
+    mounted() {
+      this.scroll()
+    },
+    methods: {
+      scroll() {
+        // tbodyContainer高度
+        let tbodyContainerHeight=this.$refs.tbodyContainer.clientHeight
+        // tbody高度
+        let tbodyHeight=this.$refs.tbody.clientHeight
+        // tbody子元素
+        let rowList=this.$refs.tbody.querySelectorAll('.tr')
+        // 展示行数
+        let showRow=0
+        this.timer=setInterval(() => {
+          showRow+=1
+          // 看到tbody底部时
+          if(tbodyHeight-this.tbodyTop<tbodyContainerHeight) {
+            showRow=0
+            this.tbodyTop=0
+            return
+          }
+          this.tbodyTop+=rowList[showRow-1].clientHeight
+        },2000)
+      }
+    },
+    computed: {
+      getTop() {
+        return `top: -${this.tbodyTop}px`
+      }
+    },
+    beforeUnmount() {
+      if(this.timer) clearInterval(this.timer)
+    }
+  }
+</script>
+
+<style lang="less" scoped>
+  .port {
+
+    // div表格
+    .table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      table-layout: fixed;
+    }
+
+    .thead {
+      background: @color-border;
+    }
+
+    .tbody-container {
+      overflow: hidden;
+      width: 100%;
+      height: calc(100% - .48rem);
+
+      .tbody {
+        // 相对自身定位，改变top实现滚动
+        position: relative;
+        // 渐变
+        transition: top 1s;
+        -webkit-transition: top 1s;
+        /* Safari */
+      }
+    }
+
+    .tr {
+      display: flex;
+      align-items: center;
+    }
+
+    .th,
+    .td {
+      flex: 1;
+      padding: .14rem .14rem;
+      text-align: center;
+      color: @color-common-text;
+      font-size: .2rem;
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .td div {
+      width: 60%;
+      height: .2rem;
+      margin: 0 20%;
+      background-color: crimson;
+      border-radius: .1rem;
+    }
+  }
+</style>
