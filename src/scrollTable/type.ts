@@ -189,6 +189,13 @@ export interface ScrollTableProps {
 	rowScrollHeight?: number;
 
 	/**
+	 * 悬浮暂停
+	 *
+	 * default : false
+	 */
+	hoverPause?: boolean;
+
+	/**
 	 * 点击事件
 	 *
 	 * default : -
@@ -200,13 +207,13 @@ export interface ScrollTableProps {
 	 *
 	 * default : -
 	 */
-	onMouseEnter?: MouseEventHandler;
+	onMouseOver?: MouseEventHandler;
 	/**
 	 * 鼠标离开事件
 	 *
 	 * default : -
 	 */
-	onMouseOver?: MouseEventHandler;
+	onMouseLeave?: MouseEventHandler;
 	/**
 	 * 鼠标移动事件
 	 *

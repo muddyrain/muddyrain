@@ -57,10 +57,11 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	delay = 250,
 	waitTime = 2000,
 	rowScrollHeight,
+	hoverPause = false,
 	onClick,
 	onMouseOver,
 	onMouseMove,
-	onMouseEnter,
+	onMouseLeave,
 	style,
 }) => {
 	const rowBackgroundColor =
@@ -155,6 +156,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	};
 	// 开始运动
 	const startMove = () => {
+		if (!isPlay.current) return;
 		timer.current = setTimeout(() => {
 			if (tableBodyRef.current && rowRef.current) {
 				const targetElement = tableBodyRef.current as HTMLDivElement;
@@ -167,16 +169,12 @@ const ScrollTable: FC<ScrollTableProps> = ({
 					onComplete() {
 						// 如果当前滚动的索引小于数据总长度
 						if (currentScrollIndex.current < dataLength.current) {
-							if (isPlay.current) {
-								startMove();
-							}
+							startMove();
 						} else {
 							targetElement.style.transform = `translateY(0px)`;
 							scrollHeight.current = 0;
 							currentScrollIndex.current = 0;
-							if (isPlay.current) {
-								startMove();
-							}
+							startMove();
 						}
 					},
 				});
@@ -212,9 +210,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		computedRowHeight();
 		isInit.current = true;
 		computedData();
-		if (isPlay.current) {
-			startMove();
-		}
+		startMove();
 	}, [tableBodyRef.current, rowRef.current]);
 	useEffect(() => {
 		return () => {
@@ -225,6 +221,16 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		<div
 			className={`${styles.scrollTable_container} ${className}`}
 			style={style}
+			onMouseOver={() => {
+				if (hoverPause) {
+					isPlay.current = false;
+					clearTimeout(timer.current);
+				}
+			}}
+			onMouseLeave={() => {
+				isPlay.current = true;
+				startMove();
+			}}
 		>
 			<div
 				className={`${styles.head} ${headClassName}`}
@@ -280,8 +286,8 @@ const ScrollTable: FC<ScrollTableProps> = ({
 										onMouseMove={(e) => {
 											onMouseMove?.(item, index, e);
 										}}
-										onMouseEnter={(e) => {
-											onMouseEnter?.(item, index, e);
+										onMouseLeave={(e) => {
+											onMouseLeave?.(item, index, e);
 										}}
 									>
 										{handleRenderRowData(column, item, index)}

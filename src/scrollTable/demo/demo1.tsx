@@ -6,6 +6,9 @@ const Demo1: FC = () => {
 			<ScrollTable
 				style={{ height: 400 }}
 				isAutoPlay={true}
+				duration={200}
+				waitTime={1000}
+				hoverPause={true}
 				onClick={(record, index) => {
 					console.log(record, index);
 				}}
