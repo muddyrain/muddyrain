@@ -58,6 +58,7 @@
     "dumi": "^2.1.22",
     "eslint": "^8.23.0",
     "father": "^4.1.0",
+    "gsap": "^3.12.2",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.8.8",
@@ -70,10 +71,10 @@
     "zustand": "^4.3.8"
   },
   "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0",
     "ahooks": ">=3.0.0",
-    "antd": ">=4.0.0"
+    "antd": ">=4.0.0",
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   },
   "publishConfig": {
     "access": "public"

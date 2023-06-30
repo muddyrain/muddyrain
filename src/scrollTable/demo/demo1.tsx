@@ -3,7 +3,7 @@ import ScrollTable from '..';
 const Demo1: FC = () => {
 	return (
 		<>
-			<ScrollTable />
+			<ScrollTable columns={[]} />
 		</>
 	);
 };
