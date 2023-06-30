@@ -38,7 +38,7 @@ export interface ColumnType {
 	/**
 	 * 列宽度
 	 *
-	 * default : 1:1
+	 * default : -
 	 */
 	width?: number | string;
 	/**
@@ -48,7 +48,7 @@ export interface ColumnType {
 	 */
 	align?: AlignType;
 	/**
-	 * 对齐方式
+	 * 表头对齐方式
 	 *
 	 * default : left
 	 */
@@ -59,6 +59,8 @@ export interface ColumnType {
 	ellipsisClassName?: string;
 	/**
 	 * 省略方向
+	 *
+	 * default : top
 	 */
 	ellipsisPlacement?: Placement;
 	/**
@@ -89,7 +91,7 @@ type MouseEventHandler = (
 ) => void;
 export interface ScrollTableProps {
 	/**
-	 * 表头数据
+	 * 表格列的配置描述，具体项见下表
 	 */
 	columns: ColumnType[];
 	/**
