@@ -54,4 +54,12 @@ export interface ScrollTableProps {
 	 * default : true
 	 */
 	isAutoPlay?: boolean;
+	/**
+	 * 类名
+	 */
+	className?: string;
+	/**
+	 * 样式
+	 */
+	style?: React.CSSProperties;
 }

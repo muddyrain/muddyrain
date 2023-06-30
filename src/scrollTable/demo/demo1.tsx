@@ -4,7 +4,8 @@ const Demo1: FC = () => {
 	return (
 		<>
 			<ScrollTable
-				isAutoPlay={false}
+				style={{ height: 640 }}
+				isAutoPlay={true}
 				dataSource={Array.from({ length: 10 }).map((_, index) => ({
 					name: '陈子涵' + (index + 1),
 					age: '21',

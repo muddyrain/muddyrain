@@ -7,6 +7,8 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	columns,
 	dataSource,
 	isAutoPlay = true,
+	className,
+	style,
 }) => {
 	// 表格身体元素
 	const tableBodyRef = useRef<HTMLDivElement>(null);
@@ -101,7 +103,10 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		}
 	}, [tableBodyRef.current, rowRef.current]);
 	return (
-		<div className={styles.scrollTable_container}>
+		<div
+			className={`${styles.scrollTable_container} ${className}`}
+			style={style}
+		>
 			<div className={styles.head}>
 				{columns.map((column, columnIndex) => (
 					<div
@@ -113,11 +118,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 					</div>
 				))}
 			</div>
-			<div
-				className={styles.wrapper}
-				ref={tableWrapperRef}
-				style={{ height: 300 }}
-			>
+			<div className={styles.wrapper} ref={tableWrapperRef}>
 				<div
 					className={styles.body}
 					ref={tableBodyRef}
