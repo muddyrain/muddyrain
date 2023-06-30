@@ -1,14 +1,14 @@
-export var DragPointDirection;
-(function (DragPointDirection) {
+export var DragPointDirection = /*#__PURE__*/function (DragPointDirection) {
   DragPointDirection["tl"] = "tl";
   DragPointDirection["tr"] = "tr";
   DragPointDirection["bl"] = "bl";
   DragPointDirection["br"] = "br";
-})(DragPointDirection || (DragPointDirection = {}));
-export var DragSideDirection;
-(function (DragSideDirection) {
+  return DragPointDirection;
+}({});
+export var DragSideDirection = /*#__PURE__*/function (DragSideDirection) {
   DragSideDirection["top"] = "top";
   DragSideDirection["bottom"] = "bottom";
   DragSideDirection["left"] = "left";
   DragSideDirection["right"] = "right";
-})(DragSideDirection || (DragSideDirection = {}));
+  return DragSideDirection;
+}({});
