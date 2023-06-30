@@ -1,13 +1,19 @@
 import gsap from 'gsap';
 import React, { FC, useLayoutEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
-import { ScrollTableProps } from './type';
-type DataSourceType = ScrollTableProps['dataSource'];
+import type { DataSourceType, ScrollTableProps, SpacingType } from './type';
+
 const ScrollTable: FC<ScrollTableProps> = ({
 	columns,
 	dataSource,
 	isAutoPlay = true,
-	className,
+	className = '',
+	headClassName = '',
+	rowClassName = '',
+	headStyle = {},
+	rowStyle = {},
+	headSpacing = [10, 15],
+	rowSpacing = [10, 15],
 	style,
 }) => {
 	// 表格身体元素
@@ -26,6 +32,26 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	const [data, setData] = useState<DataSourceType>(dataSource);
 	// 当前滚动的索引
 	const currentScrollIndex = useRef(0);
+	/**
+	 * 计算间距
+	 */
+	const computedSpacing = (spacing: SpacingType): string => {
+		if (Array.isArray(spacing)) {
+			if (spacing.length === 2) {
+				return `${spacing[0]}px ${spacing[1]}px`;
+			}
+			if (spacing.length === 4) {
+				return `${spacing[0]}px ${spacing[1]}px ${spacing[2]}px ${spacing[3]}px`;
+			}
+		}
+		if (typeof spacing === 'string') {
+			return `${spacing}`;
+		}
+		if (typeof spacing === 'number') {
+			return `${spacing}px`;
+		}
+		return ``;
+	};
 	/**
 	 * 计算数据源
 	 */
@@ -48,7 +74,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			// 承载需求层叠次数
 			const needsNumber = Math.ceil(CarryingNumber / dataLength.current);
 			if (CarryingNumber > dataLength.current) {
-				iterateData(data, needsNumber);
+				iterateData(data, needsNumber + 1);
 			}
 		}
 	};
@@ -56,10 +82,13 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	 * 计算表格宽度
 	 */
 	const computedWidth = () => {
+		console.log(tableBodyRef.current);
 		if (tableBodyRef.current) {
 			const targetElement = tableBodyRef.current as HTMLDivElement;
 			const { width } = targetElement.getBoundingClientRect();
-			widths.current = Array.from({ length: 4 }).map(() => width / 4);
+			widths.current = Array.from({ length: columns.length }).map(
+				() => width / columns.length
+			);
 		}
 	};
 	// 开始运动
@@ -92,12 +121,12 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	};
 	useLayoutEffect(() => {
 		if (isInit.current) return;
+		computedWidth();
 		if (!rowRef.current) return;
 		isInit.current = true;
 		const { height } = rowRef.current.getBoundingClientRect();
 		rowHeight.current = height;
 		computedData();
-		computedWidth();
 		if (isPlay.current) {
 			startMove();
 		}
@@ -107,12 +136,18 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			className={`${styles.scrollTable_container} ${className}`}
 			style={style}
 		>
-			<div className={styles.head}>
+			<div
+				className={`${styles.head} ${headClassName}`}
+				style={{ ...headStyle }}
+			>
 				{columns.map((column, columnIndex) => (
 					<div
 						key={columnIndex}
 						className={styles.head_item}
-						style={{ width: column.width || widths.current[columnIndex] }}
+						style={{
+							width: column.width || widths.current[columnIndex],
+							padding: computedSpacing(headSpacing),
+						}}
 					>
 						{column.title}
 					</div>
@@ -126,7 +161,8 @@ const ScrollTable: FC<ScrollTableProps> = ({
 				>
 					{data.map((item, index) => (
 						<div
-							className={styles.row}
+							className={`${styles.row} ${rowClassName}`}
+							style={{ ...rowStyle }}
 							key={index}
 							{...(index === 0 ? { ref: rowRef } : {})}
 						>
@@ -137,40 +173,13 @@ const ScrollTable: FC<ScrollTableProps> = ({
 										className={styles.row_item}
 										style={{
 											width: column.width || widths.current[columnIndex],
+											padding: computedSpacing(rowSpacing),
 										}}
 									>
 										{column.dataIndex && item[column.dataIndex]}
 									</div>
 								);
 							})}
-						</div>
-					))}
-					{Array.from({ length: dataLength.current }).map((_, index) => (
-						<div className={styles.row} key={index}>
-							<div
-								className={styles.row_item}
-								style={{ width: widths.current[0] }}
-							>
-								陈子涵{index + 1}
-							</div>
-							<div
-								className={styles.row_item}
-								style={{ width: widths.current[1] }}
-							>
-								21
-							</div>
-							<div
-								className={styles.row_item}
-								style={{ width: widths.current[2] }}
-							>
-								广东省深圳市
-							</div>
-							<div
-								className={styles.row_item}
-								style={{ width: widths.current[3] }}
-							>
-								2023-01-01 12:00:00{' '}
-							</div>
 						</div>
 					))}
 				</div>
