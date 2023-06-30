@@ -140,4 +140,22 @@ export interface ScrollTableProps {
 	 * default : true
 	 */
 	striped?: boolean;
+	/**
+	 * 滚动动画执行时长 (毫秒)
+	 *
+	 * default : 1000
+	 */
+	duration?: number;
+	/**
+	 * 延时停留时长 (毫秒)
+	 *
+	 * default : 250
+	 */
+	delay?: number;
+	/**
+	 * 轮播时间间隔 (毫秒)
+	 *
+	 * default : 2000
+	 */
+	waitTime?: number;
 }

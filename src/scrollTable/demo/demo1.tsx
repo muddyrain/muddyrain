@@ -17,7 +17,7 @@ const Demo1: FC = () => {
 						title: '姓名',
 						width: '450px',
 						dataIndex: 'name',
-						align: 'right',
+						align: 'center',
 						headAlign: 'center',
 					},
 					{

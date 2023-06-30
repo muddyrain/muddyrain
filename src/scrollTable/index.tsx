@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import React, { FC, useLayoutEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import colors from 'tailwindcss/colors';
 import styles from './index.module.less';
 import type {
@@ -22,6 +22,9 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	headBackgroundColor = colors['blue']['400'],
 	rowBackgroundColor: _rowBackgroundColor,
 	striped = true,
+	duration = 1000,
+	delay = 250,
+	waitTime = 2000,
 	style,
 }) => {
 	const rowBackgroundColor =
@@ -29,6 +32,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		(striped
 			? [colors['cyan']['700'], colors['sky']['700']]
 			: colors['cyan']['700']);
+	const timer = useRef<NodeJS.Timer>();
 	// 表格身体元素
 	const tableBodyRef = useRef<HTMLDivElement>(null);
 	// 表格外部元素
@@ -115,31 +119,33 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	};
 	// 开始运动
 	const startMove = () => {
-		if (tableBodyRef.current && rowRef.current) {
-			const targetElement = tableBodyRef.current as HTMLDivElement;
-			scrollHeight.current += rowHeight.current;
-			currentScrollIndex.current += 1;
-			gsap.to(tableBodyRef.current.style, {
-				duration: 1,
-				delay: 0.25,
-				transform: `translateY(-${scrollHeight.current}px)`,
-				onComplete() {
-					// 如果当前滚动的索引小于数据总长度
-					if (currentScrollIndex.current < dataLength.current) {
-						if (isPlay.current) {
-							startMove();
+		timer.current = setTimeout(() => {
+			if (tableBodyRef.current && rowRef.current) {
+				const targetElement = tableBodyRef.current as HTMLDivElement;
+				scrollHeight.current += rowHeight.current;
+				currentScrollIndex.current += 1;
+				gsap.to(tableBodyRef.current.style, {
+					duration: duration / 1e3,
+					delay: delay / 1e3,
+					transform: `translateY(-${scrollHeight.current}px)`,
+					onComplete() {
+						// 如果当前滚动的索引小于数据总长度
+						if (currentScrollIndex.current < dataLength.current) {
+							if (isPlay.current) {
+								startMove();
+							}
+						} else {
+							targetElement.style.transform = `translateY(0px)`;
+							scrollHeight.current = 0;
+							currentScrollIndex.current = 0;
+							if (isPlay.current) {
+								startMove();
+							}
 						}
-					} else {
-						targetElement.style.transform = `translateY(0px)`;
-						scrollHeight.current = 0;
-						currentScrollIndex.current = 0;
-						if (isPlay.current) {
-							startMove();
-						}
-					}
-				},
-			});
-		}
+					},
+				});
+			}
+		}, waitTime);
 	};
 	const computedRowBackgroundColor = (index: number) => {
 		if (striped) {
@@ -174,6 +180,11 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			startMove();
 		}
 	}, [tableBodyRef.current, rowRef.current]);
+	useEffect(() => {
+		return () => {
+			clearTimeout(timer.current);
+		};
+	}, []);
 	return (
 		<div
 			className={`${styles.scrollTable_container} ${className}`}
