@@ -1,4 +1,5 @@
-interface ColumnType {
+export type AlignType = 'left' | 'center' | 'right';
+export interface ColumnType {
 	/**
 	 * 列样式类名
 	 *
@@ -39,6 +40,18 @@ interface ColumnType {
 	 * default : 1:1
 	 */
 	width?: number | string;
+	/**
+	 * 行数据对齐方式
+	 *
+	 * default : left
+	 */
+	align?: AlignType;
+	/**
+	 * 对齐方式
+	 *
+	 * default : left
+	 */
+	headAlign?: AlignType;
 }
 
 /**
@@ -107,4 +120,24 @@ export interface ScrollTableProps {
 	 * default : [10,15]
 	 */
 	rowSpacing?: SpacingType;
+	/**
+	 * 表头背景颜色
+	 *
+	 * default : blue-400
+	 */
+	headBackgroundColor?: string;
+	/**
+	 * 行背景颜色
+	 *
+	 * 有条纹的: [cyan-700,sky-700]
+	 *
+	 * default : cyan-700
+	 */
+	rowBackgroundColor?: string;
+	/**
+	 * 有条纹的
+	 *
+	 * default : true
+	 */
+	striped?: boolean;
 }

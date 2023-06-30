@@ -4,6 +4,9 @@ declare module '*.module.css' {
 declare module '*.module.less' {
 	export default Record<string, string>;
 }
+declare module '*.less' {
+	export default Record<string, string>;
+}
 
 declare module '*.png' {
 	export default string;

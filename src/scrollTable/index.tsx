@@ -1,8 +1,13 @@
 import gsap from 'gsap';
 import React, { FC, useLayoutEffect, useRef, useState } from 'react';
+import colors from 'tailwindcss/colors';
 import styles from './index.module.less';
-import type { DataSourceType, ScrollTableProps, SpacingType } from './type';
-
+import type {
+	AlignType,
+	DataSourceType,
+	ScrollTableProps,
+	SpacingType,
+} from './type';
 const ScrollTable: FC<ScrollTableProps> = ({
 	columns,
 	dataSource,
@@ -14,8 +19,16 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	rowStyle = {},
 	headSpacing = [10, 15],
 	rowSpacing = [10, 15],
+	headBackgroundColor = colors['blue']['400'],
+	rowBackgroundColor: _rowBackgroundColor,
+	striped = true,
 	style,
 }) => {
+	const rowBackgroundColor =
+		_rowBackgroundColor ||
+		(striped
+			? [colors['cyan']['700'], colors['sky']['700']]
+			: colors['cyan']['700']);
 	// 表格身体元素
 	const tableBodyRef = useRef<HTMLDivElement>(null);
 	// 表格外部元素
@@ -32,6 +45,15 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	const [data, setData] = useState<DataSourceType>(dataSource);
 	// 当前滚动的索引
 	const currentScrollIndex = useRef(0);
+	/**
+	 * 计算行的高度
+	 */
+	const computedRowHeight = () => {
+		if (!rowRef.current) return;
+		const { height } = rowRef.current.getBoundingClientRect();
+		console.log(rowRef.current.getBoundingClientRect());
+		rowHeight.current = height;
+	};
 	/**
 	 * 计算间距
 	 */
@@ -76,13 +98,13 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			if (CarryingNumber > dataLength.current) {
 				iterateData(data, needsNumber + 1);
 			}
+			computedRowHeight();
 		}
 	};
 	/**
 	 * 计算表格宽度
 	 */
 	const computedWidth = () => {
-		console.log(tableBodyRef.current);
 		if (tableBodyRef.current) {
 			const targetElement = tableBodyRef.current as HTMLDivElement;
 			const { width } = targetElement.getBoundingClientRect();
@@ -119,13 +141,34 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			});
 		}
 	};
+	const computedRowBackgroundColor = (index: number) => {
+		if (striped) {
+			if (index % 2 === 0) {
+				return rowBackgroundColor[0];
+			} else {
+				return rowBackgroundColor[1];
+			}
+		} else {
+			return rowBackgroundColor as string;
+		}
+	};
+	const computedJustify = (align: AlignType) => {
+		switch (align) {
+			case 'left':
+				return 'flex-start';
+			case 'center':
+				return 'center';
+			case 'right':
+				return 'flex-end';
+			default:
+				return 'flex-start';
+		}
+	};
 	useLayoutEffect(() => {
 		if (isInit.current) return;
 		computedWidth();
-		if (!rowRef.current) return;
+		computedRowHeight();
 		isInit.current = true;
-		const { height } = rowRef.current.getBoundingClientRect();
-		rowHeight.current = height;
 		computedData();
 		if (isPlay.current) {
 			startMove();
@@ -138,7 +181,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		>
 			<div
 				className={`${styles.head} ${headClassName}`}
-				style={{ ...headStyle }}
+				style={{ backgroundColor: headBackgroundColor, ...headStyle }}
 			>
 				{columns.map((column, columnIndex) => (
 					<div
@@ -147,6 +190,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 						style={{
 							width: column.width || widths.current[columnIndex],
 							padding: computedSpacing(headSpacing),
+							justifyContent: computedJustify(column.headAlign || 'left'),
 						}}
 					>
 						{column.title}
@@ -162,7 +206,10 @@ const ScrollTable: FC<ScrollTableProps> = ({
 					{data.map((item, index) => (
 						<div
 							className={`${styles.row} ${rowClassName}`}
-							style={{ ...rowStyle }}
+							style={{
+								backgroundColor: computedRowBackgroundColor(index),
+								...rowStyle,
+							}}
 							key={index}
 							{...(index === 0 ? { ref: rowRef } : {})}
 						>
@@ -174,6 +221,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 										style={{
 											width: column.width || widths.current[columnIndex],
 											padding: computedSpacing(rowSpacing),
+											justifyContent: computedJustify(column.align || 'left'),
 										}}
 									>
 										{column.dataIndex && item[column.dataIndex]}
