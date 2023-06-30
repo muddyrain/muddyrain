@@ -107,7 +107,6 @@ const handleSort = (
 const handleCell = (
 	columns: TablerProps['columns']
 ): TablerProps['columns'] => {
-	console.log(columns);
 	return columns.map((column) => {
 		return {
 			...column,

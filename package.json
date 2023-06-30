@@ -21,7 +21,8 @@
     "prepublishOnly": "father doctor && npm run build",
     "format": "npx prettier --write \"src/**/*.+(js|ts|jsx|tsx)\"",
     "start": "npm run dev",
-    "release": "release-it"
+    "release": "release-it",
+    "deploy": "gh-pages -d dist"
   },
   "commitlint": {
     "extends": [
@@ -59,6 +60,7 @@
     "dumi": "^2.1.22",
     "eslint": "^8.23.0",
     "father": "^4.1.0",
+    "gh-pages": "^5.0.0",
     "gsap": "^3.12.2",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
