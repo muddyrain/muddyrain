@@ -8,10 +8,8 @@ const baseUrl = process.env.NODE_ENV === 'production' ? defaultPath : '';
 export default defineConfig({
 	logo: '/logo.png',
 	outputPath: 'docs-dist',
-	runtimePublicPath: {},
-	base: `${baseUrl}/`,
+	runtimePublicPath: true,
 	publicPath: `${baseUrl}/`,
-	mfsu: {},
 	exportStatic: {},
 	history: {
 		type: 'hash',
