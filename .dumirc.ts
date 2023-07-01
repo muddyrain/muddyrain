@@ -8,7 +8,10 @@ const baseUrl = process.env.NODE_ENV === 'production' ? defaultPath : '';
 export default defineConfig({
 	logo: '/logo.png',
 	outputPath: 'docs-dist',
-	runtimePublicPath: true,
+	mfsu: false,
+	resolve: { entryFile: './src/index.ts' },
+	runtimePublicPath: {},
+	base: `${baseUrl}/`,
 	publicPath: `${baseUrl}/`,
 	exportStatic: {},
 	themeConfig: {
