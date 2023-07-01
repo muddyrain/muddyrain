@@ -9,8 +9,10 @@ export default defineConfig({
 	logo: '/logo.png',
 	outputPath: 'docs-dist',
 	runtimePublicPath: {},
-	base: defaultPath,
+	base: `${baseUrl}/`,
 	publicPath: `${baseUrl}/`,
+	mfsu: {},
+	exportStatic: {},
 	history: {
 		type: 'hash',
 	},
