@@ -156,7 +156,21 @@ export interface ScrollTableProps {
 	 *
 	 * default : cyan-700
 	 */
-	rowBackgroundColor?: React.CSSProperties['backgroundColor'];
+	rowBackgroundColor?:
+		| React.CSSProperties['backgroundColor']
+		| React.CSSProperties['backgroundColor'][];
+	/**
+	 * 表头文字颜色
+	 *
+	 * default : white
+	 */
+	headTextColor?: React.CSSProperties['color'];
+	/**
+	 * 行文字颜色
+	 *
+	 * default : white
+	 */
+	rowTextColor?: React.CSSProperties['color'];
 	/**
 	 * 有条纹的
 	 *

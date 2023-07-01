@@ -52,6 +52,8 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	rowSpacing = [10, 15],
 	headBackgroundColor = colors['blue']['400'],
 	rowBackgroundColor: _rowBackgroundColor,
+	headTextColor = 'white',
+	rowTextColor = 'white',
 	striped = true,
 	duration = 1000,
 	delay = 250,
@@ -244,6 +246,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 							width: column.width || widths.current[columnIndex],
 							padding: computedSpacing(headSpacing),
 							justifyContent: computedJustify(column.headAlign || 'left'),
+							color: headTextColor,
 						}}
 					>
 						{column.title}
@@ -276,6 +279,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 											padding: computedSpacing(rowSpacing),
 											justifyContent: computedJustify(column.align || 'left'),
 											cursor: column.cursor,
+											color: rowTextColor,
 										}}
 										onClick={(e) => {
 											onClick?.(item, index, e);

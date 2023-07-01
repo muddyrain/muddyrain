@@ -88,8 +88,10 @@ nav:
 | isAutoPlay | 是否自动播放 | `boolean`|  -    | true
 | headSpacing | 表头每列间距 | <a href="#spacing-type" >SpacingType</a> |  内用于 padding 属性    | [10,15]
 | headSpacing | 表头每列间距 | <a href="#spacing-type" >SpacingType</a> |  内用于 padding 属性    | [10,15]
-| headBackgroundColor | 表头背景颜色 | `backgroundColor(string)`|  -    | <a href="https://www.tailwindcss.cn/docs/customizing-colors" target="_blank">blue-400 (tailwind 颜色)</a>
+| headBackgroundColor | 表头背景颜色 | `backgroundColor(string) \| backgroundColor(string)[] `|  -    | <a href="https://www.tailwindcss.cn/docs/customizing-colors" target="_blank">blue-400 (tailwind 颜色)</a>
 | rowBackgroundColor | 行背景颜色 | `backgroundColor(string)`|  有条纹的:   [cyan-700,sky-700]  | <a href="https://www.tailwindcss.cn/docs/customizing-colors" target="_blank">cyan-700 (tailwind 颜色)</a>
+|  headTextColor | 表头文字颜色 | `color(string)`| -  | white
+|  rowTextColor | 行文字颜色 | `color(string)`| -  | white
 | striped | 有条纹的 | `boolean`|  -    | true
 | duration | 滚动动画执行时长 (毫秒) | `number`|  -    | 1000
 | delay | 延时停留时长 (毫秒) | `number`|  -    | 250

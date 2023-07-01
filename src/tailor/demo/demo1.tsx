@@ -6,8 +6,8 @@ import image2 from '../images/2.png';
 import image3 from '../images/3.png';
 
 const Demo1: FC = () => {
-	const [isShowDownload, setIsShowDownload] = React.useState(false);
-	const [isShowReview, setIsShowReview] = React.useState(false);
+	const [isShowDownload, setIsShowDownload] = React.useState(true);
+	const [isShowReview, setIsShowReview] = React.useState(true);
 	const [areaColor, setAreaColor] = React.useState('#f00000');
 	const [areaAlpha, setAreaAlpha] = React.useState(0.25);
 
