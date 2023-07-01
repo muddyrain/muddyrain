@@ -9,9 +9,8 @@ console.log(`${baseUrl}/`);
 export default defineConfig({
 	logo: '/logo.png',
 	outputPath: 'docs-dist',
-	resolve: { entryFile: './src/index.ts' },
-	base: `${baseUrl}/`,
-	publicPath: `${baseUrl}/`,
+	base: '/muddyrain/',
+	publicPath: '/muddyrain/',
 
 	// themeConfig: {
 	// 	socialLinks: {
