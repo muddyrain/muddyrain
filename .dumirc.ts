@@ -11,9 +11,6 @@ export default defineConfig({
 	runtimePublicPath: true,
 	publicPath: `${baseUrl}/`,
 	exportStatic: {},
-	history: {
-		type: 'hash',
-	},
 	themeConfig: {
 		name: 'muddyrain',
 		socialLinks: {
