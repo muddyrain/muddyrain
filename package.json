@@ -56,7 +56,6 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@release-it/conventional-changelog": "^5.1.1",
-    "@tippyjs/react": "^4.2.6",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@umijs/lint": "^4.0.0",
@@ -66,7 +65,6 @@
     "eslint": "^8.23.0",
     "father": "^4.1.0",
     "gh-pages": "^5.0.0",
-    "gsap": "^3.12.2",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.8.8",
@@ -76,8 +74,6 @@
     "react-dom": "^18.0.0",
     "release-it": "^15.10.3",
     "stylelint": "^14.9.1",
-    "tailwindcss": "^3.3.2",
-    "tippy.js": "^6.3.7",
     "zustand": "^4.3.8"
   },
   "peerDependencies": {
@@ -96,7 +92,11 @@
     "cz-customizable": "^7.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2"
+    "eslint-plugin-react": "^7.32.2",
+    "tailwindcss": "^3.3.2",
+    "tippy.js": "^6.3.7",
+    "@tippyjs/react": "^4.2.6",
+    "gsap": "^3.12.2"
   },
   "config": {
     "commitizen": {
