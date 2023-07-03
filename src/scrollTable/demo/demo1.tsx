@@ -157,7 +157,7 @@ const Demo1: FC = () => {
 						dataIndex: 'name',
 						align: 'center',
 						headAlign: 'center',
-						render: () => {
+						render: (text) => {
 							return (
 								<div
 									style={{
@@ -171,7 +171,7 @@ const Demo1: FC = () => {
 										src="https://p3-passport.byteimg.com/img/user-avatar/09e00df42d9bfe86f3b0c7c8cdbf1c84~100x100.awebp"
 										alt=""
 									/>
-									<span>陈子涵</span>
+									<span>{text}</span>
 								</div>
 							);
 						},

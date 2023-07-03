@@ -21,21 +21,24 @@ const handleRenderRowData = (
 	index: number
 ): React.ReactNode => {
 	const text = column.dataIndex && item[column.dataIndex];
+	const renderText = column.render ? column.render(text, item, index) : text;
 	if (column.ellipsis) {
 		return (
 			<Tippy
 				placement={column.ellipsisPlacement || 'top'}
 				content={<div className={column.ellipsisClassName}>{text}</div>}
 			>
-				<span className={styles['ellipsis-line']}>{text}</span>
+				{column.render ? (
+					React.cloneElement(renderText, {
+						className: `${styles['ellipsis-line']} ${renderText?.props?.className}`,
+					})
+				) : (
+					<span className={styles['ellipsis-line']}>{text}</span>
+				)}
 			</Tippy>
 		);
 	} else {
-		if (column.render) {
-			return column.render(item[column.dataIndex], item, index);
-		} else {
-			return text;
-		}
+		return renderText;
 	}
 };
 
@@ -82,6 +85,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	// 是否播放
 	const isPlay = useRef(isAutoPlay);
 	const dataLength = useRef(dataSource.length);
+	const childrenElements = useRef<Element[]>([]);
 	const widths = useRef<number[]>([]);
 	const isInit = useRef(false);
 	const rowHeight = useRef(0);
@@ -92,8 +96,9 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	 * 计算行的高度
 	 */
 	const computedRowHeight = () => {
-		if (!rowRef.current) return;
-		const { height } = rowRef.current.getBoundingClientRect();
+		if (!tableBodyRef.current) return;
+		const targetElement = childrenElements.current[currentScrollIndex.current];
+		const { height } = targetElement.getBoundingClientRect();
 		rowHeight.current = height;
 	};
 	/**
@@ -159,9 +164,14 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	// 开始运动
 	const startMove = () => {
 		if (!isPlay.current) return;
+		if (timer.current) {
+			clearTimeout(timer.current);
+		}
 		timer.current = setTimeout(() => {
 			if (tableBodyRef.current && rowRef.current) {
 				const targetElement = tableBodyRef.current as HTMLDivElement;
+				// 重新计算下一个行高
+				computedRowHeight();
 				scrollHeight.current += rowScrollHeight || rowHeight.current;
 				currentScrollIndex.current += 1;
 				gsap.to(tableBodyRef.current.style, {
@@ -208,7 +218,12 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	};
 	useLayoutEffect(() => {
 		if (isInit.current) return;
+		if (!tableBodyRef.current) return;
 		computedWidth();
+		childrenElements.current = Array.from(tableBodyRef.current.children).slice(
+			0,
+			dataLength.current
+		);
 		computedRowHeight();
 		isInit.current = true;
 		computedData();
