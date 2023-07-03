@@ -20,9 +20,16 @@ const handleRenderRowData = (
 	item: DataSourceType[number],
 	index: number
 ): React.ReactNode => {
-	const text = column.dataIndex && item[column.dataIndex];
-	const renderText = column.render ? column.render(text, item, index) : text;
+	const returnRender = (text: React.ReactNode): any => {
+		return column.render ? column.render(text, item, index) : text;
+	};
+	const text = column.dataIndex && (item[column.dataIndex] as string);
+	// 特殊列处理
+	if (column.specialColumn === 'sort') {
+		return returnRender(index + 1);
+	}
 	if (column.ellipsis) {
+		const renderText = returnRender(text);
 		return (
 			<Tippy
 				placement={column.ellipsisPlacement || 'top'}
@@ -38,7 +45,7 @@ const handleRenderRowData = (
 			</Tippy>
 		);
 	} else {
-		return renderText;
+		return returnRender(text);
 	}
 };
 
@@ -336,7 +343,11 @@ const ScrollTable: FC<ScrollTableProps> = ({
 											onMouseLeave?.(item, index, e);
 										}}
 									>
-										{handleRenderRowData(column, item, index)}
+										{handleRenderRowData(
+											column,
+											item,
+											index % dataLength.current
+										)}
 									</div>
 								);
 							})}

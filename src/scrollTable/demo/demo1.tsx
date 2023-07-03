@@ -152,6 +152,10 @@ const Demo1: FC = () => {
 				}))}
 				columns={[
 					{
+						title: '排序',
+						specialColumn: 'sort',
+					},
+					{
 						title: '姓名',
 						width: '450px',
 						dataIndex: 'name',

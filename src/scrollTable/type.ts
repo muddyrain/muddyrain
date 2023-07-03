@@ -12,7 +12,7 @@ export interface ColumnType {
 	 *
 	 * default : -
 	 */
-	dataIndex: string;
+	dataIndex?: string;
 	/**
 	 * 超过宽度将自动省略
 	 *
@@ -69,6 +69,14 @@ export interface ColumnType {
 	 * default : auto
 	 */
 	cursor?: React.CSSProperties['cursor'];
+	/**
+	 * 特殊列
+	 *
+	 * 无 | 排序
+	 *
+	 * default : none
+	 */
+	specialColumn?: 'none' | 'sort';
 }
 
 /**
