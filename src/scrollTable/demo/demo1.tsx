@@ -3,8 +3,8 @@ import React, { FC } from 'react';
 import ScrollTable from '..';
 const Demo1: FC = () => {
 	const [rowTextColor, setRowTextColor] = React.useState('#ffffff');
-	const [waitTime, setWaitTime] = React.useState(2000);
-	const [duration, setDuration] = React.useState(1000);
+	const [waitTime, setWaitTime] = React.useState(1000);
+	const [duration, setDuration] = React.useState(500);
 	const [delay, setDelay] = React.useState(250);
 	const [headTextColor, setHeadTextColor] = React.useState('#ffffff');
 	const [rowsBackgroundColor, setRowsBackgroundColor] = React.useState([
@@ -144,7 +144,7 @@ const Demo1: FC = () => {
 				onClick={(record, index) => {
 					console.log(record, index);
 				}}
-				dataSource={Array.from({ length: 5 }).map((_, index) => ({
+				dataSource={Array.from({ length: 10 }).map((_, index) => ({
 					name: '陈子涵' + (index + 1),
 					age: '21',
 					address: '广东省深圳市',

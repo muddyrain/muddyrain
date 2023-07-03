@@ -5,13 +5,10 @@ nav:
   order: 2
 ---
 
-<!-- ## 代码演示
-
-<code src="./demo/demo1.tsx" description="demo"></code> -->
-
 ## 代码演示
 
-<code src="./demo/demo2.tsx" description="demo"></code>
+<code src="./demo/demo1.tsx" description="demo"></code>
+
 
 ## 实例代码
 ``` tsx | pure

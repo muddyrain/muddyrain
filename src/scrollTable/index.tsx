@@ -145,6 +145,8 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			const needsNumber = Math.ceil(CarryingNumber / dataLength.current);
 			if (CarryingNumber > dataLength.current) {
 				iterateData(data, needsNumber + 1);
+			} else {
+				iterateData(data, 2);
 			}
 			computedRowHeight();
 		}
