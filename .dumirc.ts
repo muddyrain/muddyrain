@@ -19,8 +19,10 @@ const deployConfig =
 		  };
 export default defineConfig({
 	...deployConfig,
+	title: 'Muddyrain',
 	outputPath: 'docs-dist',
 	themeConfig: {
+		name: 'Muddyrain',
 		socialLinks: {
 			github: 'https://github.com/muddyrain/muddyrain',
 			yuque: 'https://www.yuque.com/muddyrain',

@@ -205,6 +205,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			computedTransform(startMove);
 		}, waitTime);
 	};
+	// 计算行背景颜色
 	const computedRowBackgroundColor = (index: number) => {
 		let _rowBackgroundColor = rowBackgroundColor;
 		if (striped) {
