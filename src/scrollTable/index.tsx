@@ -1,6 +1,6 @@
 import Tippy from '@tippyjs/react';
 import gsap from 'gsap';
-import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { FC, useLayoutEffect, useRef, useState } from 'react';
 import colors from 'tailwindcss/colors';
 import 'tippy.js/dist/tippy.css';
 import styles from './index.module.less';
@@ -161,6 +161,31 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			);
 		}
 	};
+	const computedTransform = (startMove: () => void) => {
+		if (tableBodyRef.current && rowRef.current) {
+			const targetElement = tableBodyRef.current as HTMLDivElement;
+			// 重新计算下一个行高
+			computedRowHeight();
+			scrollHeight.current += rowScrollHeight || rowHeight.current;
+			currentScrollIndex.current += 1;
+			gsap.to(tableBodyRef.current.style, {
+				duration: duration / 1e3,
+				delay: delay / 1e3,
+				transform: `translateY(-${scrollHeight.current}px)`,
+				onComplete() {
+					// 如果当前滚动的索引小于数据总长度
+					if (currentScrollIndex.current < dataLength.current) {
+						startMove();
+					} else {
+						targetElement.style.transform = `translateY(0px)`;
+						scrollHeight.current = 0;
+						currentScrollIndex.current = 0;
+						startMove();
+					}
+				},
+			});
+		}
+	};
 	// 开始运动
 	const startMove = () => {
 		if (!isPlay.current) return;
@@ -168,40 +193,36 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			clearTimeout(timer.current);
 		}
 		timer.current = setTimeout(() => {
-			if (tableBodyRef.current && rowRef.current) {
-				const targetElement = tableBodyRef.current as HTMLDivElement;
-				// 重新计算下一个行高
-				computedRowHeight();
-				scrollHeight.current += rowScrollHeight || rowHeight.current;
-				currentScrollIndex.current += 1;
-				gsap.to(tableBodyRef.current.style, {
-					duration: duration / 1e3,
-					delay: delay / 1e3,
-					transform: `translateY(-${scrollHeight.current}px)`,
-					onComplete() {
-						// 如果当前滚动的索引小于数据总长度
-						if (currentScrollIndex.current < dataLength.current) {
-							startMove();
-						} else {
-							targetElement.style.transform = `translateY(0px)`;
-							scrollHeight.current = 0;
-							currentScrollIndex.current = 0;
-							startMove();
-						}
-					},
-				});
-			}
+			computedTransform(startMove);
 		}, waitTime);
 	};
 	const computedRowBackgroundColor = (index: number) => {
+		let _rowBackgroundColor = rowBackgroundColor;
 		if (striped) {
+			if (
+				!(
+					Array.isArray(_rowBackgroundColor) && _rowBackgroundColor.length === 2
+				)
+			) {
+				console.warn(
+					'`ScrollTable` 如果设置了 `striped` 为条纹状,那么只支持两种颜色,为保证渲染效果,请使用两种颜色数组[color,color]'
+				);
+				_rowBackgroundColor = [colors['cyan']['700'], colors['sky']['700']];
+			}
 			if (index % 2 === 0) {
-				return rowBackgroundColor[0];
+				return _rowBackgroundColor[0];
 			} else {
-				return rowBackgroundColor[1];
+				return _rowBackgroundColor[1];
 			}
 		} else {
-			return rowBackgroundColor as string;
+			if (Array.isArray(_rowBackgroundColor)) {
+				console.warn(
+					'`ScrollTable` 当前状态为正常颜色,仅支持1种颜色,为保证渲染效果,请使用1种颜色-color'
+				);
+				return _rowBackgroundColor[0];
+			} else {
+				return _rowBackgroundColor as string;
+			}
 		}
 	};
 	const computedJustify = (align: AlignType) => {
@@ -216,10 +237,19 @@ const ScrollTable: FC<ScrollTableProps> = ({
 				return 'flex-start';
 		}
 	};
+	/**
+	 * 监听窗口时间
+	 */
+	const listenWindowSize = () => {
+		computedWidth();
+		window.addEventListener('resize', () => {
+			computedWidth();
+		});
+	};
 	useLayoutEffect(() => {
 		if (isInit.current) return;
 		if (!tableBodyRef.current) return;
-		computedWidth();
+		listenWindowSize();
 		childrenElements.current = Array.from(tableBodyRef.current.children).slice(
 			0,
 			dataLength.current
@@ -229,11 +259,6 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		computedData();
 		startMove();
 	}, [tableBodyRef.current, rowRef.current]);
-	useEffect(() => {
-		return () => {
-			clearTimeout(timer.current);
-		};
-	}, []);
 	return (
 		<div
 			className={`${styles.scrollTable_container} ${className}`}

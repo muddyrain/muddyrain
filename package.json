@@ -70,8 +70,8 @@
     "prettier": "^2.8.8",
     "prettier-plugin-organize-imports": "^3.0.0",
     "prettier-plugin-packagejson": "^2.2.18",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "release-it": "^15.10.3",
     "stylelint": "^14.9.1",
     "zustand": "^4.3.8"

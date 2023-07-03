@@ -5,8 +5,13 @@ nav:
   order: 2
 ---
 
+<!-- ## 代码演示
+
+<code src="./demo/demo1.tsx" description="demo"></code> -->
+
 ## 代码演示
-<code src="./demo/demo1.tsx" description="demo"></code>
+
+<code src="./demo/demo2.tsx" description="demo"></code>
 
 ## 实例代码
 ``` tsx | pure
@@ -88,7 +93,7 @@ nav:
 | headSpacing | 表头每列间距 | <a href="#spacing-type" >SpacingType</a> |  内用于 padding 属性    | [10,15]
 | headSpacing | 表头每列间距 | <a href="#spacing-type" >SpacingType</a> |  内用于 padding 属性    | [10,15]
 | headBackgroundColor | 表头背景颜色 | `backgroundColor(string) \| backgroundColor(string)[] `|  -    | <a href="https://www.tailwindcss.cn/docs/customizing-colors" target="_blank">blue-400 (tailwind 颜色)</a>
-| rowBackgroundColor | 行背景颜色 | `backgroundColor(string)`|  有条纹的:   [cyan-700,sky-700]  | <a href="https://www.tailwindcss.cn/docs/customizing-colors" target="_blank">cyan-700 (tailwind 颜色)</a>
+| rowBackgroundColor | 行背景颜色 | `backgroundColor(string)`|  有条纹的:   [cyan-700,sky-700][奇数,偶数]  | <a href="https://www.tailwindcss.cn/docs/customizing-colors" target="_blank">cyan-700 (tailwind 颜色)</a>
 |  headTextColor | 表头文字颜色 | `color(string)`| -  | white
 |  rowTextColor | 行文字颜色 | `color(string)`| -  | white
 | striped | 有条纹的 | `boolean`|  -    | true

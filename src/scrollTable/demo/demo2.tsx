@@ -58,8 +58,10 @@ const Demo2: FC = () => {
 				duration={1000}
 				waitTime={1000}
 				className="h-full w-full"
-				style={{ width: '600px', height: '1150px' }}
+				style={{ width: '100%', height: '1150px' }}
 				headClassName="text-sm"
+				rowBackgroundColor={'red'}
+				striped={false}
 				headStyle={{
 					fontSize: '18.8px',
 				}}
