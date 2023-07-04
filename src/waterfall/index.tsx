@@ -143,7 +143,7 @@ const Waterfall: FC<WaterfallProps> = ({
 		if (!containerRef.current) return;
 		computedColumns();
 		computedContainerWidth();
-	}, [imageWidth]);
+	}, [imageWidth, spacing]);
 	return (
 		<div className={styles.wrapper_container} ref={wrapperRef}>
 			<div className={styles.waterfall_container} ref={containerRef}>
