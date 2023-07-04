@@ -4,6 +4,7 @@ export interface RenderDataSource {
 	url: string;
 	isLoad: boolean;
 	width: number;
+	height: number;
 	[key: string]: any;
 }
 export interface DataSourceType {
@@ -25,6 +26,6 @@ export interface WaterfallProps {
 	 * @
 	 */
 	renderItem: (data: renderDataSource, index: number) => React.ReactNode;
-	renderKey: (data: renderDataSource, index: number) => string | string;
+	renderKey?: (data: renderDataSource, index: number) => string | string;
 	dataSource: DataSourceType[];
 }

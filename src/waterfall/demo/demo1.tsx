@@ -1,5 +1,5 @@
 import { Slider, Space } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import image1 from '../images/1.jpg';
 import image2 from '../images/2.jpg';
 import image3 from '../images/3.jpg';
@@ -11,6 +11,9 @@ import Waterfall from '../index';
 const images = [image1, image2, image3, image4, image5, image6, image7];
 const Demo1: FC = () => {
 	const [width, setWidth] = useState(200);
+	useEffect(() => {
+		setTimeout(() => {}, 2000);
+	}, []);
 	return (
 		<>
 			<Space>
@@ -23,7 +26,7 @@ const Demo1: FC = () => {
 						}}
 						min={100}
 						max={1000}
-						onChange={(value) => {
+						onChange={(value: number) => {
 							setWidth(value);
 						}}
 					/>
@@ -33,7 +36,6 @@ const Demo1: FC = () => {
 				width={width}
 				dataSource={images.map((image) => ({ url: image }))}
 				renderItem={(data) => {
-					console.log(data);
 					const { url, left, top, width } = data;
 					return (
 						<div style={{ left, top, width, position: 'absolute' }}>
