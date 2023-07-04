@@ -4,6 +4,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "target": "ESNext",
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
