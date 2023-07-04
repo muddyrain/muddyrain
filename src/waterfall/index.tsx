@@ -64,6 +64,13 @@ const Waterfall: FC<WaterfallProps> = ({
 		const { width } = wrapperRef.current.getBoundingClientRect();
 		columnNumber.current = Math.floor(width / (imageWidth + spacing));
 	};
+	// 计算容器高度
+	const computedContainerHeight = () => {
+		if (!containerRef.current) return;
+		const maxHeight = Math.max(...heights.current);
+		containerRef.current.style.height = maxHeight + 'px';
+	};
+	// 计算容器宽度
 	const computedContainerWidth = () => {
 		if (!containerRef.current || !wrapperRef.current) return;
 		// 统计高度
@@ -80,6 +87,7 @@ const Waterfall: FC<WaterfallProps> = ({
 			item.left = left;
 			item.height = newHeight;
 		}
+		computedContainerHeight();
 		setData([...data]);
 	};
 	const computedImages = (data: RenderDataSource[]) => {
@@ -108,7 +116,6 @@ const Waterfall: FC<WaterfallProps> = ({
 			);
 		};
 		const loadList = async () => {
-			if (!containerRef.current) return;
 			for (const item of data) {
 				const { left, top, height } = await loadImage(item);
 				item.left = left;
@@ -116,12 +123,12 @@ const Waterfall: FC<WaterfallProps> = ({
 				item.height = height;
 				item.isLoad = true;
 			}
-			const maxHeight = Math.max(...heights.current);
-			containerRef.current.style.height = maxHeight + 'px';
+			computedContainerHeight();
 			setData([...data]);
 		};
 		loadList();
 	};
+
 	useEffect(() => {
 		computedImages(data);
 		const handleWindowResize = () => {

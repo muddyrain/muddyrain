@@ -38,7 +38,13 @@ const Demo1: FC = () => {
 				renderItem={(data) => {
 					const { url, left, top, width } = data;
 					return (
-						<div style={{ left, top, width, position: 'absolute' }}>
+						<div
+							style={{
+								transform: 'translate3d(' + left + 'px, ' + top + 'px, 0)',
+								width,
+								position: 'absolute',
+							}}
+						>
 							<img style={{ width: '100%' }} src={url} alt="" />
 						</div>
 					);
