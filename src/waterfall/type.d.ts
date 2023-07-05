@@ -60,15 +60,15 @@ export interface DataSourceType {
 }
 export interface WaterfallProps {
 	/**
-	 * @description 水平间距
+	 * @description 图片宽度
 	 * @type `number`
-	 * @default 10
+	 * @default 200
 	 */
 	width?: number;
 	/**
 	 * @description 元素间距
 	 * @type `number`
-	 * @default 200
+	 * @default 10
 	 */
 	spacing?: number;
 	/**
@@ -83,9 +83,14 @@ export interface WaterfallProps {
 	 * @default `index`
 	 */
 	renderKey?: (data: RenderDataSource, index: number) => string;
+	/**
+	 * @description 数据源
+	 * @type `DataSourceType[]` -> `{ url:string }[]`
+	 * @required
+	 */
 	dataSource: DataSourceType[];
 	/**
-	 * @description 临界点
+	 * @description 临界点 - 滚动距离事件的临界点
 	 * @type `number`
 	 * @default 10
 	 */

@@ -17,8 +17,8 @@ const Waterfall: FC<WaterfallProps> = ({
 	renderItem,
 	renderKey,
 	dataSource = [],
-	onScrollTop = () => null,
-	onScrollBottom = () => null,
+	onScrollTop,
+	onScrollBottom,
 }) => {
 	// 最外层容器
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -154,7 +154,6 @@ const Waterfall: FC<WaterfallProps> = ({
 					item.errorInfo = error as string | Event;
 				}
 			}
-			console.log('success');
 			computedContainerHeight();
 			dataList.current = [...dataList.current, ...data];
 			setLoading(false);
@@ -187,6 +186,7 @@ const Waterfall: FC<WaterfallProps> = ({
 			onScrollTop?.();
 		},
 		onBottom: () => {
+			if (!onScrollBottom || loading) return;
 			const res = onScrollBottom?.();
 			computedContainerWidth();
 			// 返回为promise 数据

@@ -8,10 +8,12 @@ const useScrollTopBottom = ({
 	threshold = 10,
 	onTop,
 	onBottom,
+	element = document.documentElement,
 }: {
-	threshold: number;
-	onTop: () => void;
-	onBottom: () => void;
+	threshold?: number;
+	onTop?: () => void;
+	element?: HTMLElement;
+	onBottom?: () => void;
 }) => {
 	const beforeScrollTop = useRef<number>(0);
 	const timer = useRef<NodeJS.Timeout | null>();
@@ -21,14 +23,11 @@ const useScrollTopBottom = ({
 	 */
 	const handleWindowScroll = () => {
 		// 距顶部
-		let scrollTop =
-			document.documentElement.scrollTop || document.body.scrollTop;
+		let scrollTop = element.scrollTop || document.body.scrollTop;
 		// 可视区高度
-		let clientHeight =
-			document.documentElement.clientHeight || document.body.clientHeight;
+		let clientHeight = element.clientHeight || document.body.clientHeight;
 		// 滚动条总高度
-		let scrollHeight =
-			document.documentElement.scrollHeight || document.body.scrollHeight;
+		let scrollHeight = element.scrollHeight || document.body.scrollHeight;
 		// 确定滚动方向
 		let direction = DIRECTION_SCROLL_ENUM.DOWN;
 		if (beforeScrollTop.current > scrollTop) {
@@ -37,12 +36,14 @@ const useScrollTopBottom = ({
 		// 通过滚动方向判断是触底还是触顶
 		if (direction === DIRECTION_SCROLL_ENUM.DOWN) {
 			// 滚动触底
-			if (scrollTop + clientHeight + threshold >= scrollHeight) {
-				if (!timer.current) {
-					timer.current = setTimeout(() => {
-						onBottom?.();
-						timer.current = null;
-					}, 500);
+			if (clientHeight !== scrollHeight) {
+				if (scrollTop + clientHeight + threshold >= scrollHeight) {
+					if (!timer.current) {
+						timer.current = setTimeout(() => {
+							onBottom?.();
+							timer.current = null;
+						}, 500);
+					}
 				}
 			}
 		} else {
@@ -55,11 +56,12 @@ const useScrollTopBottom = ({
 	};
 
 	useEffect(() => {
+		if (!element) return;
 		window.addEventListener('scroll', handleWindowScroll);
 		return () => {
 			window.removeEventListener('scroll', handleWindowScroll);
 		};
-	}, []);
+	}, [element]);
 };
 
 export default useScrollTopBottom;
