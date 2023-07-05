@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { getData } from '../data';
 import Waterfall from '../index';
 const Demo1: FC = () => {
-	const [width, setWidth] = useState(200);
+	const [width, setWidth] = useState(400);
 	const [spacing, setSpacing] = useState(15);
 	const [data, setData] = useState<any[]>([]);
 	useEffect(() => {
@@ -52,7 +52,11 @@ const Demo1: FC = () => {
 				spacing={spacing}
 				dataSource={data.map((image) => ({ url: image }))}
 				onScrollBottom={() => {
-					console.log('bottom');
+					return getData().then((res) => {
+						return (res?.message || []).map((item: any) => ({
+							url: item,
+						}));
+					});
 				}}
 				renderItem={(data) => {
 					const { url, left, top, width, height } = data;

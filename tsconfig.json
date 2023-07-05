@@ -8,6 +8,7 @@
     "jsx": "react",
     "baseUrl": "./",
     "moduleResolution":"node",
+    "noImplicitThis": false,
     "paths": {
       "@@/*": [".dumi/tmp/*"],
       "muddyrain": ["src"],

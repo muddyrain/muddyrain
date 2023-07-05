@@ -3,6 +3,7 @@ export enum DIRECTION_SCROLL_ENUM {
 	DOWN = 'down',
 	UP = 'up',
 }
+
 const useScrollTopBottom = ({
 	threshold = 10,
 	onTop,
@@ -13,6 +14,7 @@ const useScrollTopBottom = ({
 	onBottom: () => void;
 }) => {
 	const beforeScrollTop = useRef<number>(0);
+	const timer = useRef<NodeJS.Timeout | null>();
 
 	/**
 	 * 处理窗口滚动
@@ -36,7 +38,12 @@ const useScrollTopBottom = ({
 		if (direction === DIRECTION_SCROLL_ENUM.DOWN) {
 			// 滚动触底
 			if (scrollTop + clientHeight + threshold >= scrollHeight) {
-				onBottom?.();
+				if (!timer.current) {
+					timer.current = setTimeout(() => {
+						onBottom?.();
+						timer.current = null;
+					}, 500);
+				}
 			}
 		} else {
 			// 滚动到顶部

@@ -33,6 +33,6 @@ export interface WaterfallProps {
 	 * @default 10
 	 */
 	threshold?: number;
-	onScrollTop?: () => void;
-	onScrollBottom?: () => void;
+	onScrollTop?: () => Promise<DataSourceType[]> | DataSourceType[];
+	onScrollBottom?: () => Promise<DataSourceType[]> | DataSourceType[];
 }
