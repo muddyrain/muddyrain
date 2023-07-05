@@ -1,10 +1,12 @@
 import { Image } from 'antd';
 import React, { FC, useState } from 'react';
-import image1 from '../images/1.jpg';
-import image3 from '../images/3.jpg';
 import Waterfall from '../index';
 const Demo2: FC = () => {
-	const [data] = useState<any[]>([image1, 'image2', image3]);
+	const [data] = useState<any[]>([
+		'https://muddyrain-oss.oss-cn-hangzhou.aliyuncs.com/package_assets/waterfall_1.jpg',
+		'image2',
+		'https://muddyrain-oss.oss-cn-hangzhou.aliyuncs.com/package_assets/waterfall_2.jpg',
+	]);
 	return (
 		<>
 			<Waterfall

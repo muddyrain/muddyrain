@@ -1,9 +1,12 @@
 import { ColorPicker, Space, Switch } from 'antd';
 import React, { FC } from 'react';
 import Tailor from '..';
-import image1 from '../images/1.png';
-import image2 from '../images/2.png';
-import image3 from '../images/3.png';
+const image1 =
+	'https://muddyrain-oss.oss-cn-hangzhou.aliyuncs.com/package_assets/1.png';
+const image2 =
+	'https://muddyrain-oss.oss-cn-hangzhou.aliyuncs.com/package_assets/2.png';
+const image3 =
+	'https://muddyrain-oss.oss-cn-hangzhou.aliyuncs.com/package_assets/3.png';
 
 const Demo1: FC = () => {
 	const [isShowDownload, setIsShowDownload] = React.useState(true);
