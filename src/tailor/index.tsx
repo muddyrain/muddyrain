@@ -64,7 +64,6 @@ const Tailor: FC<TailorProps> = ({
 	) => {
 		const imageElement = canvasRef.current;
 		if (!imageElement) return;
-
 		const ctx = state.current.canvasCtx;
 		if (ctx) {
 			const imagedata = ctx.getImageData(left, top, dragWidth, dragHeight);
@@ -115,6 +114,7 @@ const Tailor: FC<TailorProps> = ({
 					state.current.canvasCtx = ctx;
 					const image = new Image();
 					image.src = src;
+					image.crossOrigin = '*';
 					const { width: wrapWidth, height: wrapHeight } =
 						wrapElement.getBoundingClientRect();
 					const wrapProportion = wrapWidth / wrapHeight;
