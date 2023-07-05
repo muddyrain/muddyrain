@@ -6,6 +6,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
+import { useScrollTopBottom } from '../hooks';
 import styles from './index.module.less';
 import { DataSourceType, RenderDataSource, WaterfallProps } from './type.d';
 
@@ -15,6 +16,8 @@ const Waterfall: FC<WaterfallProps> = ({
 	renderItem,
 	renderKey,
 	dataSource = [],
+	onScrollCallback,
+	threshold = 10,
 }) => {
 	// 最外层容器
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -26,6 +29,10 @@ const Waterfall: FC<WaterfallProps> = ({
 	const imageWidth = useRef<number>(_imageWidth);
 	// 加载中
 	const [loading, setLoading] = useState<boolean>(false);
+	// 是否加载数据
+	const isCanLoad = useRef<boolean>(true);
+	const isInitFinish = useRef<boolean>(false);
+	const [updater, setUpdater] = useState(+new Date());
 	// 统计高度组
 	const heights = useRef<number[]>([]);
 	// 数据列表
@@ -69,10 +76,11 @@ const Waterfall: FC<WaterfallProps> = ({
 	// 计算容器宽度
 	const computedContainerWidth = () => {
 		if (!containerRef.current || !wrapperRef.current) return;
+		if (!isCanLoad.current) return;
 		// 统计高度
 		heights.current = Array.from({ length: columnNumber.current }).map(() => 0);
 		containerRef.current.style.width =
-			columnNumber.current * imageWidth.current + spacing + 'px';
+			columnNumber.current * (imageWidth.current + spacing) + 'px';
 		for (const item of dataList.current) {
 			if (!item.isLoad) return;
 			const proportion = item.width / item.height;
@@ -106,34 +114,35 @@ const Waterfall: FC<WaterfallProps> = ({
 			}
 		});
 	};
+	const loadImage = (item: (typeof dataSource)[number]) => {
+		return new Promise<{ left: number; top: number; height: number }>(
+			(resolve, reject) => {
+				const image = document.createElement('img');
+				image.src = item.url;
+				image.className = styles.waterfall_false_image;
+				image.width = imageWidth.current;
+				document.body.appendChild(image);
+				image.onload = () => {
+					const { left, top } = computedPosition(image.height);
+					resolve({
+						left,
+						top,
+						height: image.height,
+					});
+					document.body.removeChild(image);
+				};
+				image.onerror = (event) => {
+					reject(event);
+				};
+			}
+		);
+	};
 	// 计算图片数据
 	const computedImages = (data: RenderDataSource[]) => {
-		setLoading(true);
-		const loadImage = (item: (typeof data)[number]) => {
-			return new Promise<{ left: number; top: number; height: number }>(
-				(resolve, reject) => {
-					const image = document.createElement('img');
-					image.src = item.url;
-					image.className = styles.waterfall_false_image;
-					image.width = imageWidth.current;
-					document.body.appendChild(image);
-					image.onload = () => {
-						const { left, top } = computedPosition(image.height);
-						resolve({
-							left,
-							top,
-							height: image.height,
-						});
-						document.body.removeChild(image);
-					};
-					image.onerror = (event) => {
-						reject(event);
-					};
-				}
-			);
-		};
+		isCanLoad.current = false;
 		const loadList = async () => {
 			for (const item of data) {
+				setLoading(true);
 				try {
 					const { left, top, height } = await loadImage(item);
 					item.left = left;
@@ -145,32 +154,60 @@ const Waterfall: FC<WaterfallProps> = ({
 					item.errorInfo = error as string | Event;
 				}
 				dataList.current = [...dataList.current, item];
+				setUpdater(+new Date());
+				setLoading(false);
+				computedContainerHeight();
 			}
-			setLoading(false);
-			computedContainerHeight();
+			isCanLoad.current = true;
+			computedContainerWidth();
 		};
 		loadList();
 	};
-
 	// 监听初始化
 	useEffect(() => {
-		if (dataSource.length) {
+		if (dataSource.length && !isInitFinish.current && isCanLoad.current) {
 			const _data = dataSourceToRenderSource(dataSource);
 			if (_data.length) {
 				computedImages([..._data]);
+				isInitFinish.current = true;
 			}
 		}
-	}, [dataSource]);
+	}, [dataSource, isInitFinish.current, isCanLoad]);
 	// 监听页面宽度变化
 	useEffect(() => {
 		imageWidth.current = _imageWidth;
 	}, [_imageWidth]);
+	useScrollTopBottom({
+		threshold,
+		element: wrapperRef.current as HTMLDivElement,
+		onBottom() {
+			if (!isCanLoad.current) return;
+			const res = onScrollCallback?.();
+			computedContainerWidth();
+			// 返回为promise 数据
+			if (res instanceof Promise) {
+				res.then((res) => {
+					const _data = dataSourceToRenderSource(res);
+					computedImages([..._data]);
+				});
+			} else if (Array.isArray(res)) {
+				console.log('array');
+			} else {
+				console.error(
+					new Error(
+						'The data returned by onScrollBottom is not a promise or array'
+					)
+				);
+			}
+		},
+	});
+
 	// 初始化页面布局
 	useLayoutEffect(() => {
 		if (!containerRef.current) return;
 		computedColumns();
 		computedContainerWidth();
-	}, [imageWidth.current, spacing]);
+	}, [_imageWidth, spacing, isCanLoad.current, updater]);
 	return (
 		<div className={styles.wrapper_container} ref={wrapperRef}>
 			<div className={styles.waterfall_container} ref={containerRef}>

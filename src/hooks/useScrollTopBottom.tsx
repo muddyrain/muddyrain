@@ -35,15 +35,12 @@ const useScrollTopBottom = ({
 		}
 		// 通过滚动方向判断是触底还是触顶
 		if (direction === DIRECTION_SCROLL_ENUM.DOWN) {
-			// 滚动触底
-			if (clientHeight !== scrollHeight) {
-				if (scrollTop + clientHeight + threshold >= scrollHeight) {
-					if (!timer.current) {
-						timer.current = setTimeout(() => {
-							onBottom?.();
-							timer.current = null;
-						}, 500);
-					}
+			if (scrollTop + clientHeight + threshold >= scrollHeight) {
+				if (!timer.current) {
+					timer.current = setTimeout(() => {
+						onBottom?.();
+						timer.current = null;
+					}, 500);
 				}
 			}
 		} else {
@@ -57,9 +54,9 @@ const useScrollTopBottom = ({
 
 	useEffect(() => {
 		if (!element) return;
-		window.addEventListener('scroll', handleWindowScroll);
+		element.addEventListener('scroll', handleWindowScroll);
 		return () => {
-			window.removeEventListener('scroll', handleWindowScroll);
+			element.removeEventListener('scroll', handleWindowScroll);
 		};
 	}, [element]);
 };

@@ -96,15 +96,9 @@ export interface WaterfallProps {
 	 */
 	threshold?: number;
 	/**
-	 * @description 滚动顶部监听 - 需返回数据或promise类型的数据
-	 * @type `() => Promise<DataSourceType[]> | DataSourceType[]`
-	 * @default `void`
-	 */
-	onScrollTop?: () => Promise<DataSourceType[]> | DataSourceType[];
-	/**
 	 * @description 滚动底部监听 - 需返回数据或promise类型的数据
 	 * @type `() => Promise<DataSourceType[]> | DataSourceType[]`
 	 * @default `void`
 	 */
-	onScrollBottom?: () => Promise<DataSourceType[]> | DataSourceType[];
+	onScrollCallback?: () => Promise<DataSourceType[]> | DataSourceType[];
 }
