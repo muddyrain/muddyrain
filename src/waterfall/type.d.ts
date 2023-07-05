@@ -28,4 +28,11 @@ export interface WaterfallProps {
 	renderItem: (data: renderDataSource, index: number) => React.ReactNode;
 	renderKey?: (data: renderDataSource, index: number) => string | string;
 	dataSource: DataSourceType[];
+	/**
+	 * @description 临界点
+	 * @default 10
+	 */
+	threshold?: number;
+	onScrollTop?: () => void;
+	onScrollBottom?: () => void;
 }

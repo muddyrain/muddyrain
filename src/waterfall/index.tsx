@@ -24,16 +24,7 @@ const Waterfall: FC<WaterfallProps> = ({
 	const columnNumber = useRef<number>(0);
 	// 统计高度组
 	const heights = useRef<number[]>([]);
-	const [data, setData] = useState<RenderDataSource[]>(
-		dataSource.map((item) => ({
-			...item,
-			left: 0,
-			top: 0,
-			isLoad: false,
-			height: 0,
-			width: imageWidth,
-		}))
-	);
+	const [data, setData] = useState<RenderDataSource[]>([]);
 	// 计算最小高度
 	const getMinHeight = () => {
 		const height = Math.min(...heights.current);
@@ -91,6 +82,7 @@ const Waterfall: FC<WaterfallProps> = ({
 		setData([...data]);
 	};
 	const computedImages = (data: RenderDataSource[]) => {
+		console.log('computedImages');
 		const loadImage = (item: (typeof data)[number]) => {
 			return new Promise<{ left: number; top: number; height: number }>(
 				(resolve, reject) => {
@@ -128,9 +120,21 @@ const Waterfall: FC<WaterfallProps> = ({
 		};
 		loadList();
 	};
-
 	useEffect(() => {
-		computedImages(data);
+		if (dataSource.length && data.length === 0) {
+			const _data = dataSource.map((item) => ({
+				...item,
+				left: 0,
+				top: 0,
+				isLoad: false,
+				height: 0,
+				width: imageWidth,
+			}));
+			setData(_data);
+			computedImages(_data);
+		}
+	}, [dataSource]);
+	useEffect(() => {
 		const handleWindowResize = () => {
 			computedContainerWidth();
 		};

@@ -11,8 +11,9 @@
     "paths": {
       "@@/*": [".dumi/tmp/*"],
       "muddyrain": ["src"],
+      "@^/*": ["./*"],
       "muddyrain/*": ["src/*", "*"]
     }
   },
-  "include": [".dumi/**/*", ".dumirc.ts", "src/**/*"]
+  "include": [".dumi/**/*", ".dumirc.ts", "src/**/*", "src/hooks/useScrollTopBottom.tsx"]
 }
