@@ -5,8 +5,12 @@ nav:
   order: 2
 ---
 
+## 代码演示
 
-## 容错处理
+<code src="./demo/demo1.tsx" description="demo"></code>
+
+
+<!-- ## 容错处理
 
 <code src="./demo/demo2.tsx" description="demo"></code>
 
@@ -52,7 +56,4 @@ export default function (){
 | ------------| -------- | -------- | -------- |
 | `url` | `string` | 图片地址 | `required` |
 
-
-## 代码演示
-
-<code src="./demo/demo1.tsx" description="demo"></code>
+ -->

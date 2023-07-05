@@ -1,21 +1,31 @@
-import { Image, Slider, Space } from 'antd';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { Button, Image, Slider, Space } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
 import { getData } from '../data';
 import Waterfall from '../index';
+
 const Demo1: FC = () => {
-	const [width, setWidth] = useState(400);
+	const [width, setWidth] = useState(160);
 	const [spacing, setSpacing] = useState(15);
-	const page = useRef(1);
 	const [data, setData] = useState<any[]>([]);
+
 	useEffect(() => {
-		setTimeout(() => {
-			getData().then((res) => {
-				setData(res?.message || []);
-			});
-		}, 250);
+		getData().then((res) => {
+			setData(res?.message || []);
+		});
 	}, []);
 	return (
 		<>
+			<Space>
+				<Button
+					onClick={() => {
+						getData().then((res) => {
+							setData([...data, ...(res?.message || [])]);
+						});
+					}}
+				>
+					加载数据
+				</Button>
+			</Space>
 			<Space>
 				<Space>
 					<span>图片宽度</span>
@@ -52,15 +62,6 @@ const Demo1: FC = () => {
 				width={width}
 				spacing={spacing}
 				dataSource={data.map((image) => ({ url: image }))}
-				onScrollBottom={() => {
-					if (page.current > 5) return [];
-					return getData().then((res) => {
-						page.current += 1;
-						return (res?.message || []).map((item: any) => ({
-							url: item,
-						}));
-					});
-				}}
 				renderItem={(data) => {
 					const { url, left, top, width, height } = data;
 					return (
