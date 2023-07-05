@@ -1,6 +1,5 @@
 import React, {
 	FC,
-	Fragment,
 	ReactElement,
 	useEffect,
 	useLayoutEffect,
@@ -16,6 +15,7 @@ const Waterfall: FC<WaterfallProps> = ({
 	spacing = 10,
 	width: _imageWidth = 200,
 	renderItem,
+	renderKey,
 	dataSource = [],
 	onScrollTop = () => null,
 	onScrollBottom = () => null,
@@ -26,10 +26,15 @@ const Waterfall: FC<WaterfallProps> = ({
 	const containerRef = useRef<HTMLDivElement>(null);
 	// 列数量
 	const columnNumber = useRef<number>(0);
+	// 记录图片宽度
 	const imageWidth = useRef<number>(_imageWidth);
+	// 加载中
+	const [loading, setLoading] = useState<boolean>(false);
+	// 是否初始化数据完毕
 	const [isInitData, setIsInitData] = useState<boolean>(false);
 	// 统计高度组
 	const heights = useRef<number[]>([]);
+	// 更新器
 	const [updater, setUpdater] = useState(+new Date());
 	// 数据列表
 	const dataList = useRef<RenderDataSource[]>([]);
@@ -89,6 +94,7 @@ const Waterfall: FC<WaterfallProps> = ({
 		computedContainerHeight();
 		setUpdater(+new Date());
 	};
+	// 原数据转为渲染数据
 	const dataSourceToRenderSource = (dataSource: DataSourceType[]) => {
 		return dataSource.map((item) => {
 			if ('url' in item) {
@@ -98,8 +104,10 @@ const Waterfall: FC<WaterfallProps> = ({
 					top: 0,
 					isLoad: false,
 					height: 0,
+					isError: false,
+					errorInfo: '',
 					width: imageWidth.current,
-				};
+				} as RenderDataSource;
 			} else {
 				throw new Error(
 					'The data source must be an array of objects containing the `url` field'
@@ -107,7 +115,9 @@ const Waterfall: FC<WaterfallProps> = ({
 			}
 		});
 	};
+	// 计算图片数据
 	const computedImages = (data: RenderDataSource[]) => {
+		setLoading(true);
 		const loadImage = (item: (typeof data)[number]) => {
 			return new Promise<{ left: number; top: number; height: number }>(
 				(resolve, reject) => {
@@ -125,30 +135,38 @@ const Waterfall: FC<WaterfallProps> = ({
 						});
 						document.body.removeChild(image);
 					};
-					image.onerror = () => {
-						console.log('error');
-						reject();
+					image.onerror = (event) => {
+						reject(event);
 					};
 				}
 			);
 		};
 		const loadList = async () => {
 			for (const item of data) {
-				const { left, top, height } = await loadImage(item);
-				item.left = left;
-				item.top = top;
-				item.height = height;
-				item.isLoad = true;
+				try {
+					const { left, top, height } = await loadImage(item);
+					item.left = left;
+					item.top = top;
+					item.height = height;
+					item.isLoad = true;
+				} catch (error) {
+					item.isLoad = false;
+					item.errorInfo = error as string | Event;
+				}
 			}
+			console.log('success');
 			computedContainerHeight();
 			dataList.current = [...dataList.current, ...data];
+			setLoading(false);
 			setUpdater(+new Date());
 		};
 		loadList();
 	};
+	// 缓存列表数据
 	const list = useMemo(() => {
 		return dataList.current;
 	}, [updater]);
+	// 监听初始化
 	useEffect(() => {
 		if (dataSource.length && !isInitData) {
 			const _data = dataSourceToRenderSource(dataSource);
@@ -162,6 +180,7 @@ const Waterfall: FC<WaterfallProps> = ({
 			}
 		}
 	}, [dataSource, isInitData]);
+	// 监听顶部底部刷新
 	useScrollTopBottom({
 		threshold: 10,
 		onTop: () => {
@@ -187,6 +206,7 @@ const Waterfall: FC<WaterfallProps> = ({
 			}
 		},
 	});
+	// 监听页面宽度变化
 	useEffect(() => {
 		imageWidth.current = _imageWidth;
 	}, [_imageWidth]);
@@ -199,6 +219,7 @@ const Waterfall: FC<WaterfallProps> = ({
 			window.removeEventListener('resize', handleWindowResize);
 		};
 	}, []);
+	// 初始化页面布局
 	useLayoutEffect(() => {
 		if (!containerRef.current) return;
 		computedColumns();
@@ -208,15 +229,16 @@ const Waterfall: FC<WaterfallProps> = ({
 		<div className={styles.wrapper_container} ref={wrapperRef}>
 			<div className={styles.waterfall_container} ref={containerRef}>
 				{list.map((item, index) => {
-					if (item.isLoad) {
-						return React.cloneElement(renderItem(item, index) as ReactElement, {
-							key: index,
-						});
-					} else {
-						return <Fragment key={index}></Fragment>;
+					let element = renderItem(item, index) as any;
+					if (typeof element?.$$typeof !== 'symbol') {
+						element = <>{element}</>;
 					}
+					return React.cloneElement(element as ReactElement, {
+						key: renderKey?.(item, index) || index,
+					});
 				})}
 			</div>
+			{loading && <div className={styles.waterfall_loading}></div>}
 		</div>
 	);
 };
