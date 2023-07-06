@@ -10,7 +10,7 @@ nav:
 <code src="./demo/demo1.tsx" description="demo"></code>
 
 
-<!-- ## 容错处理
+## 容错处理
 
 <code src="./demo/demo2.tsx" description="demo"></code>
 
@@ -35,9 +35,8 @@ export default function (){
 | renderItem  | 自定义渲染数据  | `(data: `<a href="#render-data-source" >RenderDataSource</a>`, index: number) => React.ReactNode`  | - | - |
 | renderKey  | 自定义渲染Key  | `(data: `<a href="#render-data-source" >RenderDataSource</a>`, index: number) => string`  | - | `index` |
 | dataSource  | 数据源  | <a href="#data-source" >DataSource</a>`[]`  | - | `Required` |
-| threshold  | 临界点  | `number`  | 滚动距离事件的临界点 | 10 |
-| onScrollTop  | 滚动顶部监听 | `() => Promise<`<a href="#data-source" >DataSource</a>`[]> \| `<a href="#data-source" >DataSource</a>`[]`  | 需返回数据或promise类型的数据 | - |
-| onScrollBottom  | 滚动底部监听  | `() => Promise<`<a href="#data-source" >DataSource</a>`[]> \| `<a href="#data-source" >DataSource</a>`[]`  | 需返回数据或promise类型的数据 | - |
+| threshold  | 临界点  | `number`  | 滚动距离事件的临界点 | 30 |
+| onScrollCallback  | 滚动底部监听  | `() => Promise<`<a href="#data-source" >DataSource</a>`[]> \| `<a href="#data-source" >DataSource</a>`[]`  | 需返回数据或promise类型的数据 | - |
 
 
 #### render-data-source
@@ -56,4 +55,4 @@ export default function (){
 | ------------| -------- | -------- | -------- |
 | `url` | `string` | 图片地址 | `required` |
 
- -->
+

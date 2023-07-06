@@ -1,17 +1,30 @@
 import { Image, Slider, Space } from 'antd';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { getData } from '../data';
 import Waterfall from '../index';
 const Demo1: FC = () => {
-	const [width, setWidth] = useState(400);
+	const [width, setWidth] = useState(234);
 	const [spacing, setSpacing] = useState(15);
-	const page = useRef(1);
+	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<any[]>([]);
 	useEffect(() => {
+		setLoading(true);
 		setTimeout(() => {
-			getData().then((res) => {
-				setData(res?.message || []);
-			});
+			setData(
+				[
+					'https://images.dog.ceo/breeds/hound-afghan/n02088094_1479.jpg',
+					'https://images.dog.ceo/breeds/hound-basset/n02088238_10140.jpg',
+					'https://images.dog.ceo/breeds/hound-basset/n02088238_3359.jpg',
+					'https://images.dog.ceo/breeds/hound-blood/n02088466_5432.jpg',
+					'https://images.dog.ceo/breeds/hound-english/n02089973_1907.jpg',
+					'https://images.dog.ceo/breeds/hound-english/n02089973_811.jpg',
+					'https://images.dog.ceo/breeds/hound-english/n02089973_99.jpg',
+					'https://images.dog.ceo/breeds/hound-ibizan/n02091244_2709.jpg',
+					'https://images.dog.ceo/breeds/hound-ibizan/n02091244_2760.jpg',
+					'https://images.dog.ceo/breeds/hound-ibizan/n02091244_589.jpg',
+				] || []
+			);
+			setLoading(false);
 		}, 250);
 	}, []);
 	return (
@@ -51,11 +64,12 @@ const Demo1: FC = () => {
 			<Waterfall
 				width={width}
 				spacing={spacing}
+				loading={loading}
 				dataSource={data.map((image) => ({ url: image }))}
 				onScrollCallback={() => {
-					if (page.current > 5) return [];
+					setLoading(true);
 					return getData().then((res) => {
-						page.current += 1;
+						setLoading(false);
 						return (res?.message || []).map((item: any) => ({
 							url: item,
 						}));

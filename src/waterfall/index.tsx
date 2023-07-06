@@ -3,6 +3,7 @@ import React, {
 	ReactElement,
 	useEffect,
 	useLayoutEffect,
+	useMemo,
 	useRef,
 	useState,
 } from 'react';
@@ -11,13 +12,16 @@ import styles from './index.module.less';
 import { DataSourceType, RenderDataSource, WaterfallProps } from './type.d';
 
 const Waterfall: FC<WaterfallProps> = ({
-	spacing = 10,
+	spacing: _spacing = 10,
 	width: _imageWidth = 200,
 	renderItem,
 	renderKey,
 	dataSource = [],
 	onScrollCallback,
-	threshold = 10,
+	loadingIcon = <div className={styles.waterfall_loading} />,
+	loadingText = 'Loading...',
+	threshold = 30,
+	loading: _loading = false,
 }) => {
 	// 最外层容器
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -27,12 +31,14 @@ const Waterfall: FC<WaterfallProps> = ({
 	const columnNumber = useRef<number>(0);
 	// 记录图片宽度
 	const imageWidth = useRef<number>(_imageWidth);
+	const spacing = useRef<number>(_spacing);
 	// 加载中
-	const [loading, setLoading] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(_loading);
+	// 是否渲染完毕
+	const [updater, setUpdater] = useState(+new Date());
 	// 是否加载数据
 	const isCanLoad = useRef<boolean>(true);
 	const isInitFinish = useRef<boolean>(false);
-	const [updater, setUpdater] = useState(+new Date());
 	// 统计高度组
 	const heights = useRef<number[]>([]);
 	// 数据列表
@@ -53,9 +59,9 @@ const Waterfall: FC<WaterfallProps> = ({
 		if (heightIndex === 0) {
 			left = heightIndex * imageWidth.current;
 		} else {
-			left = heightIndex * (imageWidth.current + spacing);
+			left = heightIndex * (imageWidth.current + spacing.current);
 		}
-		heights.current[heightIndex] += imageHeight + spacing;
+		heights.current[heightIndex] += imageHeight + spacing.current;
 		return {
 			top: height,
 			left,
@@ -64,34 +70,31 @@ const Waterfall: FC<WaterfallProps> = ({
 	// 计算列
 	const computedColumns = () => {
 		if (!containerRef.current || !wrapperRef.current) return;
-		const { width } = wrapperRef.current.getBoundingClientRect();
-		columnNumber.current = Math.floor(width / (imageWidth.current + spacing));
+		const width = wrapperRef.current.clientWidth;
+		columnNumber.current = Math.floor(
+			width / (imageWidth.current + spacing.current)
+		);
 	};
-	// 计算容器高度
-	const computedContainerHeight = () => {
-		if (!containerRef.current) return;
-		const maxHeight = Math.max(...heights.current);
-		containerRef.current.style.height = maxHeight + 'px';
-	};
-	// 计算容器宽度
-	const computedContainerWidth = () => {
+	// 计算容器尺寸
+	const computedContainerSize = () => {
 		if (!containerRef.current || !wrapperRef.current) return;
-		if (!isCanLoad.current) return;
 		// 统计高度
 		heights.current = Array.from({ length: columnNumber.current }).map(() => 0);
 		containerRef.current.style.width =
-			columnNumber.current * (imageWidth.current + spacing) + 'px';
+			columnNumber.current * (imageWidth.current + spacing.current) + 'px';
 		for (const item of dataList.current) {
 			if (!item.isLoad) return;
 			const proportion = item.width / item.height;
 			const newHeight = imageWidth.current / proportion;
-			item.width = imageWidth.current;
 			const { top, left } = computedPosition(newHeight);
 			item.top = top;
 			item.left = left;
 			item.height = newHeight;
+			item.width = imageWidth.current;
 		}
-		computedContainerHeight();
+		const maxHeight = Math.max(...heights.current);
+		containerRef.current.style.height = maxHeight + 'px';
+		setUpdater(+new Date());
 	};
 	// 原数据转为渲染数据
 	const dataSourceToRenderSource = (dataSource: DataSourceType[]) => {
@@ -117,12 +120,12 @@ const Waterfall: FC<WaterfallProps> = ({
 	const loadImage = (item: (typeof dataSource)[number]) => {
 		return new Promise<{ left: number; top: number; height: number }>(
 			(resolve, reject) => {
-				const image = document.createElement('img');
+				const image = new Image();
 				image.src = item.url;
 				image.className = styles.waterfall_false_image;
 				image.width = imageWidth.current;
 				document.body.appendChild(image);
-				image.onload = () => {
+				image.addEventListener('load', () => {
 					const { left, top } = computedPosition(image.height);
 					resolve({
 						left,
@@ -130,8 +133,9 @@ const Waterfall: FC<WaterfallProps> = ({
 						height: image.height,
 					});
 					document.body.removeChild(image);
-				};
+				});
 				image.onerror = (event) => {
+					setLoading(false);
 					reject(event);
 				};
 			}
@@ -141,6 +145,8 @@ const Waterfall: FC<WaterfallProps> = ({
 	const computedImages = (data: RenderDataSource[]) => {
 		isCanLoad.current = false;
 		const loadList = async () => {
+			if (!containerRef.current) return;
+			computedColumns();
 			for (const item of data) {
 				setLoading(true);
 				try {
@@ -154,12 +160,10 @@ const Waterfall: FC<WaterfallProps> = ({
 					item.errorInfo = error as string | Event;
 				}
 				dataList.current = [...dataList.current, item];
-				setUpdater(+new Date());
+				computedContainerSize();
 				setLoading(false);
-				computedContainerHeight();
 			}
 			isCanLoad.current = true;
-			computedContainerWidth();
 		};
 		loadList();
 	};
@@ -173,17 +177,13 @@ const Waterfall: FC<WaterfallProps> = ({
 			}
 		}
 	}, [dataSource, isInitFinish.current, isCanLoad]);
-	// 监听页面宽度变化
-	useEffect(() => {
-		imageWidth.current = _imageWidth;
-	}, [_imageWidth]);
 	useScrollTopBottom({
 		threshold,
 		element: wrapperRef.current as HTMLDivElement,
 		onBottom() {
 			if (!isCanLoad.current) return;
 			const res = onScrollCallback?.();
-			computedContainerWidth();
+			computedContainerSize();
 			// 返回为promise 数据
 			if (res instanceof Promise) {
 				res.then((res) => {
@@ -205,13 +205,21 @@ const Waterfall: FC<WaterfallProps> = ({
 	// 初始化页面布局
 	useLayoutEffect(() => {
 		if (!containerRef.current) return;
+		if (loading) return;
+		imageWidth.current = _imageWidth;
+		spacing.current = _spacing;
+		setLoading(_loading);
 		computedColumns();
-		computedContainerWidth();
-	}, [_imageWidth, spacing, isCanLoad.current, updater]);
+		computedContainerSize();
+	}, [_imageWidth, _spacing, isCanLoad.current, _loading]);
+
+	const list = useMemo(() => {
+		return dataList.current;
+	}, [dataList.current, updater]);
 	return (
 		<div className={styles.wrapper_container} ref={wrapperRef}>
 			<div className={styles.waterfall_container} ref={containerRef}>
-				{dataList.current.map((item, index) => {
+				{list.map((item, index) => {
 					let element = renderItem(item, index) as any;
 					if (typeof element?.$$typeof !== 'symbol') {
 						element = <>{element}</>;
@@ -221,7 +229,12 @@ const Waterfall: FC<WaterfallProps> = ({
 					});
 				})}
 			</div>
-			{loading && <div className={styles.waterfall_loading}></div>}
+			{loading && (
+				<div className={styles.waterfall_loading_box}>
+					{loadingIcon}
+					<div className={styles.waterfall_loading_text}>{loadingText}</div>
+				</div>
+			)}
 		</div>
 	);
 };

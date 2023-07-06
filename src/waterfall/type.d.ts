@@ -72,6 +72,24 @@ export interface WaterfallProps {
 	 */
 	spacing?: number;
 	/**
+	 * @description 加载中
+	 * @type `boolean`
+	 * @default false
+	 */
+	loading?: boolean;
+	/**
+	 * @description Loading图标
+	 * @type `ReactNode`
+	 * @default Loading元素
+	 */
+	loadingIcon?: React.ReactNode;
+	/**
+	 * @description Loading文本
+	 * @type `ReactNode | string`
+	 * @default `Loading...`
+	 */
+	loadingText?: React.ReactNode | string;
+	/**
 	 * @description 自定义渲染数据
 	 * @type `(data: RenderDataSource, index: number) => React.ReactNode`
 	 * @required
@@ -92,7 +110,7 @@ export interface WaterfallProps {
 	/**
 	 * @description 临界点 - 滚动距离事件的临界点
 	 * @type `number`
-	 * @default 10
+	 * @default 30
 	 */
 	threshold?: number;
 	/**

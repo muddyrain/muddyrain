@@ -9,15 +9,25 @@
     }
   }
 
-  .waterfall_loading {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 2s linear infinite;
-    margin: 10px auto;
+  .waterfall_loading_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .waterfall_loading {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+    }
+
+    .waterfall_loading_text {
+      margin-left: 10px;
+    }
   }
+
 
   width: 100%;
   margin: 0 auto;
