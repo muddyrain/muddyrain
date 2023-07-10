@@ -145,7 +145,7 @@ const Demo1: FC = () => {
 					console.log(record, index);
 				}}
 				dataSource={Array.from({ length: 10 }).map((_, index) => ({
-					name: '陈子涵' + (index + 1),
+					name: '张三' + (index + 1),
 					age: '21',
 					address: '广东省深圳市',
 					date: '2023-01-01 12:00:00',
