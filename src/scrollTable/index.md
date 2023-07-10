@@ -22,7 +22,7 @@ nav:
     console.log(record, index);
   }}
   dataSource={Array.from({ length: 5 }).map((_, index) => ({
-    name: '陈子涵' + (index + 1),
+    name: '张三' + (index + 1),
     age: '21',
     address: '广东省深圳市',
     date: '2023-01-01 12:00:00',
@@ -48,7 +48,7 @@ nav:
               src="https://p3-passport.byteimg.com/img/user-avatar/09e00df42d9bfe86f3b0c7c8cdbf1c84~100x100.awebp"
               alt=""
             />
-            <span>陈子涵</span>
+            <span>张三</span>
           </div>
         );
       },
