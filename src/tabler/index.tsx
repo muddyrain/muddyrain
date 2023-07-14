@@ -110,15 +110,16 @@ const handleCell = (
 	return columns.map((column) => {
 		return {
 			...column,
-			render: (text) => {
+			render: (text, record, index) => {
+				const content = column.render?.(text, record, index) || text;
 				if (typeof column.ellipsis === 'boolean' && column.ellipsis) {
 					return (
 						<Tooltip title={text} {...column.ellipsisProps}>
-							{text}
+							{content}
 						</Tooltip>
 					);
 				} else {
-					return <div>{text}</div>;
+					return <>{content}</>;
 				}
 			},
 		};

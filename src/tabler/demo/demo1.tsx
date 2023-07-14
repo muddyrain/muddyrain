@@ -44,6 +44,10 @@ const Demo1 = () => {
 						title: 'Age',
 						dataIndex: 'age',
 						key: 'age',
+						ellipsis: true,
+						render(text) {
+							return <>{text + '岁'}</>;
+						},
 					},
 					{
 						title: 'Address',
