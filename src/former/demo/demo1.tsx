@@ -29,6 +29,7 @@ const Former = createFormer(Form, {
 		CheckboxGroup: Checkbox.Group,
 		TreeSelect,
 		RadioGroup: Radio.Group,
+		RangePicker: DatePicker.RangePicker,
 	},
 });
 const Demo = () => {
@@ -88,6 +89,14 @@ const Demo = () => {
 							view: 'TimePicker',
 							Select: {
 								placeholder: '请输入选择器',
+							},
+						},
+						{
+							key: 'ranger',
+							label: '时间选择器',
+							view: 'RangePicker',
+							RangePicker: {
+								showTime: true,
 							},
 						},
 						{
@@ -173,6 +182,7 @@ const Demo = () => {
 								],
 							},
 						},
+
 						{
 							key: 'a2',
 							label: '用户名',
