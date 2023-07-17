@@ -1,11 +1,11 @@
 import type {
-	Form as AForm,
 	ButtonProps,
 	Cascader,
 	CascaderProps,
 	Checkbox,
 	DatePicker,
 	DatePickerProps,
+	Form as AForm,
 	FormInstance,
 	FormItemProps,
 	FormProps,
@@ -21,6 +21,7 @@ import type {
 	TreeSelectProps,
 } from 'antd';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
+import { RangePickerProps } from 'antd/es/date-picker';
 import { TextAreaProps } from 'antd/es/input';
 import React from 'react';
 import rules from './rules';
@@ -201,6 +202,7 @@ export interface AntdElementTypesProps {
 	CheckboxGroup?: CheckboxGroupProps;
 	TreeSelect?: TreeSelectProps;
 	RadioGroup?: RadioGroupProps;
+	RangePicker?: RangePickerProps;
 }
 /**
  * antd 元素类型
@@ -215,6 +217,7 @@ export interface AntdElementProps {
 	CheckboxGroup?: typeof Checkbox.Group;
 	TreeSelect?: typeof TreeSelect;
 	RadioGroup?: typeof Radio.Group;
+	RangePicker?: typeof DatePicker.RangePicker;
 }
 
 export type Rules = {
