@@ -146,7 +146,15 @@ const handleCell = (
 				if (typeof column.ellipsis === 'boolean' && column.ellipsis) {
 					return (
 						<Tooltip title={text} {...column.ellipsisProps}>
-							<div style={{ width: '100%' }}>{content}</div>
+							<div
+								style={{
+									width: '100%',
+									textOverflow: 'ellipsis',
+									overflow: 'hidden',
+								}}
+							>
+								{content}
+							</div>
 						</Tooltip>
 					);
 				} else {
