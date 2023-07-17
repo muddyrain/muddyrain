@@ -89,6 +89,7 @@ const handleSort = (
 	return [
 		{
 			title: props.sortTitle || '序号',
+			width: 100,
 			render(_, __, index) {
 				if (pagination) {
 					return (
