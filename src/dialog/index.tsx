@@ -117,6 +117,9 @@ const Dialog: FC<DialogProps> = ({
 	useEffect(() => {
 		changeVisible?.(visible);
 	}, [visible]);
+	useEffect(() => {
+		setVisible(_visible);
+	}, [_visible]);
 	return (
 		<>
 			{procedureOpenButton()}
