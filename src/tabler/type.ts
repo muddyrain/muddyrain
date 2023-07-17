@@ -35,10 +35,25 @@ export interface TablerProps extends TableProps<RecordType> {
 	 */
 	actions?: TablerActionsProps[] | null;
 	/**
+	 * 操作项
+	 * @default {}
+	 */
+	actionsProps?: TablerProps['columns'][number];
+	/**
 	 * 排序标题
 	 * default: 序号
 	 */
 	sortTitle?: string;
+	/**
+	 * 操作列宽度
+	 * default: 200
+	 */
+	actionsWidth?: string | number | undefined;
+	/**
+	 * 是否固定
+	 * default: true
+	 */
+	fixed?: boolean;
 	/**
 	 * 表格列的配置
 	 */

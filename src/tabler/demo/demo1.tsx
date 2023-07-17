@@ -3,8 +3,10 @@ import Tabler from '..';
 
 const Demo1 = () => {
 	return (
-		<div>
+		<div style={{ width: '100%' }}>
 			<Tabler
+				style={{ width: '100%' }}
+				fixed={true}
 				actions={[
 					{
 						content: '哈哈',
@@ -38,6 +40,7 @@ const Demo1 = () => {
 						dataIndex: 'name',
 						key: 'name',
 						ellipsis: true,
+						width: 500,
 						ellipsisProps: {},
 					},
 					{
@@ -45,6 +48,7 @@ const Demo1 = () => {
 						dataIndex: 'age',
 						key: 'age',
 						ellipsis: true,
+						width: 500,
 						render(text) {
 							return <>{text + '岁'}</>;
 						},
@@ -52,6 +56,7 @@ const Demo1 = () => {
 					{
 						title: 'Address',
 						dataIndex: 'address',
+						width: 200,
 						key: 'address',
 					},
 				]}

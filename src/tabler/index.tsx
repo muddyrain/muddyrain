@@ -3,83 +3,113 @@ import { Button, Popconfirm, Space, Table, Tooltip } from 'antd';
 import React, { FC } from 'react';
 import { TablerProps } from './type';
 const handleActions = (
-	actions: TablerProps['actions']
+	actions: TablerProps['actions'],
+	actionsWidth?: TablerProps['actionsWidth'],
+	actionsProps?: TablerProps['columns'][number]
 ): TablerProps['columns'] => {
-	if (!actions) {
-		return [];
-	}
-	return [
-		{
-			title: '操作',
-			render: (_, record, index) => {
-				return (
-					<Space>
-						{actions.map((action, _index) => {
-							const key = action.key || _index;
-							/**
-							 * 是否显示
-							 */
-							if (action.visible === false) {
-								return null;
-							}
-							/**
-							 * 自定义函数组件式方式
-							 */
-							if (typeof action?.content === 'function') {
-								return <div key={key}>{action?.content(record, index)}</div>;
-							}
-							if (action.confirm) {
+	if (Array.isArray(actions)) {
+		return [
+			{
+				title: '操作',
+				width: actionsWidth || 200,
+				align: 'center',
+				render: (_, record, index) => {
+					return (
+						<Space style={{ padding: '0 10px' }}>
+							{actions.map((action, _index) => {
+								const key = action.key || _index;
+								/**
+								 * 是否显示
+								 */
+								if (action.visible === false) {
+									return null;
+								}
+								/**
+								 * 自定义函数组件式方式
+								 */
+								if (typeof action?.content === 'function') {
+									return <div key={key}>{action?.content(record, index)}</div>;
+								}
+								if (action.confirm) {
+									return (
+										<Popconfirm
+											title="提示"
+											key={key}
+											description={
+												typeof action.confirm === 'string'
+													? action.confirm
+													: action.confirm(record, index)
+											}
+											disabled={!!action.disabled}
+											okText="确定"
+											cancelText="取消"
+											onConfirm={() => {
+												action.onClick?.(record, index);
+											}}
+											{...action.confirmProps}
+										>
+											<Button
+												disabled={!!action.disabled}
+												loading={!!action.loading}
+												type="primary"
+												{...action.props}
+											>
+												{action.content || ''}
+											</Button>
+										</Popconfirm>
+									);
+								}
+								/**
+								 * 普通方式 - 展示内容按钮
+								 */
 								return (
-									<Popconfirm
-										title="提示"
+									<Button
 										key={key}
-										description={
-											typeof action.confirm === 'string'
-												? action.confirm
-												: action.confirm(record, index)
-										}
+										loading={!!action.loading}
 										disabled={!!action.disabled}
-										okText="确定"
-										cancelText="取消"
-										onConfirm={() => {
+										type="primary"
+										onClick={() => {
 											action.onClick?.(record, index);
 										}}
-										{...action.confirmProps}
+										{...action.props}
 									>
-										<Button
-											disabled={!!action.disabled}
-											loading={!!action.loading}
-											type="primary"
-											{...action.props}
-										>
-											{action.content || ''}
-										</Button>
-									</Popconfirm>
+										{action.content}
+									</Button>
 								);
-							}
-							/**
-							 * 普通方式 - 展示内容按钮
-							 */
-							return (
-								<Button
-									key={key}
-									loading={!!action.loading}
-									disabled={!!action.disabled}
-									type="primary"
-									onClick={() => {
-										action.onClick?.(record, index);
-									}}
-									{...action.props}
-								>
-									{action.content}
-								</Button>
-							);
-						})}
-					</Space>
-				);
+							})}
+						</Space>
+					);
+				},
+				...actionsProps,
 			},
-		},
-	];
+		];
+	}
+	return [];
+};
+// 处理固定列
+const procedureFixed = ({
+	fixed,
+	columns,
+}: {
+	fixed?: boolean;
+	columns?: TablerProps['columns'];
+}) => {
+	let total = 0;
+
+	// 计算内容需要宽度 [Begin]
+	const recursion = (list: TablerProps['columns'] = []) => {
+		list.forEach((item: any) => {
+			total = total + (Number(item?.width) || 0);
+			if (item?.children) {
+				recursion(item.children);
+			}
+		});
+	};
+	// 计算内容需要宽度 [End]
+
+	recursion(columns);
+
+	return fixed ? { scroll: { x: total } } : {};
 };
 
 const handleSort = (
@@ -128,7 +158,15 @@ const handleCell = (
 };
 
 const Tabler: FC<TablerProps> = (props) => {
-	const { columns = [], dataSource = [], actions = null, onPageChange } = props;
+	const {
+		columns = [],
+		dataSource = [],
+		actions = null,
+		onPageChange,
+		actionsWidth,
+		actionsProps,
+		fixed = true,
+	} = props;
 	const [state, setState] = useSetState({
 		current: 1,
 		pageSize: 10,
@@ -153,10 +191,11 @@ const Tabler: FC<TablerProps> = (props) => {
 	return (
 		<Table
 			{...props}
+			{...procedureFixed({ fixed, columns })}
 			columns={[
 				...(handleSort(props, pagination) || []),
 				...(handleCell(columns) || []),
-				...(handleActions(actions) || []),
+				...(handleActions(actions, actionsWidth, actionsProps) || []),
 			]}
 			pagination={pagination}
 			dataSource={dataSource}
