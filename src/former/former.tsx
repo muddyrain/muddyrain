@@ -42,6 +42,7 @@ const createFormer: CreateFormerProps = (
 			_dataSource.map((item, index) => {
 				const formItemProps = {
 					label: item.label,
+					...item.itemProps,
 				};
 				// If this View is not registered in elements, an error will be reported
 				if (typeof item.view === 'string' && !(item.view in elements)) {

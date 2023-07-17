@@ -83,6 +83,7 @@ export default () => {
 | submitText | 提交按钮文本 | `string  null`| 如果值为 `null` 则不显示该按钮 | '提交'
 | resetText | 重置按钮文本 | `string  null`| 如果值为 `null` 则不显示该按钮 | '重置'
 | submitProps | 提交按钮的props | `ButtonProps;`| 按钮的参数 - 源自 antd button | {}
+| itemProps | FormItem的props | `FormItemProps;`| 表单项的参数 - 源自 antd FormItem | {label:'自定义'}
 | resetProps | 重置按钮的props | `ButtonProps;`| 按钮的参数 - 源自 antd button | {}
 | actionMode | 操作按钮模式 | `inner  wrapper`| type -> `'inner' | 'wrapper'` | 'wrapper'
 | renderAction | 自定义渲染操作按钮 | `((submit: () => void, reset: () => void) => JSX.Element)`| 自定义渲染的按钮组，需返回JSX元素对象 | undefined

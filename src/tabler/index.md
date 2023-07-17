@@ -18,6 +18,8 @@ nav:
 | style | 样式 | `React.CSSProperties`|  -    | {}
 | rowKey | 行key | `string`|  -    | 'key'
 | actions | 操作项 | `TablerActionsProps[] | null`|  -    | []
+| actionsProps | 操作项参数 | `TablerProps['columns'][number]`|  -    | {}
+| actionsWidth | 操作列宽度 | `number`|  -    | 200
 | sortTitle | 排序标题 | `string`|  -    | '序号'
 | columns | 表格列的配置 | `(ColumnType<RecordType> & { ellipsis?: boolean; ellipsisProps?: TooltipProps;)[]` |  -    | []
 | onPageChange | 监听分页 | ` (props: { page: number; pageSize: number; size: number;}) => void`|  -    | {}

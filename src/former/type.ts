@@ -103,6 +103,11 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 * default: `8`
 	 */
 	span?: number;
+	/**
+	 * 项配置
+	 * default: `{label:'自定义'}`
+	 */
+	itemProps?: FormItemProps;
 }
 export interface FormerProps {
 	/**

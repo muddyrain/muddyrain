@@ -32,7 +32,8 @@ const Demo1 = () => {
 					key: index + 1,
 					name: 'John Brown' + index + 1,
 					age: 32,
-					address: 'New York No. 1 Lake Park',
+					address:
+						'置国毛到方系此指始天动劳类党。等究声包国和安相间示区照十律红法青。线任可且号等关表局西中府求证条却历。义参消断只器广选们严易称之第构半际。文内则计精参千但提花都如因。政及二身前装适节万发维天制两电太。',
 				}))}
 				columns={[
 					{
@@ -40,7 +41,7 @@ const Demo1 = () => {
 						dataIndex: 'name',
 						key: 'name',
 						ellipsis: true,
-						width: 500,
+						width: 200,
 						ellipsisProps: {},
 					},
 					{
@@ -48,7 +49,7 @@ const Demo1 = () => {
 						dataIndex: 'age',
 						key: 'age',
 						ellipsis: true,
-						width: 500,
+						width: 200,
 						render(text) {
 							return <>{text + '岁'}</>;
 						},
@@ -58,6 +59,7 @@ const Demo1 = () => {
 						dataIndex: 'address',
 						width: 200,
 						key: 'address',
+						ellipsis: true,
 					},
 				]}
 			/>

@@ -35,7 +35,7 @@ export interface TablerProps extends TableProps<RecordType> {
 	 */
 	actions?: TablerActionsProps[] | null;
 	/**
-	 * 操作项
+	 * 操作项参数
 	 * @default {}
 	 */
 	actionsProps?: TablerProps['columns'][number];
