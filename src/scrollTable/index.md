@@ -84,6 +84,7 @@ nav:
 | style | 样式 | `React.CSSProperties`|  -    | {}
 | headClassName | 表头容器类名 | `string`|  -    | ''
 | rowClassName | 行容器类名 | `string`|  -    | ''
+| emptyText | 空白内容 | `React.ReactNode \| JSX.Element`|  数据为空显示内容    | ''
 | headStyle | 表头容器样式 | `React.CSSProperties`|  -    | {}
 | rowStyle | 行容器样式 | `React.CSSProperties`|  -    | {}
 | isAutoPlay | 是否自动播放 | `boolean`|  -    | true
@@ -134,6 +135,7 @@ nav:
 | ellipsisClassName | 省略元素类名 | `string`|  -    | -
 | ellipsisPlacement | 省略方向 | `Placement`|  -    | 'top'
 | cursor | 指针 | `cursor`|  css-cursor   | 'auto'
+| specialColumn | 特殊列 | `'none' \| 'sort'`|   特殊列-排序  | 'none'
 
 
 #### align-type
