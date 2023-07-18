@@ -1,6 +1,6 @@
 import Tippy from '@tippyjs/react';
 import gsap from 'gsap';
-import React, { FC, useLayoutEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import colors from 'tailwindcss/colors';
 import 'tippy.js/dist/tippy.css';
 import styles from './index.module.less';
@@ -90,13 +90,11 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	// 行元素
 	const rowRef = useRef<HTMLDivElement>(null);
 	const scrollHeight = useRef(0);
-	const CarryingNumber = useRef(0);
 	// 是否播放
 	const isPlay = useRef(isAutoPlay);
 	const dataLength = useRef(dataSource.length);
 	const childrenElements = useRef<Element[]>([]);
 	const widths = useRef<number[]>([]);
-	const isInit = useRef(false);
 	const rowHeight = useRef(0);
 	const [data, setData] = useState<DataSourceType>(dataSource);
 	// 当前滚动的索引
@@ -107,8 +105,10 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	const computedRowHeight = () => {
 		if (!tableBodyRef.current) return;
 		const targetElement = childrenElements.current[currentScrollIndex.current];
-		const { height } = targetElement?.getBoundingClientRect();
-		rowHeight.current = height;
+		if (targetElement) {
+			const { height } = targetElement.getBoundingClientRect();
+			rowHeight.current = height;
+		}
 	};
 	/**
 	 * 计算间距
@@ -144,19 +144,18 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			}
 			setData([..._data]);
 		}
+
 		if (tableWrapperRef.current) {
 			const targetElement = tableWrapperRef.current as HTMLDivElement;
 			const { height } = targetElement.getBoundingClientRect();
 			// 承载个数
-			CarryingNumber.current = Math.ceil(height / rowHeight.current);
+			const CarryingNumber = Math.ceil(height / rowHeight.current);
 			// 承载需求层叠次数
-			const needsNumber = Math.ceil(
-				CarryingNumber.current / dataLength.current
-			);
-			if (CarryingNumber.current > dataLength.current) {
-				iterateData(data, needsNumber + 1);
+			const needsNumber = Math.ceil(CarryingNumber / dataLength.current);
+			if (CarryingNumber > dataLength.current) {
+				iterateData(dataSource, needsNumber + 1);
 			} else {
-				iterateData(data, 2);
+				iterateData(dataSource, 2);
 			}
 			computedRowHeight();
 		}
@@ -259,19 +258,31 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			computedWidth();
 		});
 	};
-	useLayoutEffect(() => {
-		if (isInit.current) return;
+
+	useEffect(() => {
+		setData([...dataSource]);
+	}, [dataSource, tableBodyRef.current]);
+	useEffect(() => {
 		if (!tableBodyRef.current) return;
 		if (!dataSource.length) return;
+		new MutationObserver((list) => {
+			if (!tableBodyRef.current) return;
+			if (list.length) {
+				childrenElements.current = Array.from(
+					tableBodyRef.current.children
+				).slice(0, dataLength.current);
+				computedRowHeight();
+				computedData();
+				startMove();
+			}
+		}).observe(tableBodyRef.current, {
+			childList: true,
+		});
+	}, [tableBodyRef, dataSource]);
+	useLayoutEffect(() => {
+		if (!tableBodyRef.current) return;
 		listenWindowSize();
-		childrenElements.current = Array.from(tableBodyRef.current.children).slice(
-			0,
-			dataLength.current
-		);
-		computedRowHeight();
-		isInit.current = true;
-		computedData();
-		startMove();
+		dataLength.current = dataSource.length;
 	}, [tableBodyRef.current, rowRef.current, dataSource]);
 	return (
 		<div
@@ -308,61 +319,61 @@ const ScrollTable: FC<ScrollTableProps> = ({
 				))}
 			</div>
 			<div className={styles.wrapper} ref={tableWrapperRef}>
-				{data.length > 0 ? (
-					<div
-						className={styles.body}
-						ref={tableBodyRef}
-						style={{ transform: 'translateY(0px)' }}
-					>
-						{data.map((item, index) => (
-							<div
-								className={`${styles.row} ${rowClassName}`}
-								style={{
-									backgroundColor: computedRowBackgroundColor(index),
-									...rowStyle,
-								}}
-								key={index}
-								{...(index === 0 ? { ref: rowRef } : {})}
-							>
-								{columns.map((column, columnIndex) => {
-									return (
-										<div
-											key={columnIndex}
-											className={styles.row_item}
-											style={{
-												width: column.width || widths.current[columnIndex],
-												padding: computedSpacing(rowSpacing),
-												justifyContent: computedJustify(column.align || 'left'),
-												cursor: column.cursor,
-												color: rowTextColor,
-											}}
-											onClick={(e) => {
-												onClick?.(item, index, e);
-											}}
-											onMouseOver={(e) => {
-												onMouseOver?.(item, index, e);
-											}}
-											onMouseMove={(e) => {
-												onMouseMove?.(item, index, e);
-											}}
-											onMouseLeave={(e) => {
-												onMouseLeave?.(item, index, e);
-											}}
-										>
-											{handleRenderRowData(
-												column,
-												item,
-												index % dataLength.current
-											)}
-										</div>
-									);
-								})}
-							</div>
-						))}
-					</div>
-				) : (
-					emptyText
-				)}
+				<div
+					className={styles.body}
+					ref={tableBodyRef}
+					style={{ transform: 'translateY(0px)' }}
+				>
+					{data.length
+						? data.map((item, index) => (
+								<div
+									className={`${styles.row} ${rowClassName}`}
+									style={{
+										backgroundColor: computedRowBackgroundColor(index),
+										...rowStyle,
+									}}
+									key={index}
+									{...(index === 0 ? { ref: rowRef } : {})}
+								>
+									{columns.map((column, columnIndex) => {
+										return (
+											<div
+												key={columnIndex}
+												className={styles.row_item}
+												style={{
+													width: column.width || widths.current[columnIndex],
+													padding: computedSpacing(rowSpacing),
+													justifyContent: computedJustify(
+														column.align || 'left'
+													),
+													cursor: column.cursor,
+													color: rowTextColor,
+												}}
+												onClick={(e) => {
+													onClick?.(item, index, e);
+												}}
+												onMouseOver={(e) => {
+													onMouseOver?.(item, index, e);
+												}}
+												onMouseMove={(e) => {
+													onMouseMove?.(item, index, e);
+												}}
+												onMouseLeave={(e) => {
+													onMouseLeave?.(item, index, e);
+												}}
+											>
+												{handleRenderRowData(
+													column,
+													item,
+													index % dataLength.current
+												)}
+											</div>
+										);
+									})}
+								</div>
+						  ))
+						: emptyText}
+				</div>
 			</div>
 		</div>
 	);

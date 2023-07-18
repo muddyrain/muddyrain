@@ -1,5 +1,5 @@
 import { ColorPicker, Input, Space, Switch } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ScrollTable from '..';
 const Demo1: FC = () => {
 	const [rowTextColor, setRowTextColor] = React.useState('#ffffff');
@@ -15,6 +15,18 @@ const Demo1: FC = () => {
 	const [headBackgroundColor, setHeadBackgroundColor] =
 		React.useState('#60a5fa');
 	const [striped, setStriped] = React.useState(true);
+	const [data, setData] = useState<any[]>([]);
+	useEffect(() => {
+		setTimeout(() => {
+			const _data = Array.from({ length: 10 }).map((_, index) => ({
+				name: '张三' + (index + 1),
+				age: '21',
+				address: '广东省深圳市',
+				date: '2023-01-01 12:00:00',
+			}));
+			setData(_data);
+		}, 2000);
+	}, []);
 	return (
 		<>
 			<div>
@@ -144,12 +156,7 @@ const Demo1: FC = () => {
 				onClick={(record, index) => {
 					console.log(record, index);
 				}}
-				dataSource={Array.from({ length: 10 }).map((_, index) => ({
-					name: '张三' + (index + 1),
-					age: '21',
-					address: '广东省深圳市',
-					date: '2023-01-01 12:00:00',
-				}))}
+				dataSource={data}
 				columns={[
 					{
 						title: '排序',
