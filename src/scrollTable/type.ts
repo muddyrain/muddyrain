@@ -1,3 +1,4 @@
+import React from 'react';
 import { Placement } from 'tippy.js';
 export type AlignType = 'left' | 'center' | 'right';
 export interface ColumnType {
@@ -106,6 +107,11 @@ export interface ScrollTableProps {
 	 * 表格数据
 	 */
 	dataSource: DataSourceType;
+	/**
+	 * 数据为空显示内容
+	 * default : null
+	 */
+	emptyText?: React.ReactNode | JSX.Element;
 	/**
 	 * 是否自动播放
 	 * default : true

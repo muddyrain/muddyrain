@@ -198,6 +198,7 @@ const Demo1: FC = () => {
 						dataIndex: 'date',
 					},
 				]}
+				emptyText={'暂无数据'}
 			/>
 		</>
 	);

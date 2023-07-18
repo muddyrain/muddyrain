@@ -75,6 +75,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	onMouseMove,
 	onMouseLeave,
 	style,
+	emptyText,
 }) => {
 	const rowBackgroundColor =
 		_rowBackgroundColor ||
@@ -89,6 +90,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	// 行元素
 	const rowRef = useRef<HTMLDivElement>(null);
 	const scrollHeight = useRef(0);
+	const CarryingNumber = useRef(0);
 	// 是否播放
 	const isPlay = useRef(isAutoPlay);
 	const dataLength = useRef(dataSource.length);
@@ -105,7 +107,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	const computedRowHeight = () => {
 		if (!tableBodyRef.current) return;
 		const targetElement = childrenElements.current[currentScrollIndex.current];
-		const { height } = targetElement.getBoundingClientRect();
+		const { height } = targetElement?.getBoundingClientRect();
 		rowHeight.current = height;
 	};
 	/**
@@ -142,15 +144,16 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			}
 			setData([..._data]);
 		}
-
 		if (tableWrapperRef.current) {
 			const targetElement = tableWrapperRef.current as HTMLDivElement;
 			const { height } = targetElement.getBoundingClientRect();
 			// 承载个数
-			const CarryingNumber = Math.ceil(height / rowHeight.current);
+			CarryingNumber.current = Math.ceil(height / rowHeight.current);
 			// 承载需求层叠次数
-			const needsNumber = Math.ceil(CarryingNumber / dataLength.current);
-			if (CarryingNumber > dataLength.current) {
+			const needsNumber = Math.ceil(
+				CarryingNumber.current / dataLength.current
+			);
+			if (CarryingNumber.current > dataLength.current) {
 				iterateData(data, needsNumber + 1);
 			} else {
 				iterateData(data, 2);
@@ -259,6 +262,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	useLayoutEffect(() => {
 		if (isInit.current) return;
 		if (!tableBodyRef.current) return;
+		if (!dataSource.length) return;
 		listenWindowSize();
 		childrenElements.current = Array.from(tableBodyRef.current.children).slice(
 			0,
@@ -268,7 +272,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 		isInit.current = true;
 		computedData();
 		startMove();
-	}, [tableBodyRef.current, rowRef.current]);
+	}, [tableBodyRef.current, rowRef.current, dataSource]);
 	return (
 		<div
 			className={`${styles.scrollTable_container} ${className}`}
@@ -304,57 +308,61 @@ const ScrollTable: FC<ScrollTableProps> = ({
 				))}
 			</div>
 			<div className={styles.wrapper} ref={tableWrapperRef}>
-				<div
-					className={styles.body}
-					ref={tableBodyRef}
-					style={{ transform: 'translateY(0px)' }}
-				>
-					{data.map((item, index) => (
-						<div
-							className={`${styles.row} ${rowClassName}`}
-							style={{
-								backgroundColor: computedRowBackgroundColor(index),
-								...rowStyle,
-							}}
-							key={index}
-							{...(index === 0 ? { ref: rowRef } : {})}
-						>
-							{columns.map((column, columnIndex) => {
-								return (
-									<div
-										key={columnIndex}
-										className={styles.row_item}
-										style={{
-											width: column.width || widths.current[columnIndex],
-											padding: computedSpacing(rowSpacing),
-											justifyContent: computedJustify(column.align || 'left'),
-											cursor: column.cursor,
-											color: rowTextColor,
-										}}
-										onClick={(e) => {
-											onClick?.(item, index, e);
-										}}
-										onMouseOver={(e) => {
-											onMouseOver?.(item, index, e);
-										}}
-										onMouseMove={(e) => {
-											onMouseMove?.(item, index, e);
-										}}
-										onMouseLeave={(e) => {
-											onMouseLeave?.(item, index, e);
-										}}
-									>
-										{handleRenderRowData(
-											column,
-											item,
-											index % dataLength.current
-										)}
-									</div>
-								);
-							})}
-						</div>
-					))}
-				</div>
+				{data.length > 0 ? (
+					<div
+						className={styles.body}
+						ref={tableBodyRef}
+						style={{ transform: 'translateY(0px)' }}
+					>
+						{data.map((item, index) => (
+							<div
+								className={`${styles.row} ${rowClassName}`}
+								style={{
+									backgroundColor: computedRowBackgroundColor(index),
+									...rowStyle,
+								}}
+								key={index}
+								{...(index === 0 ? { ref: rowRef } : {})}
+							>
+								{columns.map((column, columnIndex) => {
+									return (
+										<div
+											key={columnIndex}
+											className={styles.row_item}
+											style={{
+												width: column.width || widths.current[columnIndex],
+												padding: computedSpacing(rowSpacing),
+												justifyContent: computedJustify(column.align || 'left'),
+												cursor: column.cursor,
+												color: rowTextColor,
+											}}
+											onClick={(e) => {
+												onClick?.(item, index, e);
+											}}
+											onMouseOver={(e) => {
+												onMouseOver?.(item, index, e);
+											}}
+											onMouseMove={(e) => {
+												onMouseMove?.(item, index, e);
+											}}
+											onMouseLeave={(e) => {
+												onMouseLeave?.(item, index, e);
+											}}
+										>
+											{handleRenderRowData(
+												column,
+												item,
+												index % dataLength.current
+											)}
+										</div>
+									);
+								})}
+							</div>
+						))}
+					</div>
+				) : (
+					emptyText
+				)}
 			</div>
 		</div>
 	);
