@@ -27,6 +27,7 @@ import rules from './rules';
 export type FormerCustomView<T> = React.FC<{
 	value: T;
 	onChange: (value: T) => void;
+	[key: string]: any;
 }>;
 export interface DataSourceItem extends AntdElementTypesProps {
 	/**
