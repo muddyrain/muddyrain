@@ -84,6 +84,7 @@ const Tailor: FC<TailorProps> = ({
 		dragElement: HTMLDivElement,
 		canvasElement: HTMLCanvasElement
 	) => {
+		if (!dragElement) return;
 		for (const element of Array.from(
 			dragElement.children
 		) as HTMLDivElement[]) {

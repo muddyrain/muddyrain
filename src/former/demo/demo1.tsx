@@ -17,7 +17,7 @@ import {
 import React, { useEffect } from 'react';
 import createFormer from '../index';
 import { FormerCustomView } from '../type';
-
+import './demo.css';
 const Test: FormerCustomView<string> = ({ onChange, value }) => {
 	useEffect(() => {
 		onChange('12');
@@ -54,14 +54,13 @@ const Demo = () => {
 		<div>
 			<Former
 				form={$form}
-				column={3}
+				layout="grid"
 				resetText={null}
 				actionMode="wrapper"
 				onSubmit={(e) => {
 					console.log(e);
 				}}
-				dataSource={(data) => {
-					console.log(data);
+				dataSource={() => {
 					return [
 						{
 							key: 'a',
@@ -197,7 +196,6 @@ const Demo = () => {
 								],
 							},
 						},
-
 						{
 							key: 'a2',
 							label: '用户名',

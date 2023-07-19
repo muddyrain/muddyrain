@@ -34,6 +34,10 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	label: string;
 	/**
+	 * 容器类名 `string`
+	 */
+	className?: string;
+	/**
 	 * 输出值的`key`值 `string`|`number`
 	 */
 	key: string | number;
@@ -98,11 +102,13 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	rules?: (keyof typeof rules)[] | FormItemProps['rules'] | string[];
 	/**
-	 * 宽度 `number`
+	 * 宽度 `number` | `string`
+	 *
+	 * default : 100%
 	 */
-	width?: number;
+	width?: number | string;
 	/**
-	 * Col 布局 `number`
+	 * Col 布局 `number` - 栅格layout
 	 * default: `8`
 	 */
 	span?: number;
@@ -117,6 +123,16 @@ export interface FormerProps {
 	 * 类名
 	 */
 	className?: string;
+	/**
+	 * form外部类名
+	 */
+	wrapperClassName?: string;
+	/**
+	 * 布局方式
+	 *
+	 * default : 'grid'
+	 */
+	layout?: 'grid' | 'flex';
 	/**
 	 * 样式
 	 */

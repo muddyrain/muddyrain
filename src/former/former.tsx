@@ -1,5 +1,6 @@
 import { Button, Col, FormItemProps, Row, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
+import styles from './index.module.less';
 import CustomRules from './rules';
 import type {
 	AntdElementTypesProps,
@@ -33,6 +34,8 @@ const createFormer: CreateFormerProps = (
 		resetProps,
 		actionMode = 'wrapper',
 		renderAction,
+		layout = 'grid',
+		wrapperClassName = '',
 	}) => {
 		const colSpan = Math.floor(24 / column);
 		const [formData, setFormData] = useState({});
@@ -82,38 +85,43 @@ const createFormer: CreateFormerProps = (
 				}
 
 				if (_visible) {
-					return (
-						<Col key={item.key} span={item.span || colSpan}>
-							<Form.Item
-								hidden={item.hide}
-								initialValue={item.initialValue}
-								style={{ width: item.width || '100%' }}
-								rules={[
-									{
-										required: item.required,
-										message: item.requiredMsg || `${item.label}不能为空`,
-									},
-									...formItemRules,
-								]}
-								{...(item.onlyEntryNumber && {
-									getValueFromEvent: (e) =>
-										e.target.value.replace(/[^\d]/g, ''),
+					const Item = (
+						<Form.Item
+							hidden={item.hide}
+							initialValue={item.initialValue}
+							style={{ width: item.width || 'auto' }}
+							rules={[
+								{
+									required: item.required,
+									message: item.requiredMsg || `${item.label}不能为空`,
+								},
+								...formItemRules,
+							]}
+							{...(item.onlyEntryNumber && {
+								getValueFromEvent: (e) => e.target.value.replace(/[^\d]/g, ''),
+							})}
+							name={item.key}
+							{...formItemProps}
+							className={`${item.className} ${formItemProps.className}`}
+						>
+							<Element
+								placeholder={item.placeholder || prefixPlaceholder + item.label}
+								{...(item.allowClear && {
+									allowClear: item.allowClear,
 								})}
-								name={item.key}
-								{...formItemProps}
-							>
-								<Element
-									placeholder={
-										item.placeholder || prefixPlaceholder + item.label
-									}
-									{...(item.allowClear && {
-										allowClear: item.allowClear,
-									})}
-									{...(item[item.view as keyof AntdElementTypesProps] || {})}
-								/>
-							</Form.Item>
-						</Col>
+								{...(item[item.view as keyof AntdElementTypesProps] || {})}
+							/>
+						</Form.Item>
 					);
+					if (layout === 'grid') {
+						return (
+							<Col key={item.key} span={item.span || colSpan}>
+								{Item}
+							</Col>
+						);
+					} else {
+						return <Fragment key={item.key}>{Item}</Fragment>;
+					}
 				}
 				return null;
 			});
@@ -174,12 +182,28 @@ const createFormer: CreateFormerProps = (
 				labelCol={{ span: labelCol }}
 				wrapperCol={{ span: wrapperCol }}
 			>
-				<Row gutter={15}>
-					{Array.isArray(dataSource)
-						? DataSources(dataSource)
-						: DataSources(dataSource(formData))}
-					{actionMode === 'inner' && <ActionButtons />}
-				</Row>
+				{layout === 'grid' ? (
+					<Row gutter={15}>
+						{Array.isArray(dataSource)
+							? DataSources(dataSource)
+							: DataSources(dataSource(formData))}
+						{actionMode === 'inner' && <ActionButtons />}
+					</Row>
+				) : (
+					<div
+						className={`${styles.layout_flex_container} ${wrapperClassName}`}
+					>
+						{
+							<>
+								{Array.isArray(dataSource)
+									? DataSources(dataSource)
+									: DataSources(dataSource(formData))}
+								{actionMode === 'inner' && <ActionButtons />}
+							</>
+						}
+					</div>
+				)}
+
 				{actionMode === 'wrapper' && <ActionButtons />}
 			</Form>
 		);
