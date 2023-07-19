@@ -14,10 +14,25 @@ import {
 	TimePicker,
 	TreeSelect,
 } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import createFormer from '../index';
+import { FormerCustomView } from '../type';
 
-const Test = ({ onChange }: any) => <input type="text" onChange={onChange} />;
+const Test: FormerCustomView<string> = ({ onChange, value }) => {
+	useEffect(() => {
+		onChange('12');
+	}, []);
+	return (
+		<input
+			type="text"
+			value={value}
+			onChange={(e) => {
+				onChange(e.target.value);
+			}}
+		/>
+	);
+};
+
 const Former = createFormer(Form, {
 	elements: {
 		Input,
@@ -187,6 +202,7 @@ const Demo = () => {
 							key: 'a2',
 							label: '用户名',
 							view: Test,
+							initialValue: '12312312',
 						},
 					];
 				}}

@@ -5,7 +5,7 @@ import {
 	DragPointDirection,
 	DragSideDirection,
 	type TailorProps,
-} from './types';
+} from './type.d';
 import { handleMoveDragElement, hexToRgba } from './utils';
 /**
  * 裁剪
@@ -271,3 +271,4 @@ const Tailor: FC<TailorProps> = ({
 };
 
 export default Tailor;
+export * from './type.d';

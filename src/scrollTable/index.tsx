@@ -380,3 +380,4 @@ const ScrollTable: FC<ScrollTableProps> = ({
 };
 
 export default ScrollTable;
+export * from './type.d';

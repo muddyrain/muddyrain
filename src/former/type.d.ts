@@ -23,8 +23,11 @@ import type {
 import { CheckboxGroupProps } from 'antd/es/checkbox';
 import { RangePickerProps } from 'antd/es/date-picker';
 import { TextAreaProps } from 'antd/es/input';
-import React from 'react';
 import rules from './rules';
+export type FormerCustomView<T> = React.FC<{
+	value: T;
+	onChange: (value: T) => void;
+}>;
 export interface DataSourceItem extends AntdElementTypesProps {
 	/**
 	 * 标签 `string`
@@ -65,7 +68,7 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 *
 	 * ②: 自定义函数式组件 `React.FC`
 	 */
-	view: keyof AntdElementProps | React.FC;
+	view: keyof AntdElementProps | FormerCustomView<any>;
 	/**
 	 * 前缀占位符 - `string`
 	 *

@@ -240,3 +240,5 @@ const Waterfall: FC<WaterfallProps> = ({
 };
 
 export default Waterfall;
+
+export * from './type.d';

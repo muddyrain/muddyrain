@@ -2,9 +2,9 @@ import { Button, ButtonProps, Modal } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 
 // 尺寸大小类型
-type SizeProps = 'default' | 'small' | 'medium' | 'large';
+export type SizeProps = 'default' | 'small' | 'medium' | 'large';
 
-interface DialogProps {
+export interface DialogProps {
 	/**
 	 * 类名
 	 */

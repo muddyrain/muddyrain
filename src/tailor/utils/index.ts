@@ -1,4 +1,4 @@
-import { DragPointDirection, DragSideDirection } from '../types';
+import { DragPointDirection, DragSideDirection } from '../type.d';
 
 export const handleMoveDragElement = (
 	element: HTMLDivElement,

@@ -212,3 +212,4 @@ const Tabler: FC<TablerProps> = (props) => {
 };
 
 export default Tabler;
+export * from './type.d';
