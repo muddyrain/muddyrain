@@ -36,6 +36,7 @@ const createFormer: CreateFormerProps = (
 		renderAction,
 		layout = 'grid',
 		wrapperClassName = '',
+		itemClassName = '',
 	}) => {
 		const colSpan = Math.floor(24 / column);
 		const [formData, setFormData] = useState({});
@@ -89,7 +90,7 @@ const createFormer: CreateFormerProps = (
 						<Form.Item
 							hidden={item.hide}
 							initialValue={item.initialValue}
-							style={{ width: item.width || 'auto' }}
+							style={{ width: item.width }}
 							rules={[
 								{
 									required: item.required,
@@ -102,7 +103,7 @@ const createFormer: CreateFormerProps = (
 							})}
 							name={item.key}
 							{...formItemProps}
-							className={`${item.className} ${formItemProps.className}`}
+							className={`${styles.form_item} ${itemClassName} ${item.className} ${formItemProps.className}`}
 						>
 							<Element
 								placeholder={item.placeholder || prefixPlaceholder + item.label}

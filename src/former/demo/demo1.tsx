@@ -56,10 +56,12 @@ const Demo = () => {
 				form={$form}
 				layout="grid"
 				resetText={null}
+				labelCol={8}
 				actionMode="wrapper"
 				onSubmit={(e) => {
 					console.log(e);
 				}}
+				itemClassName="demo_item"
 				dataSource={() => {
 					return [
 						{
@@ -73,6 +75,7 @@ const Demo = () => {
 							rules: ['integer'],
 							required: true,
 							Input: {
+								style: { width: '150px' },
 								// placeholder: '请输入用户名自定义',
 							},
 						},
@@ -82,6 +85,7 @@ const Demo = () => {
 							view: 'Select',
 							allowClear: true,
 							Select: {
+								style: { width: '200px' },
 								options: [
 									{ value: '北京', label: '北京' },
 									{ value: '上海', label: '上海' },

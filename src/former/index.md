@@ -70,7 +70,8 @@ export default () => {
 | 参数         | 说明     | 类型           | 描述信息 | 默认值 |
 | ------------| -------- | -----------   | ------  | ----- |
 | className | 类名 | `string`|  react - className     | `''`
-| wrapperClassName | form外部类名 | `string`|  Form 外部包裹    | `''`
+| wrapperClassName | form外部类名 | `string`|  Form 外部 className    | `''`
+| itemClassName | item类名 | `string`|  item 类名    | `''`
 | layout | 布局方式 | `grid \| flex`|  栅格布局 \| 弹性布局 | `grid`
 | style | 样式 | `React.CSSProperties`| react - style     | {}
 | onSubmit | 提交表单且数据验证成功后回调事件 | `FormProps['onFinish']`| -     | undefined

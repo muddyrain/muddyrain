@@ -128,6 +128,10 @@ export interface FormerProps {
 	 */
 	wrapperClassName?: string;
 	/**
+	 * form Item 样式
+	 */
+	itemClassName?: string;
+	/**
 	 * 布局方式
 	 *
 	 * default : 'grid'
