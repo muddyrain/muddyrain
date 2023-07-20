@@ -10,6 +10,7 @@ const Demo1 = () => {
 				actions={[
 					{
 						content: '哈哈',
+						visible: () => Math.random() > 0.5,
 						onClick(record, index) {
 							console.log('修改', record, index);
 						},

@@ -19,6 +19,14 @@ const handleActions = (
 							{actions.map((action, _index) => {
 								const key = action.key || _index;
 								/**
+								 * 函数返回时是否显示
+								 */
+								if (
+									typeof action.visible === 'function' &&
+									!action.visible(record, index)
+								)
+									return null;
+								/**
 								 * 是否显示
 								 */
 								if (action.visible === false) {
