@@ -98,9 +98,11 @@ const handleActions = (
 const procedureFixed = ({
 	fixed,
 	columns,
+	scroll,
 }: {
 	fixed?: boolean;
 	columns?: TablerProps['columns'];
+	scroll?: TablerProps['scroll'];
 }) => {
 	let total = 0;
 
@@ -117,7 +119,7 @@ const procedureFixed = ({
 
 	recursion(columns);
 
-	return fixed ? { scroll: { x: total } } : {};
+	return fixed ? { scroll: { x: total, ...scroll } } : {};
 };
 
 const handleSort = (
@@ -207,7 +209,7 @@ const Tabler: FC<TablerProps> = (props) => {
 	return (
 		<Table
 			{...props}
-			{...procedureFixed({ fixed, columns })}
+			{...procedureFixed({ fixed, scroll: props.scroll, columns })}
 			columns={[
 				...(handleSort(props, pagination) || []),
 				...(handleCell(columns) || []),
