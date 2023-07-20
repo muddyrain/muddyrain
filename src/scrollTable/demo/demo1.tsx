@@ -15,16 +15,23 @@ const Demo1: FC = () => {
 	const [headBackgroundColor, setHeadBackgroundColor] =
 		React.useState('#60a5fa');
 	const [striped, setStriped] = React.useState(true);
-	const [data, setData] = useState<any[]>([]);
+	const mockData = Array.from({ length: 10 }).map((_, index) => ({
+		name: '张三11' + (index + 1),
+		age: '21',
+		address: '广东省深圳市',
+		date: '2023-01-01 12:00:00',
+	}));
+	const [data, setData] = useState<any[]>(mockData);
 	useEffect(() => {
 		setTimeout(() => {
-			const _data = Array.from({ length: 10 }).map((_, index) => ({
-				name: '张三' + (index + 1),
-				age: '21',
-				address: '广东省深圳市',
-				date: '2023-01-01 12:00:00',
-			}));
-			setData(_data);
+			setData([
+				...Array.from({ length: 6 }).map((_, index) => ({
+					name: '张三222' + (index + 1),
+					age: '21',
+					address: '广东省深圳市',
+					date: '2023-01-01 12:00:00',
+				})),
+			]);
 		}, 2000);
 	}, []);
 	return (

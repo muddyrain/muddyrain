@@ -142,7 +142,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			for (let i = 0; i < num; i++) {
 				_data = [..._data, ...data];
 			}
-			setData([..._data]);
+			setData(() => [..._data]);
 		}
 
 		if (tableWrapperRef.current) {
@@ -172,9 +172,17 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			);
 		}
 	};
+	/**
+	 * 清除定时器
+	 */
+	const clearTimer = () => {
+		clearTimeout(timer.current);
+		timer.current = undefined;
+	};
 	const computedTransform = (startMove: () => void) => {
 		if (tableBodyRef.current && rowRef.current) {
 			const targetElement = tableBodyRef.current as HTMLDivElement;
+			clearTimer();
 			// 重新计算下一个行高
 			computedRowHeight();
 			scrollHeight.current += rowScrollHeight || rowHeight.current;
@@ -201,7 +209,7 @@ const ScrollTable: FC<ScrollTableProps> = ({
 	const startMove = () => {
 		if (!isPlay.current) return;
 		if (timer.current) {
-			clearTimeout(timer.current);
+			clearTimer();
 		}
 		timer.current = setTimeout(() => {
 			computedTransform(startMove);
@@ -258,40 +266,51 @@ const ScrollTable: FC<ScrollTableProps> = ({
 			computedWidth();
 		});
 	};
-
 	useEffect(() => {
-		setData([...dataSource]);
-	}, [dataSource, tableBodyRef.current]);
+		if (waitTime < 1000) {
+			throw new Error('`ScrollTable` waitTime 最小为1000毫秒');
+		}
+	}, [waitTime]);
 	useEffect(() => {
 		if (!tableBodyRef.current) return;
 		if (!dataSource.length) return;
-		new MutationObserver((list) => {
+		clearTimer();
+		dataLength.current = dataSource.length;
+		setData(() => [...dataSource]);
+		const initAnimation = () => {
 			if (!tableBodyRef.current) return;
-			if (list.length) {
-				childrenElements.current = Array.from(
-					tableBodyRef.current.children
-				).slice(0, dataLength.current);
-				computedRowHeight();
-				computedData();
-				startMove();
-			}
-		}).observe(tableBodyRef.current, {
-			childList: true,
-		});
+			childrenElements.current = Array.from(
+				tableBodyRef.current.children
+			).slice(0, dataLength.current);
+			computedRowHeight();
+			computedData();
+			startMove();
+		};
+		if (tableBodyRef.current.children?.length) {
+			clearTimer();
+			initAnimation();
+		} else {
+			new MutationObserver((list) => {
+				if (!tableBodyRef.current) return;
+				if (list.length) {
+					initAnimation();
+				}
+			}).observe(tableBodyRef.current, {
+				childList: true,
+			});
+		}
 	}, [tableBodyRef, dataSource]);
 	useLayoutEffect(() => {
-		if (!tableBodyRef.current) return;
 		listenWindowSize();
-		dataLength.current = dataSource.length;
-	}, [tableBodyRef.current, rowRef.current, dataSource]);
+	}, [rowRef.current]);
 	return (
 		<div
 			className={`${styles.scrollTable_container} ${className}`}
 			style={style}
 			onMouseOver={() => {
 				if (hoverPause) {
+					clearTimer();
 					isPlay.current = false;
-					clearTimeout(timer.current);
 				}
 			}}
 			onMouseLeave={() => {
