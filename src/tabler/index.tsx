@@ -129,7 +129,7 @@ const handleSort = (
 	return [
 		{
 			title: props.sortTitle || '序号',
-			width: 100,
+			width: props.sortWidth || 80,
 			render(_, __, index) {
 				if (pagination) {
 					return (
@@ -141,6 +141,7 @@ const handleSort = (
 					return index + 1;
 				}
 			},
+			...props.sortProps,
 		},
 	];
 };

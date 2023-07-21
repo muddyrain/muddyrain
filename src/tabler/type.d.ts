@@ -45,6 +45,16 @@ export interface TablerProps extends TableProps<RecordType> {
 	 */
 	sortTitle?: string;
 	/**
+	 * 排序宽度
+	 * default: 80
+	 */
+	sortWidth?: number;
+	/**
+	 * 排序参数
+	 * default: {}
+	 */
+	sortProps?: TablerProps['columns'][number];
+	/**
 	 * 操作列宽度
 	 * default: 200
 	 */
