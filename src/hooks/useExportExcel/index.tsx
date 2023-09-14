@@ -1,7 +1,8 @@
 import { TablerProps } from '@/tabler';
-import { renderToString } from 'react-dom/server';
+import ReactDOMServer, { renderToString } from 'react-dom/server';
 import { template } from './template';
 const uri = 'data:application/vnd.ms-excel;base64,';
+
 const useExportExcel = (fileName = '文件') => {
 	const exportToExcel = (table: string, name: string) => {
 		// 编码要用utf-8不然默认gbk会出现中文乱码
@@ -56,7 +57,17 @@ const useExportExcel = (fileName = '文件') => {
 							row[key] as JSX.Element
 						)}</div></td>`;
 					} else {
-						tbody += '<td style="text-align:center">' + text + '</td>';
+						// render 返回出来的是 element 对象
+						if (typeof text === 'object' && '$$typeof' in text) {
+							const container = document.createElement('div');
+							container.innerHTML = ReactDOMServer.renderToString(text);
+							tbody +=
+								'<td style="text-align:center">' +
+								container.textContent +
+								'</td>';
+						} else {
+							tbody += '<td style="text-align:center">' + text + '</td>';
+						}
 					}
 				}
 			}

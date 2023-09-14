@@ -2,7 +2,7 @@
 nav:
   title: components
   path: /components
-  order: 3
+  order: 1
 ---
 
 ## 代码演示

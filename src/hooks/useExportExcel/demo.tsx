@@ -21,6 +21,14 @@ const useExportExcelDemo: FC = () => {
 		{
 			title: '年龄',
 			dataIndex: 'age',
+			render(text: any) {
+				return (
+					<div>
+						<span>{text}</span>
+						<p>{'年龄'}</p>
+					</div>
+				);
+			},
 		},
 		{
 			title: '地址',

@@ -1,7 +1,7 @@
 ---
 nav:
   title: hooks
-  order: 1
+  order: 10
 group: 钩子库
 ---
 
