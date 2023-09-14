@@ -7,14 +7,19 @@
     "target": "ESNext",
     "jsx": "react",
     "baseUrl": "./",
-    "moduleResolution":"node",
+    "moduleResolution": "node",
     "noImplicitThis": false,
     "paths": {
-      "@@/*": [".dumi/tmp/*"],
-      "muddyrain": ["src"],
-      "@^/*": ["./*"],
-      "muddyrain/*": ["src/*", "*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": [".dumi/**/*", ".dumirc.ts", "src/**/*", "src/hooks/useScrollTopBottom.tsx"]
+  "include": [
+    ".dumi/**/*",
+    ".dumirc.ts",
+    "src/**/*",
+    "src/hooks/useScrollTopBottom/index.tsx",
+    "src/useExportExcel"
+  ]
 }
