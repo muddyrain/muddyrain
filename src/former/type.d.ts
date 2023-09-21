@@ -75,6 +75,10 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	view: keyof AntdElementProps | FormerCustomView<any>;
 	/**
+	 * 视图自定义props参数
+	 */
+	viewProps?: Record<string, any>;
+	/**
 	 * 前缀占位符 - `string`
 	 *
 	 * default: `请输入`| `请选择`

@@ -103,6 +103,7 @@ export default () => {
 | onlyEntryNumber|  仅支持输入数字      |  `boolean ` | - | false |
 | allowClear    |  支持清除            |  `boolean ` | - | false |
 | view          |  展示元素            |  `keyof AntdElementProps \|  React.FC<{value: T; onChange: (value: T) => void; }> ` | 可选择性的 antd 表单组件 或者 自定义 函数组件 | 必填 |
+| viewProps     |  视图组件参数         |  `object`  |   -  |  自定义组件参数 |
 | prefixPlaceholder|  前缀占位符       |  `string ` | - | '请输入/请选择' |
 | required      |  是否为必填          |  `boolean ` | - | false |
 | hide          |  是否隐藏            |  `boolean ` | - | false |

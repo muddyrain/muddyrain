@@ -111,6 +111,7 @@ const createFormer: CreateFormerProps = (
 									allowClear: item.allowClear,
 								})}
 								{...(item[item.view as keyof AntdElementTypesProps] || {})}
+								{...item?.viewProps}
 							/>
 						</Form.Item>
 					);

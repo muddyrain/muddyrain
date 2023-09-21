@@ -73,9 +73,11 @@ const Demo = () => {
 							requiredMsg: '哒哒哒',
 							onlyEntryNumber: true,
 							rules: ['integer'],
+							viewProps: {
+								style: { width: '150px' },
+							},
 							required: true,
 							Input: {
-								style: { width: '150px' },
 								// placeholder: '请输入用户名自定义',
 							},
 						},
