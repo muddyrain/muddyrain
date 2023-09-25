@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Modal } from 'antd';
+import { Button, ButtonProps, Modal, ModalProps } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 
 // 尺寸大小类型
@@ -67,7 +67,7 @@ const procedureWidth = (width: SizeProps | number) => {
 	}
 };
 
-const Dialog: FC<DialogProps> = ({
+const Dialog: FC<DialogProps & ModalProps> = ({
 	className = '',
 	style = {},
 	title = '弹框标题',
@@ -87,6 +87,7 @@ const Dialog: FC<DialogProps> = ({
 	footer,
 	renderOpenButton,
 	changeVisible,
+	...props
 }) => {
 	const [visible, setVisible] = useState(_visible);
 	// 处理打开按钮
@@ -174,6 +175,7 @@ const Dialog: FC<DialogProps> = ({
 						return { footer };
 					}
 				})()}
+				{...props}
 			>
 				{children}
 			</Modal>
