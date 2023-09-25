@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Modal, ModalProps } from 'antd';
+import { Button, ButtonProps, Modal } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 
 // 尺寸大小类型
@@ -49,6 +49,7 @@ export interface DialogProps {
 	renderOpenButton?: (int: () => void) => void;
 	/** 监听显示 */
 	changeVisible?: (bool: boolean) => void;
+	[key: string]: any;
 }
 
 // 处理框架宽度
@@ -67,7 +68,7 @@ const procedureWidth = (width: SizeProps | number) => {
 	}
 };
 
-const Dialog: FC<DialogProps & ModalProps> = ({
+const Dialog: FC<DialogProps> = ({
 	className = '',
 	style = {},
 	title = '弹框标题',

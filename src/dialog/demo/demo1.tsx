@@ -12,6 +12,7 @@ const Demo1 = () => {
 				changeVisible={(value) => {
 					setVisible(value);
 				}}
+				footer={() => null}
 			>
 				哈哈哈
 				<Button
