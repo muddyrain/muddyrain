@@ -18,7 +18,7 @@ export interface DialogProps {
 	 */
 	children?: React.ReactNode | JSX.Element;
 	/** 标题 */
-	title?: string;
+	title?: React.ReactNode | JSX.Element;
 	/** 显示 */
 	visible?: boolean;
 	/** 宽度 */
