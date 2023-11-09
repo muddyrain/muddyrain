@@ -185,6 +185,7 @@ const Tabler: FC<TablerProps> = (props) => {
 		actionsWidth,
 		actionsProps,
 		fixed = true,
+		showSort = true,
 	} = props;
 	const [state, setState] = useSetState({
 		current: 1,
@@ -212,7 +213,7 @@ const Tabler: FC<TablerProps> = (props) => {
 			{...props}
 			{...procedureFixed({ fixed, scroll: props.scroll, columns })}
 			columns={[
-				...(props.showSort ? handleSort(props, pagination) || [] : []),
+				...(showSort ? handleSort(props, pagination) || [] : []),
 				...(handleCell(columns) || []),
 				...(handleActions(actions, actionsWidth, actionsProps) || []),
 			]}
