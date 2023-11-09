@@ -153,7 +153,7 @@ const handleCell = (
 		return {
 			...column,
 			render: (text, record, index) => {
-				const content = column.render?.(text, record, index) || text;
+				const content = column.render?.(text, record, index) || text || '-';
 				if (typeof column.ellipsis === 'boolean' && column.ellipsis) {
 					return (
 						<Tooltip title={text} {...column.ellipsisProps}>
