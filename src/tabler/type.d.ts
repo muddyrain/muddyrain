@@ -40,6 +40,11 @@ export interface TablerProps extends TableProps<RecordType> {
 	 */
 	actionsProps?: TablerProps['columns'][number];
 	/**
+	 * 显示
+	 * default: 是否显示排序
+	 */
+	showSort?: boolean;
+	/**
 	 * 排序标题
 	 * default: 序号
 	 */

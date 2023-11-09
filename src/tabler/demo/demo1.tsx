@@ -7,6 +7,7 @@ const Demo1 = () => {
 			<Tabler
 				style={{ width: '100%' }}
 				fixed={true}
+				showSort={false}
 				actions={[
 					{
 						content: '哈哈',
