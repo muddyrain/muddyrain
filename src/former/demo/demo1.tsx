@@ -55,7 +55,6 @@ const Demo = () => {
 			<Former
 				form={$form}
 				layout="grid"
-				resetText={null}
 				labelCol={8}
 				actionMode="wrapper"
 				onSubmit={(e) => {

@@ -1,9 +1,9 @@
 import { Button, ButtonProps, Modal } from 'antd';
-import React, { FC, useEffect, useState } from 'react';
-
+import React, { FC, useEffect, useRef, useState } from 'react';
+import type { DraggableData, DraggableEvent } from 'react-draggable';
+import Draggable from 'react-draggable';
 // 尺寸大小类型
 export type SizeProps = 'default' | 'small' | 'medium' | 'large';
-
 export interface DialogProps {
 	/**
 	 * 类名
@@ -21,6 +21,8 @@ export interface DialogProps {
 	title?: React.ReactNode | JSX.Element;
 	/** 显示 */
 	visible?: boolean;
+	/** 是否拖拽 */
+	isDrag?: boolean;
 	/** 宽度 */
 	width?: SizeProps | number;
 	/** 打开按钮文字 */
@@ -74,6 +76,7 @@ const Dialog: FC<DialogProps> = ({
 	title = '弹框标题',
 	onOpen,
 	visible: _visible = false,
+	isDrag = false,
 	okText = '确定',
 	openText = '打开',
 	cancelText = '取消',
@@ -90,7 +93,15 @@ const Dialog: FC<DialogProps> = ({
 	changeVisible,
 	...props
 }) => {
+	const draggleRef = useRef<HTMLDivElement>(null);
 	const [visible, setVisible] = useState(_visible);
+	const [disabled, setDisabled] = useState(true);
+	const [bounds, setBounds] = useState({
+		left: 0,
+		top: 0,
+		bottom: 0,
+		right: 0,
+	});
 	// 处理打开按钮
 	const procedureOpenButton = () => {
 		const type = Object.prototype.toString.call(renderOpenButton);
@@ -122,6 +133,50 @@ const Dialog: FC<DialogProps> = ({
 	useEffect(() => {
 		setVisible(_visible);
 	}, [_visible]);
+
+	const onStart = (_event: DraggableEvent, uiData: DraggableData) => {
+		const { clientWidth, clientHeight } = window.document.documentElement;
+		const targetRect = draggleRef.current?.getBoundingClientRect();
+		if (!targetRect) {
+			return;
+		}
+		setBounds({
+			left: -targetRect.left + uiData.x,
+			right: clientWidth - (targetRect.right - uiData.x),
+			top: -targetRect.top + uiData.y,
+			bottom: clientHeight - (targetRect.bottom - uiData.y),
+		});
+	};
+	const dragProps = {
+		modalRender: (modal: React.ReactNode) => (
+			<Draggable
+				disabled={disabled}
+				bounds={bounds}
+				nodeRef={draggleRef}
+				onStart={(event, uiData) => onStart(event, uiData)}
+			>
+				<div ref={draggleRef}>{modal}</div>
+			</Draggable>
+		),
+		title: (
+			<div
+				style={{
+					width: '100%',
+					cursor: 'move',
+				}}
+				onMouseOver={() => {
+					if (disabled) {
+						setDisabled(false);
+					}
+				}}
+				onMouseOut={() => {
+					setDisabled(true);
+				}}
+			>
+				{title}
+			</div>
+		),
+	};
 	return (
 		<>
 			{procedureOpenButton()}
@@ -130,7 +185,6 @@ const Dialog: FC<DialogProps> = ({
 				className={className}
 				destroyOnClose
 				style={style}
-				title={title}
 				width={procedureWidth(width!)}
 				open={visible}
 				okText={okText}
@@ -176,6 +230,7 @@ const Dialog: FC<DialogProps> = ({
 						return { footer };
 					}
 				})()}
+				{...(isDrag ? dragProps : { title: title })}
 				{...props}
 			>
 				{children}

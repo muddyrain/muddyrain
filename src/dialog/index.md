@@ -28,6 +28,7 @@ export default function (){
 | style  | 样式  | `React.CSSProperties`  | - | - |
 | children  | 子节点  | `React.ReactNode` | JSX.Element  | - | - |
 | title  | 标题  | `string`  | - | 弹框标题 |
+| isDrag  | 是否拖拽  | `boolean`  | - | false |
 | width  | 宽度  | `SizeProps` | `number`  | - | medium |
 | openText  | 打开按钮文字  | `React.ReactNode`  | - | 打开 |
 | okText  | 确定按钮文字  | `React.ReactNode`  | - | 确定 |
