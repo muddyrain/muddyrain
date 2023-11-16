@@ -216,10 +216,20 @@ const Tabler: FC<TablerProps> = (props) => {
 			const { height } = tableRef.current.getBoundingClientRect();
 			const theadHeight =
 				tableRef.current.querySelector('.ant-table-thead')?.clientHeight || 0;
-			const paginationHeight =
-				tableRef.current.querySelector('.ant-pagination')?.clientHeight || 0;
+			const paginationElement =
+				tableRef.current.querySelector('.ant-pagination');
+			let paginationHeight = paginationElement?.clientHeight || 0;
+			if (paginationElement) {
+				let marginTop = parseInt(
+					window.getComputedStyle(paginationElement).marginTop
+				);
+				let marginBottom = parseInt(
+					window.getComputedStyle(paginationElement).marginBottom
+				);
+				paginationHeight = paginationHeight + marginTop + marginBottom;
+			}
 			const tHeight = height - theadHeight - paginationHeight;
-			setTableHeight(tHeight);
+			setTableHeight(() => tHeight);
 		}
 	}, [props.dataSource]);
 	return (
@@ -239,7 +249,7 @@ const Tabler: FC<TablerProps> = (props) => {
 					...(handleActions(actions, actionsWidth, actionsProps) || []),
 				]}
 				scroll={{
-					...(props.autoHeight ? { y: tableHeight } : {}),
+					...(props.autoHeight && tableHeight ? { y: tableHeight } : {}),
 					...props.scroll,
 				}}
 				pagination={pagination}

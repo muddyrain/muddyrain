@@ -76,7 +76,7 @@ const Dialog: FC<DialogProps> = ({
 	title = '弹框标题',
 	onOpen,
 	visible: _visible = false,
-	isDrag = false,
+	isDrag = true,
 	okText = '确定',
 	openText = '打开',
 	cancelText = '取消',
