@@ -19,7 +19,7 @@ const Demo1 = () => {
 				display: 'flex',
 				flexDirection: 'column',
 				width: '100%',
-				height: '40vh',
+				height: '65vh',
 				margin: 16,
 				overflow: 'hidden',
 			}}
@@ -27,7 +27,6 @@ const Demo1 = () => {
 			<Tabler
 				style={{ width: '100%' }}
 				fixed={true}
-				showSort={false}
 				actions={[
 					{
 						content: '哈哈',
