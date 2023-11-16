@@ -235,16 +235,18 @@ const Tabler: FC<TablerProps> = (props) => {
 
 	useEffect(() => {
 		if (tableRef.current && props.autoHeight) {
-			new IntersectionObserver((entries) => {
+			const observer = new IntersectionObserver((entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
 						computedTableHeight();
 					}
 				});
-			}).observe(tableRef.current);
+			});
+			observer.observe(tableRef.current);
 			window.addEventListener('resize', computedTableHeight);
 			return () => {
 				window.removeEventListener('resize', computedTableHeight);
+				observer.disconnect();
 			};
 		}
 	}, [tableRef.current, props.loading, props.dataSource, props.autoHeight]);
