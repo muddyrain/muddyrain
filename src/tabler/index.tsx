@@ -1,6 +1,6 @@
 import { useSetState } from 'ahooks';
 import { Button, Popconfirm, Space, Table, Tooltip } from 'antd';
-import React, { FC, useLayoutEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import styles from './index.module.less';
 import { TablerProps } from './type';
 const handleActions = (
@@ -234,11 +234,11 @@ const Tabler: FC<TablerProps> = (props) => {
 		return 0;
 	}, [props.dataSource, props.loading, props, wrapperLoaded]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (tableRef.current) {
-			setWrapperLoaded(true);
+			setWrapperLoaded(() => true);
 		}
-	}, []);
+	}, [tableRef.current]);
 	return (
 		<div
 			className={`${styles.tabler_container} ${
