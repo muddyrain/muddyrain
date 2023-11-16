@@ -1,6 +1,6 @@
 import { useSetState } from 'ahooks';
 import { Button, Popconfirm, Space, Table, Tooltip } from 'antd';
-import React, { FC, useLayoutEffect, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import styles from './index.module.less';
 import { TablerProps } from './type';
 const handleActions = (
@@ -192,7 +192,6 @@ const Tabler: FC<TablerProps> = (props) => {
 		current: 1,
 		pageSize: 10,
 	});
-	const [tableHeight, setTableHeight] = useState(0);
 	const tableRef = React.useRef<HTMLDivElement>(null);
 	const pagination: TablerProps['pagination'] =
 		typeof props.pagination === 'boolean'
@@ -211,7 +210,7 @@ const Tabler: FC<TablerProps> = (props) => {
 					},
 					...props.pagination,
 			  };
-	useLayoutEffect(() => {
+	const tableHeight = useMemo(() => {
 		if (tableRef.current) {
 			const { height } = tableRef.current.getBoundingClientRect();
 			const theadHeight =
@@ -229,9 +228,10 @@ const Tabler: FC<TablerProps> = (props) => {
 				paginationHeight = paginationHeight + marginTop + marginBottom;
 			}
 			const tHeight = height - theadHeight - paginationHeight;
-			setTableHeight(() => tHeight);
+			return tHeight;
 		}
-	}, [props.dataSource]);
+		return 0;
+	}, [props.dataSource, props.loading, props]);
 	return (
 		<div
 			className={`${styles.tabler_container} ${

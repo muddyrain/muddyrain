@@ -2,18 +2,20 @@ import React, { useEffect } from 'react';
 import Tabler from '..';
 
 const Demo1 = () => {
-	const [list, setList] = React.useState<any[]>([]);
+	const [loading, setLoading] = React.useState<boolean>(true);
+	const [list] = React.useState<any[]>(
+		Array.from({ length: 50 }).map((_, index) => ({
+			key: index + 1,
+			name: 'John Brown' + index + 1,
+			age: 32,
+			address:
+				'置国毛到方系此指始天动劳类党等究声包国和安相间示区照十律红法青。线任可且号等关表局西中府求证条却历。义参消断只器广选们严易称之第构半际。文内则计精参千但提花都如因。政及二身前装适节万发维天制两电太。',
+		}))
+	);
 	useEffect(() => {
+		setLoading(true);
 		setTimeout(() => {
-			setList(
-				Array.from({ length: 50 }).map((_, index) => ({
-					key: index + 1,
-					name: 'John Brown' + index + 1,
-					age: 32,
-					address:
-						'置国毛到方系此指始天动劳类党等究声包国和安相间示区照十律红法青。线任可且号等关表局西中府求证条却历。义参消断只器广选们严易称之第构半际。文内则计精参千但提花都如因。政及二身前装适节万发维天制两电太。',
-				}))
-			);
+			setLoading(false);
 		}, 1000);
 	}, []);
 	return (
@@ -22,6 +24,7 @@ const Demo1 = () => {
 				display: 'flex',
 				flexDirection: 'column',
 				width: '100%',
+				height: '40vh',
 				margin: 16,
 				overflow: 'hidden',
 			}}
@@ -52,6 +55,8 @@ const Demo1 = () => {
 						},
 					},
 				]}
+				autoHeight
+				loading={loading}
 				dataSource={list}
 				columns={[
 					{
