@@ -1,6 +1,6 @@
 {
   "name": "muddyrain",
-  "version": "1.8.4",
+  "version": "1.9.0",
   "description": "A react library developed with dumi",
   "license": "MIT",
   "module": "dist/index.js",
