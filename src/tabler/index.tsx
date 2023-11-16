@@ -1,6 +1,7 @@
 import { useSetState } from 'ahooks';
 import { Button, Popconfirm, Space, Table, Tooltip } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useLayoutEffect, useState } from 'react';
+import styles from './index.module.less';
 import { TablerProps } from './type';
 const handleActions = (
 	actions: TablerProps['actions'],
@@ -191,6 +192,8 @@ const Tabler: FC<TablerProps> = (props) => {
 		current: 1,
 		pageSize: 10,
 	});
+	const [tableHeight, setTableHeight] = useState(0);
+	const tableRef = React.useRef<HTMLDivElement>(null);
 	const pagination: TablerProps['pagination'] =
 		typeof props.pagination === 'boolean'
 			? props.pagination
@@ -208,18 +211,41 @@ const Tabler: FC<TablerProps> = (props) => {
 					},
 					...props.pagination,
 			  };
+	useLayoutEffect(() => {
+		if (tableRef.current) {
+			const { height } = tableRef.current.getBoundingClientRect();
+			const theadHeight =
+				tableRef.current.querySelector('.ant-table-thead')?.clientHeight || 0;
+			const paginationHeight =
+				tableRef.current.querySelector('.ant-pagination')?.clientHeight || 0;
+			const tHeight = height - theadHeight - paginationHeight;
+			setTableHeight(tHeight);
+		}
+	}, [props.dataSource]);
 	return (
-		<Table
-			{...props}
-			{...procedureFixed({ fixed, scroll: props.scroll, columns })}
-			columns={[
-				...(showSort ? handleSort(props, pagination) || [] : []),
-				...(handleCell(columns) || []),
-				...(handleActions(actions, actionsWidth, actionsProps) || []),
-			]}
-			pagination={pagination}
-			dataSource={dataSource}
-		/>
+		<div
+			className={`${styles.tabler_container} ${
+				props.autoHeight ? styles.autoHeight : ''
+			}`}
+			ref={tableRef}
+		>
+			<Table
+				{...props}
+				className={`${styles.tabler}`}
+				{...procedureFixed({ fixed, scroll: props.scroll, columns })}
+				columns={[
+					...(showSort ? handleSort(props, pagination) || [] : []),
+					...(handleCell(columns) || []),
+					...(handleActions(actions, actionsWidth, actionsProps) || []),
+				]}
+				scroll={{
+					...(props.autoHeight ? { y: tableHeight } : {}),
+					...props.scroll,
+				}}
+				pagination={pagination}
+				dataSource={dataSource}
+			/>
+		</div>
 	);
 };
 

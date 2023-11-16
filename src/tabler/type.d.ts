@@ -31,6 +31,11 @@ export interface TablerProps extends TableProps<RecordType> {
 	 */
 	rowKey?: string;
 	/**
+	 * 高度自适应
+	 * default: 否
+	 */
+	autoHeight?: boolean;
+	/**
 	 * 操作项
 	 */
 	actions?: TablerActionsProps[] | null;
