@@ -35,8 +35,8 @@ nav:
 | dataSource | 数据源 | `DataSourceItem[]  ((data: any) => DataSourceItem[])`| -  | []
 | wrapperCol | 容器布局 | `number`| 仅在 layout 为 `grid` 时生效    | 16
 | labelCol | 标签布局 | `number`| 仅在 layout 为 `grid` 时生效   | 6
-| submitText | 提交按钮文本 | `string  null`| 如果值为 `null` 则不显示该按钮 | '提交'
-| resetText | 重置按钮文本 | `string  null`| 如果值为 `null` 则不显示该按钮 | '重置'
+| submitText | 提交按钮文本 | `string  null`| 如果值为 `null` 则不显示该按钮 | ''
+| resetText | 重置按钮文本 | `string  null`| 如果值为 `null` 则不显示该按钮 | ''
 | submitProps | 提交按钮的props | `ButtonProps`| 按钮的参数 - 源自 antd button | {}
 | itemProps | FormItem的props | `FormItemProps`| 表单项的参数 - 源自 antd FormItem | {label:'自定义'}
 | resetProps | 重置按钮的props | `ButtonProps`| 按钮的参数 - 源自 antd button | {}

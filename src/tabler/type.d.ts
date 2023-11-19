@@ -31,6 +31,11 @@ export interface TablerProps extends TableProps<RecordType> {
 	 */
 	rowKey?: string;
 	/**
+	 * 高度自适应
+	 * default: 否
+	 */
+	autoHeight?: boolean;
+	/**
 	 * 操作项
 	 */
 	actions?: TablerActionsProps[] | null;
@@ -39,6 +44,11 @@ export interface TablerProps extends TableProps<RecordType> {
 	 * @default {}
 	 */
 	actionsProps?: TablerProps['columns'][number];
+	/**
+	 * 显示
+	 * default: 是否显示排序
+	 */
+	showSort?: boolean;
 	/**
 	 * 排序标题
 	 * default: 序号
