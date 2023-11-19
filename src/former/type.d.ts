@@ -1,39 +1,23 @@
+import type { ButtonProps, FormInstance, FormItemProps, FormProps } from 'antd';
+import { NamePath } from 'antd/es/form/interface';
+import { ReactNode } from 'react';
 import type {
-	ButtonProps,
-	Cascader,
-	CascaderProps,
-	Checkbox,
-	DatePicker,
-	DatePickerProps,
-	Form as AForm,
-	FormInstance,
-	FormItemProps,
-	FormProps,
-	Input,
-	InputProps,
-	Radio,
-	RadioGroupProps,
-	Select,
-	SelectProps,
-	TimePicker,
-	TimePickerProps,
-	TreeSelect,
-	TreeSelectProps,
-} from 'antd';
-import { CheckboxGroupProps } from 'antd/es/checkbox';
-import { RangePickerProps } from 'antd/es/date-picker';
-import { TextAreaProps } from 'antd/es/input';
+	AntdElementTypesProps,
+	ElementViewTypes,
+} from './ElementViewType';
 import rules from './rules';
-export type FormerCustomView<T> = React.FC<{
+export type FormerCustomView<T> = React.FC<FormerView<T>>;
+export type FormerView<T> = {
 	value: T;
 	onChange: (value: T) => void;
 	[key: string]: any;
-}>;
-export interface DataSourceItem extends AntdElementTypesProps {
+};
+
+interface DataSourceItem extends AntdElementTypesProps {
 	/**
 	 * 标签 `string`
 	 */
-	label: string;
+	label?: ReactNode;
 	/**
 	 * 容器类名 `string`
 	 */
@@ -41,7 +25,7 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	/**
 	 * 输出值的`key`值 `string`|`number`
 	 */
-	key: string | number;
+	key?: NamePath;
 	/**
 	 * 初始值 - `any`
 	 */
@@ -66,18 +50,6 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 * default: `false`
 	 */
 	allowClear?: boolean;
-	/**
-	 * 展示元素
-	 *
-	 * ①: 可选择性的 `Antd Form Components`
-	 *
-	 * ②: 自定义函数式组件 `React.FC`
-	 */
-	view: keyof AntdElementProps | FormerCustomView<any>;
-	/**
-	 * 视图自定义props参数
-	 */
-	viewProps?: Record<string, any>;
 	/**
 	 * 前缀占位符 - `string`
 	 *
@@ -123,15 +95,13 @@ export interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	itemProps?: FormItemProps;
 }
+
+type DataSourceItemType = DataSourceItem & ElementViewTypes;
 export interface FormerProps {
 	/**
 	 * 类名
 	 */
 	className?: string;
-	/**
-	 * form外部类名
-	 */
-	wrapperClassName?: string;
 	/**
 	 * form Item 样式
 	 */
@@ -140,8 +110,18 @@ export interface FormerProps {
 	 * 布局方式
 	 *
 	 * default : 'grid'
+	 *
+	 * flex inline 同一种行内布局
 	 */
-	layout?: 'grid' | 'flex';
+	layout?: 'grid' | 'flex' | 'inline';
+	/**
+	 * itemGap 间距
+	 *
+	 * default : 16
+	 *
+	 * 仅在 layout 为 flex | inline 时生效
+	 */
+	itemGap?: number;
 	/**
 	 * 样式
 	 */
@@ -173,18 +153,20 @@ export interface FormerProps {
 	 */
 	column?: number;
 	/**
-	 * 数据源 `DataSourceItem`
+	 * 数据源 `DataSourceItemType`
 	 * default: `[]`
 	 */
-	dataSource: DataSourceItem[] | ((data: any) => DataSourceItem[]);
+	dataSource: DataSourceItemType[] | ((data: any) => DataSourceItemType[]);
 	/**
 	 * 容器布局 `number`
 	 * default: `16`
+	 * 仅在 layout 为 grid 时生效
 	 */
 	wrapperCol?: number;
 	/**
 	 * 标签布局 `number`
 	 * default: `6`
+	 * 仅在 layout 为 grid 时生效
 	 */
 	labelCol?: number;
 	/**
@@ -222,36 +204,6 @@ export interface FormerProps {
 		| ((submit: () => void, reset: () => void) => JSX.Element)
 		| null;
 }
-/**
- * antd 元素类型props
- */
-export interface AntdElementTypesProps {
-	Select?: SelectProps;
-	Input?: InputProps;
-	TextArea?: TextAreaProps;
-	DatePicker?: DatePickerProps;
-	TimePicker?: TimePickerProps;
-	Cascader?: CascaderProps;
-	CheckboxGroup?: CheckboxGroupProps;
-	TreeSelect?: TreeSelectProps;
-	RadioGroup?: RadioGroupProps;
-	RangePicker?: RangePickerProps;
-}
-/**
- * antd 元素类型
- */
-export interface AntdElementProps {
-	Select?: typeof Select;
-	Input?: typeof Input;
-	TextArea?: typeof Input.TextArea;
-	DatePicker?: typeof DatePicker;
-	TimePicker?: typeof TimePicker;
-	Cascader?: typeof Cascader;
-	CheckboxGroup?: typeof Checkbox.Group;
-	TreeSelect?: typeof TreeSelect;
-	RadioGroup?: typeof Radio.Group;
-	RangePicker?: typeof DatePicker.RangePicker;
-}
 
 export type Rules = {
 	[key: string]: {
@@ -264,13 +216,4 @@ export type Rules = {
 		 */
 		message: string;
 	};
-};
-export type CreateFormerProps = (
-	Form: typeof AForm,
-	options?: {
-		elements: AntdElementProps;
-		rules?: Rules;
-	}
-) => React.FC<FormerProps> & {
-	useForm: () => [FormInstance];
 };
