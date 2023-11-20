@@ -25,10 +25,6 @@ interface ButtonViewProps {
 	view: 'Button';
 	viewProps?: ButtonProps;
 }
-interface CheckboxViewProps {
-	view: 'Checkbox';
-	viewProps?: CheckboxProps;
-}
 interface TextAreaViewProps {
 	view: 'TextArea';
 	viewProps?: TextAreaProps;
@@ -40,6 +36,10 @@ interface DatePickerViewProps {
 interface TimePickerViewProps {
 	view: 'TimePicker';
 	viewProps?: TimePickerProps;
+}
+interface RangePickerViewProps {
+	view: 'RangePicker';
+	viewProps?: RangePickerProps;
 }
 interface CascaderViewProps {
 	view: 'Cascader';
@@ -54,7 +54,7 @@ interface TreeSelectViewProps {
 	viewProps?: TreeSelectProps;
 }
 interface RangePickerViewProps {
-	view: 'TreeSelect';
+	view: 'RangePicker';
 	viewProps?: RangePickerProps;
 }
 interface RadioGroupViewProps {
@@ -67,9 +67,9 @@ interface CustomViewProps {
 }
 export type ElementViewTypes =
 	| InputViewProps
+	| RangePickerViewProps
 	| ButtonViewProps
 	| SelectViewProps
-	| CheckboxViewProps
 	| TextAreaViewProps
 	| DatePickerViewProps
 	| TimePickerViewProps
