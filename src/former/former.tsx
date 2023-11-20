@@ -18,6 +18,10 @@ import { AntdElementTypesProps } from './ElementViewType';
 import rules from './rules';
 import type { DataSourceItemType, FormerProps } from './type';
 
+type InternalFormType = FC<FormerProps>;
+type CompoundedComponent = InternalFormType & {
+	useForm: typeof Form.useForm;
+};
 const elements = {
 	Button: Button,
 	Cascader: Cascader,
@@ -33,7 +37,7 @@ const elements = {
 	TreeSelect: TreeSelect,
 };
 
-const Former: FC<FormerProps> = ({
+const Former: CompoundedComponent = ({
 	dataSource,
 	form: _form,
 	column = 3,
@@ -240,3 +244,5 @@ const Former: FC<FormerProps> = ({
 	);
 };
 export default Former;
+
+Former.useForm = Form.useForm;

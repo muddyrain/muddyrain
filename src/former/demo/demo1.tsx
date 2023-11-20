@@ -3,13 +3,12 @@
  * description: 加装过的form表单组件，拥有全新的类型支持系统
  */
 
-import { Form } from 'antd';
 import React from 'react';
 import Former from '../former';
 import './demo.css';
 
 const Demo = () => {
-	const [$form] = Form.useForm();
+	const [$form] = Former.useForm();
 
 	return (
 		<div>
