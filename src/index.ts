@@ -1,6 +1,6 @@
 export { default as Dialog } from './dialog';
 export type { DialogProps } from './dialog';
-export { default as createFormer } from './former';
+export { default as Former } from './former';
 export type { FormerCustomView, FormerProps, FormerView } from './former/type';
 export * from './hooks';
 export { default as ScrollTable } from './scrollTable';
