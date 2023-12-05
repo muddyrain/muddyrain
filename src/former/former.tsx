@@ -57,6 +57,8 @@ const Former: CompoundedComponent = ({
 	actionMode = 'wrapper',
 	renderAction,
 	layout = 'grid',
+	labelClassName = '',
+	labelStyle = {},
 	itemClassName = '',
 }) => {
 	const colSpan = Math.floor(24 / column);
@@ -134,6 +136,16 @@ const Former: CompoundedComponent = ({
 						})}
 						name={item.key}
 						{...formItemProps}
+						label={
+							item.label ? (
+								<div
+									className={item.labelClassName || labelClassName || ''}
+									style={item.labelStyle || labelStyle || {}}
+								>
+									{item.label}
+								</div>
+							) : undefined
+						}
 						className={`${itemClassName} ${item.className} ${formItemProps.className}`}
 					>
 						<Element

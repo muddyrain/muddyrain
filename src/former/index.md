@@ -23,6 +23,8 @@ nav:
 | ------------| -------- | -----------   | ------  | ----- |
 | className | 类名 | `string`|  react - className     | `''`
 | itemClassName | item类名 | `string`|  item 类名    | `''`
+| labelClassName | label类名 | `string`|  label类名    | `''`
+| labelStyle | label样式 | `React.CSSProperties`|  label样式    | `{}`
 | layout | 布局方式 | `grid \| flex \| inline`|  栅格布局 \| 行内布局 | `grid`
 | itemGap | 间距 | `number`|  仅在 layout 为 `flex` \| `inline` 时生效 | `16`
 | style | 样式 | `React.CSSProperties`| react - style     | {}
@@ -56,6 +58,8 @@ nav:
 | allowClear    |  支持清除            |  `boolean ` | - | false |
 | view          |  展示元素            |  `keyof AntdElementProps \|  React.FC<{value: T; onChange: (value: T) => void; }> ` | 可选择性的 antd 表单组件 或者 自定义 函数组件 | 必填 |
 | viewProps     |  视图组件参数         |  `object`  |   -  |  自定义组件参数 |
+| labelClassName | label类名 | `string`|  label类名    | `''`
+| labelStyle | label样式 | `React.CSSProperties`|  label样式    | `{}`
 | prefixPlaceholder|  前缀占位符       |  `string ` | - | '请输入/请选择' |
 | required      |  是否为必填          |  `boolean ` | - | false |
 | hide          |  是否隐藏            |  `boolean ` | - | false |

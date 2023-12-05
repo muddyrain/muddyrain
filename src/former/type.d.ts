@@ -19,6 +19,14 @@ interface DataSourceItem extends AntdElementTypesProps {
 	 */
 	label?: ReactNode;
 	/**
+	 * label 类名
+	 */
+	labelClassName?: string;
+	/**
+	 * label 样式
+	 */
+	labelStyle?: React.CSSProperties;
+	/**
 	 * 容器类名 `string`
 	 */
 	className?: string;
@@ -106,6 +114,14 @@ export interface FormerProps {
 	 * form Item 样式
 	 */
 	itemClassName?: string;
+	/**
+	 * label 类名
+	 */
+	labelClassName?: string;
+	/**
+	 * label 样式
+	 */
+	labelStyle?: React.CSSProperties;
 	/**
 	 * 布局方式
 	 *
