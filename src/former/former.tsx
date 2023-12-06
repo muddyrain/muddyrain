@@ -15,9 +15,9 @@ import {
 } from 'antd';
 import React, { FC, Fragment, useState } from 'react';
 import { AntdElementTypesProps } from './ElementViewType';
+import styles from './former.module.less';
 import rules from './rules';
 import type { DataSourceItemType, FormerProps } from './type';
-
 type InternalFormType = FC<FormerProps>;
 type CompoundedComponent = InternalFormType & {
 	useForm: typeof Form.useForm;
@@ -220,7 +220,7 @@ const Former: CompoundedComponent = ({
 		<Form
 			form={$form}
 			style={style}
-			className={className}
+			className={`${styles.former_container} ${className}`}
 			onFinish={(values) => {
 				onSubmit?.(values);
 				onFinish?.(values);

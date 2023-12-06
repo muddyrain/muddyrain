@@ -32,6 +32,9 @@ const Demo = () => {
 					console.log(e);
 				}}
 				itemClassName="demo_item"
+				labelStyle={{
+					width: 200,
+				}}
 				dataSource={(values) => {
 					return [
 						{
