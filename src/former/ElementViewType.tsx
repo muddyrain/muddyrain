@@ -10,12 +10,16 @@ import {
 } from 'antd';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
 import { RangePickerProps } from 'antd/es/date-picker';
-import { InputProps, TextAreaProps } from 'antd/es/input';
+import { InputProps, PasswordProps, TextAreaProps } from 'antd/es/input';
 import { FC } from 'react';
 
 interface InputViewProps {
 	view: 'Input';
 	viewProps?: InputProps;
+}
+interface InputPasswordViewProps {
+	view: 'Password';
+	viewProps?: PasswordProps;
 }
 interface SelectViewProps {
 	view: 'Select';
@@ -67,6 +71,7 @@ interface CustomViewProps {
 }
 export type ElementViewTypes =
 	| InputViewProps
+	| InputPasswordViewProps
 	| RangePickerViewProps
 	| ButtonViewProps
 	| SelectViewProps
@@ -88,6 +93,10 @@ export interface AntdElementTypesProps {
 	 * @deprecated This property will be deprecated in the next version. Please use the newProperty instead.
 	 */
 	Input?: InputProps;
+	/**
+	 * @deprecated This property will be deprecated in the next version. Please use the newProperty instead.
+	 */
+	Password?: PasswordProps;
 	/**
 	 * @deprecated This property will be deprecated in the next version. Please use the newProperty instead.
 	 */

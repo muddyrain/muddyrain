@@ -29,6 +29,7 @@ const elements = {
 	CheckboxGroup: Checkbox.Group,
 	DatePicker: DatePicker,
 	Input: Input,
+	Password: Input.Password,
 	RadioGroup: Radio.Group,
 	RangePicker: DatePicker.RangePicker,
 	Select: Select,

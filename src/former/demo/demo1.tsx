@@ -34,11 +34,8 @@ const Demo = () => {
 						{
 							label: '密码',
 							key: 'password',
-							view: 'Input',
-							viewProps: {
-								type: 'password',
-								allowClear: true,
-							},
+							view: 'Password',
+							viewProps: {},
 						},
 						{
 							label: '数字1',
