@@ -119,8 +119,6 @@ const Former: CompoundedComponent = ({
 							...(isInlineLayout
 								? {
 										display: 'inline-block',
-										marginBottom: itemGap,
-										marginRight: itemGap,
 								  }
 								: {}),
 							...(item.width ? { width: item.width } : {}),
@@ -220,7 +218,14 @@ const Former: CompoundedComponent = ({
 	return (
 		<Form
 			form={$form}
-			style={style}
+			style={{
+				...style,
+				...(isInlineLayout
+					? {
+							gap: itemGap,
+					  }
+					: {}),
+			}}
 			className={`${styles.former_container} ${className}`}
 			onFinish={(values) => {
 				onSubmit?.(values);

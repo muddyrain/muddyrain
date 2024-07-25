@@ -13,7 +13,6 @@ const C: FC<{
 	name: string;
 	num: number;
 }> = (props) => {
-	console.log('props', props);
 	return <div>自定义{props.name}</div>;
 };
 
@@ -32,9 +31,6 @@ const Demo = () => {
 					console.log(e);
 				}}
 				itemClassName="demo_item"
-				labelStyle={{
-					width: 200,
-				}}
 				dataSource={(values) => {
 					return [
 						{
