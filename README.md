@@ -7,26 +7,25 @@
 ---
 
 ### 🚀 关于我
-
 <table align="center">
-  <tr>
-    <td width="50%" valign="top">
-      <h4>🤖 AI-Native 架构师声明</h4>
-      <ul>
-        <li>深信 <b>"AI 协同开发"</b> 是未来的终极生产力。</li>
-        <li>擅长利用 <b>Cursor/Cline</b> 及其自动化 Bot 进行代码重构与基建升级。</li>
-        <li>致力于构建 <b>AI 与人类开发者完美契合</b> 的开发流。</li>
-      </ul>
-    </td>
-    <td width="50%" valign="top">
-      <h4>📡 VibeCoding项目： valley-mas</h4>
-      <ul>
-        <li>一种全新的 <b>创作与协作体验</b> 平台。</li>
-        <li>使用 <b>Go + React</b> 的硬核全栈架构。</li>
-        <li>项目状态：🏗️ 深度研发中 (In Dev)...</li>
-      </ul>
-    </td>
-  </tr>
+<tr>
+<td width="50%" valign="top">
+<h4>💻 全栈开发与工程化</h4>
+<ul>
+<li><b>深度前端</b>：精通 React 生态，具备大型 Monorepo (Turborepo) 管理及高性能组件库研发经验。</li>
+<li><b>全栈进阶</b>：熟练使用 Go/Node.js 构建高并发后端服务，具备从 0 到 1 的系统架构能力。</li>
+<li><b>极致工具</b>：追求工程效率，熟练运用 Biome、Oxlint 等 Rust 基建工具打造丝滑开发体验。</li>
+</ul>
+</td>
+<td width="50%" valign="top">
+<h4>⚡ 职业战斗力</h4>
+<ul>
+<li><b>开发经验</b>：长期服务于高并发业务场景，具备严谨的代码质量意识与稳定性保障经验。</li>
+<li><b>极速交付</b>：践行 Vibe Coding 理念，擅长利用现代化工具链实现产品构思到落地的快速闭环。</li>
+<li><b>持续进化</b>：对新技术保持极度敏感，能够快速攻克复杂技术难点并转化为业务价值。</li>
+</ul>
+</td>
+</tr>
 </table>
 
 <p align="center">
@@ -109,18 +108,17 @@
 
 ### 📊 Github 统计数据 (稳定加速版)
 <p align="center">
-  <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=muddyrain&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="muddyrain's stats" height="180px" />
-  <img src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=muddyrain&layout=compact&theme=tokyonight&hide=html,css&hide_border=true" alt="top langs" height="180px" />
+  <img src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=muddyrain&layout=compact&theme=tokyonight&hide=html,css&hide_border=true" alt="top langs" width="100%" />
 </p>
-
 <p align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=muddyrain&theme=tokyonight" alt="Github Summary Card" />
+  <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=muddyrain&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="muddyrain's stats" width="100%" />
 </p>
-
+<p align="center">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=muddyrain&theme=tokyonight" alt="Github Summary Card" width="100%" />
+</p>
 <p align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=muddyrain&theme=tokyo-night&hide_border=true&area=true" width="100%" />
 </p>
-
 ---
 
 ### 📫 联系我
