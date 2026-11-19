@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="260" viewBox="0 0 1040 260" role="img" aria-labelledby="title">
+  <title id="title">muddyrain — Frontend, web tools and indie games</title>
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#101c30"/><stop offset="1" stop-color="#09111d"/>
+    </linearGradient>
+    <pattern id="rain" width="36" height="31" patternUnits="userSpaceOnUse">
+      <path d="M20 2l-7 10" stroke="#9cb9c4" stroke-opacity=".20" stroke-width="1" stroke-linecap="round"/>
+    </pattern>
+    <clipPath id="frame"><rect width="1040" height="260" rx="16"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="1040" height="260" fill="url(#night)"/>
+    <rect x="641" width="399" height="260" fill="url(#rain)"/>
+    <path d="M618 260V209l42-29 34 5 46-54 35 9 24-24 31 26 40-56 48 53 45-21 77 56v86Z" fill="#192e3d"/>
+    <path d="M615 260v-21l85-62 45 14 61-41 55 31 76-29 103 43v65Z" fill="#203d47"/>
+    <path d="M628 260v-9l77-26 40 8 80-26 57 12 61-23 97 13v51Z" fill="#2c514f"/>
+    <circle cx="915" cy="71" r="20" fill="#d8ad79"/><circle cx="915" cy="71" r="31" fill="none" stroke="#d8ad79" stroke-opacity=".2"/>
+    <path d="M62 56h20m-10-10v20" stroke="#88c9bb" stroke-width="2" stroke-linecap="round"/>
+    <text x="96" y="61" fill="#9acdc3" font-family="monospace" font-size="15" letter-spacing="3">DEVELOPER PROFILE</text>
+    <text x="57" y="145" fill="#f3f7f8" font-family="sans-serif" font-size="78" font-weight="700">muddyrain</text>
+    <path d="M62 174h40" stroke="#d8ad79" stroke-width="2" stroke-linecap="round"/>
+    <text x="62" y="211" fill="#a6bcc8" font-family="sans-serif" font-size="23">Frontend · Web tools · Indie games</text>
+  </g>
+</svg>
